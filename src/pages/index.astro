@@ -111,7 +111,7 @@ const faq = [
   <section class="section section--mist" aria-labelledby="svc">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">What we do</span>
+        <span class="eyebrow">Six services</span>
         <h2 id="svc">Six things, done properly</h2>
         <p>
           Whether it is a blocked dunny, leaky taps, gas issues or more, we have got you
@@ -124,6 +124,15 @@ const faq = [
       </p>
     </div>
   </section>
+
+  <Reviews
+    seed="home"
+    count={3}
+    tags={['flagship']}
+    heading="What customers actually said"
+    intro="Reviews published on our Google Business Profile, quoted exactly as they were written. We have not tidied the spelling of our own name."
+    mist={false}
+  />
 
   <!-- ================= WHY ================= -->
   <section class="section" aria-labelledby="why">
@@ -172,7 +181,7 @@ const faq = [
   <section class="section section--mist" aria-labelledby="areas">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Where we work</span>
+        <span class="eyebrow">{coastSuburbs.length + rockySuburbs.length} suburbs</span>
         <h2 id="areas">Find your suburb</h2>
         <p>
           Every suburb below has its own page, and each one says something specific
@@ -230,15 +239,6 @@ const faq = [
     </div>
   </section>
 
-  <Reviews
-    seed="home"
-    count={3}
-    tags={['flagship']}
-    heading="What customers actually said"
-    intro="Reviews published on our Google Business Profile, quoted exactly as they were written. We have not tidied the spelling of our own name."
-    mist={false}
-  />
-
   <!-- ================= COMMERCIAL ================= -->
   <section class="section section--mist" aria-labelledby="comm">
     <div class="container split split--reverse">
@@ -281,7 +281,6 @@ const faq = [
   <section class="section" aria-labelledby="faq-h">
     <div class="container container--narrow">
       <div class="section-head">
-        <span class="eyebrow">Straight answers</span>
         <h2 id="faq-h">Questions we get asked</h2>
       </div>
       <div class="faq">

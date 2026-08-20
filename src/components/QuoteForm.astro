@@ -14,7 +14,7 @@ const {
   suburb = '',
   service = '',
   heading = 'Tell us what has gone wrong',
-  intro = 'Four fields. We read every one of them, and we will come back to you with what the job actually involves.',
+  intro = 'Three fields we need, two that help. We read every one of them.',
 } = Astro.props;
 
 const suburbNames = byRank.map((s) => s.name).sort((a, b) => a.localeCompare(b));
@@ -79,7 +79,7 @@ const suburbNames = byRank.map((s) => s.name).sort((a, b) => a.localeCompare(b))
     </div>
 
     <div class="field">
-      <label for={`${id}-service`}>What do you need?</label>
+      <label for={`${id}-service`}>What do you need? <span class="opt">optional</span></label>
       <select id={`${id}-service`} name="service">
         <option value="">Not sure, have a look</option>
         {services.map((s) => (
@@ -89,7 +89,7 @@ const suburbNames = byRank.map((s) => s.name).sort((a, b) => a.localeCompare(b))
     </div>
 
     <div class="field">
-      <label for={`${id}-message`}>What is happening?</label>
+      <label for={`${id}-message`}>What is happening? <span class="opt">optional</span></label>
       <textarea
         id={`${id}-message`}
         name="message"

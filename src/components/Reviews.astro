@@ -1,5 +1,5 @@
 ---
-import { pickReviews } from '../data/reviews.js';
+import { pickReviews, reviews } from '../data/reviews.js';
 
 interface Props {
   seed: string;
@@ -23,7 +23,7 @@ const chosen = pickReviews(seed, count, tags);
 <section class={mist ? 'section section--mist' : 'section'} aria-labelledby={`rev-${seed}`}>
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">Reviews</span>
+      <span class="eyebrow">{chosen.length} of {reviews.length} Google reviews</span>
       <h2 id={`rev-${seed}`}>{heading}</h2>
       {intro && <p>{intro}</p>}
     </div>

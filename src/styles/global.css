@@ -111,18 +111,29 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 
 .lede { font-size: clamp(1.075rem, 1rem + 0.4vw, 1.28rem); line-height: 1.5; }
 
-/* Uppercase eyebrow, the "FLOWTEK" label pattern from the live site */
+/* Uppercase eyebrow.
+   CONTENT RULE: an eyebrow must name real information, a council, a postcode, a
+   distance, a count. If deleting it would remove nothing, delete it. It is not
+   a decorative kicker and it never restates the heading underneath it. */
 .eyebrow {
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 0.8125rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
   color: var(--orange-deep);
   margin: 0 0 var(--sp-3);
   display: block;
 }
 .eyebrow--on-dark { color: var(--orange); }
+
+/* Numerals are structural in this system, not incidental. Distances, postcodes,
+   the phone number and counts all set tabular so columns line up and nothing
+   shifts between pages. */
+.tnum, .factlist .v, .arealist .km, .header__phone, .phone-big, .action-bar a {
+  font-variant-numeric: tabular-nums;
+}
 
 /* ---------- Focus. Never removed. Ring flips on dark surfaces. ---------- */
 :focus-visible {
@@ -163,6 +174,7 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .stack-lg > * + * { margin-top: var(--sp-6); }
 
 .section-head { max-width: 760px; margin-bottom: var(--sp-7); }
+.section-head h2 + p, .section-head h1 + p { margin-top: var(--sp-4); }
 .section-head p { color: var(--slate); }
 .section--mist .section-head p,
 .section--mist p.muted { color: var(--ink); } /* Slate on Mist fails at 4.12:1 */
@@ -411,7 +423,9 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .review {
   display: flex; flex-direction: column; gap: var(--sp-4);
   background: var(--white); border: var(--border-hairline);
-  border-radius: var(--r-md); padding: var(--sp-5); box-shadow: var(--shadow-soft);
+  border-left: 4px solid var(--orange);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: var(--sp-5); box-shadow: var(--shadow-soft);
 }
 .review blockquote { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--ink); }
 .review blockquote p { max-width: none; }
@@ -445,6 +459,55 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .section--navy .field input:focus-visible, .section--navy .field textarea:focus-visible,
 .section--navy .field select:focus-visible { outline-color: var(--white); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---------- The distance figure ----------
+   THE SIGNATURE MOVE of this site. On every suburb page the one fact that
+   decides whether a worried person rings is "will they actually come to me".
+   That fact is a number, it is different on all 27 pages, and here it is set as
+   a composition element rather than buried in a sentence: oversized, tabular,
+   sitting on a hairline rule with the unit and the origin set small beside it.
+   It is the same device on every page and it never says the same thing twice. */
+.distance {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: end;
+  gap: var(--sp-4);
+  border-top: 3px solid var(--ink);
+  padding-top: var(--sp-4);
+}
+.distance__fig {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(3.75rem, 2.4rem + 6vw, 7rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+}
+.distance__unit {
+  font-size: 0.32em;
+  letter-spacing: 0.06em;
+  margin-left: 0.12em;
+  vertical-align: baseline;
+  color: var(--orange-deep);
+}
+.distance__meta {
+  padding-bottom: 0.5em;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+.section--mist .distance__meta { color: var(--ink); }
+.distance--base .distance__fig { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); line-height: 1; }
+
+/* ---------- Swiss hairline structure ----------
+   Rules do the dividing work instead of shadows and boxes. Confirmed token. */
+.rule-top { border-top: var(--border-hairline); padding-top: var(--sp-6); }
+.section-head { border-top: 3px solid var(--ink); padding-top: var(--sp-5); }
+.section--navy .section-head, .section--ink .section-head { border-top-color: var(--orange); }
 
 /* ---------- Local facts panel ---------- */
 .factlist { list-style: none; display: grid; gap: 0; }
@@ -573,3 +636,11 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .split { display: grid; gap: clamp(28px, 4vw, 56px); align-items: center; }
 @media (min-width: 880px) { .split { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 880px) { .split--reverse > :first-child { order: 2; } }
+
+/* Optional form fields are named as optional. Required fields carry the marker
+   and the `required` attribute, so neither state is signalled by colour alone. */
+.field .opt {
+  font-family: var(--font-body); font-weight: 400; font-size: 0.8125rem;
+  color: var(--slate); letter-spacing: 0;
+}
+.section--navy .field .opt, .section--ink .field .opt { color: rgba(255,255,255,0.75); }
