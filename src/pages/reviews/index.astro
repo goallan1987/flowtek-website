@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { business } from '../../data/business.js';
+import { reviews } from '../../data/reviews.js';
+---
+<Base
+  title="Reviews | Flowtek Services, Plumber Yeppoon & Rockhampton"
+  description="Google reviews for Flowtek Services from customers across Yeppoon, Rockhampton and the Capricorn Coast, quoted exactly as they were written."
+>
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reviews' }]} />
+
+  <section class="hero">
+    <div class="container hero__inner" style="grid-template-columns:1fr">
+      <div style="max-width:800px">
+        <p class="hero__area">In their words, not ours</p>
+        <h1>Reviews</h1>
+        <p class="lede hero__lede">
+          Every quote on this page is copied exactly from a review published on our
+          Google Business Profile. Nothing has been shortened, tidied or corrected.
+          Customers spell our name Flowtech, Flowtex and Flowtec, and we have left
+          that alone too.
+        </p>
+        <div class="btn-row hero__actions">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {reviews.map((r) => (
+          <article class="review">
+            <blockquote><p>{r.text}</p></blockquote>
+            <div class="review__by">
+              {r.name}
+              <span class="review__src">Google review, {r.date}</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist">
+    <div class="container container--narrow">
+      <div class="callout" style="background:var(--white)">
+        <h2 style="font-size:1.25rem">Two things we want to be straight about</h2>
+        <p style="font-size:.9375rem">
+          We have not printed a star rating or a review count on this page. That figure
+          moves on its own, and a number typed into a web page stops being true the
+          moment somebody leaves a review. Go and look at the live profile if you want
+          the current one.
+        </p>
+        <p style="font-size:.9375rem;margin-top:12px">
+          Several of these reviews mention how quickly we turned up. That is what
+          happened on those days, for those customers. It is not a promise. Our
+          emergency response runs during active business hours, and we would rather
+          tell you that here than have you find out the hard way.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Want us to have a look?" />
+</Base>

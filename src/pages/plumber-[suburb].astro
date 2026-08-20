@@ -1,0 +1,383 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import Promises from '../components/Promises.astro';
+import ServiceCards from '../components/ServiceCards.astro';
+import Reviews from '../components/Reviews.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, serviceBySlug } from '../data/business.js';
+import { suburbs, nearbyPages } from '../data/suburbs.js';
+
+import imgConduit from '../assets/job-conduit-timber-frame.jpg';
+import imgHotWater from '../assets/job-old-hot-water-unit.jpg';
+import imgTrenchTaranganba from '../assets/job-stormwater-trench-taranganba.jpg';
+import imgRiser from '../assets/project-2405.png';
+import imgGasTrench from '../assets/project-2406.png';
+import imgCommercialGas from '../assets/project-2407.png';
+import imgRegulator from '../assets/project-2408.png';
+
+export function getStaticPaths() {
+  return suburbs.map((s) => ({ params: { suburb: s.slug }, props: { s } }));
+}
+
+const { s } = Astro.props;
+
+/* Every photograph below is a real Flowtek job photograph from the business's own
+   media library. None is stock. Only the Taranganba image is tied to a named
+   suburb, because that job is documented on the live site. The rest are captioned
+   as Flowtek work without a location claim, because the location was not recorded.
+   See the outstanding proof list in /docs/outstanding-proof.md. */
+const photoSets: Record<string, { img: any; alt: string; cap: string }> = {
+  'hot-water': {
+    img: imgHotWater,
+    alt: 'A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house',
+    cap: 'A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.',
+  },
+  'blocked-drains': {
+    img: imgRiser,
+    alt: 'A capped PVC drainage riser standing in an open trench, carrying a green inspection sticker approving the pipework to be covered up',
+    cap: 'Drainage riser signed off before backfill. The green sticker is the inspection approving the pipework to be covered.',
+  },
+  renovations: {
+    img: imgConduit,
+    alt: 'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room, threading conduit through a wall frame with his tools laid out on the slab',
+    cap: 'Rough-in on a timber frame. This is the part of a renovation nobody sees, and the part that ruins one.',
+  },
+  'gas-fitting': {
+    img: imgCommercialGas,
+    alt: 'Copper gas lines with flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel kitchen',
+    cap: 'Commercial kitchen gas fit-off, with the flexible connectors restrained the way they have to be.',
+  },
+  'backflow-tmv-testing': {
+    img: imgRegulator,
+    alt: 'A gas regulator mounted on an exterior wall with copper gas lines running to it and capped test points',
+    cap: 'Regulator and test points. Anything with a test point on it has a test interval attached to it.',
+  },
+  'emergency-plumbing': {
+    img: imgGasTrench,
+    alt: 'An open service trench across a lawn beside a retaining wall, with yellow gas warning marker tape laid along the bottom',
+    cap: 'Open trench with marker tape down. Getting to a buried line is most of the job.',
+  },
+};
+
+const photo = s.hasRealJob
+  ? {
+      img: imgTrenchTaranganba,
+      alt: 'A gravel drainage path running beside a red brick building at Taranganba, with a black drainage pit set into the gravel and an open trench cut along the fence line',
+      cap: 'Taranganba. Drainage pits placed to catch surface water and take it away from the building, on a site where the ground fell back towards the wall.',
+    }
+  : photoSets[s.leadServices[0]] ?? photoSets['blocked-drains'];
+
+/* The hero uses the charcoal polo photograph on every suburb page, deliberately.
+   It is the reference image for the uniform of record in /OS/brand/photography.md.
+   The blue tee photograph is a real Flowtek job but the shirt is off brand, so it
+   is kept off the most-seen slot until the reshoot in brand register row 16. The
+   image that varies page to page is the one further down, chosen by lead service. */
+const heroImg = imgConduit;
+const heroAlt =
+  'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, with his tools laid out on the slab';
+
+const lead = s.leadServices.map((slug: string) => serviceBySlug[slug]);
+const neighbours = nearbyPages(s);
+const smsBody = encodeURIComponent(business.smsBody + s.name);
+
+/* Title kept under 60 characters and description under 160, so neither gets
+   truncated in the result. Both carry "plumber {suburb}" and "plumbing", which
+   are the two phrases this page is built to answer. */
+const title = `Plumber ${s.name} | Plumbing & Gas Fitting | Flowtek`;
+const longDesc = `Licensed plumber and gas fitter in ${s.name} ${s.postcode}. ${s.fault.title}, and what we do about it. Call ${business.phone}.`;
+const description =
+  longDesc.length <= 158
+    ? longDesc
+    : `Licensed plumber and gas fitter in ${s.name} ${s.postcode}. Hot water, drains, gas and renovations. Call ${business.phone}.`;
+---
+<Base
+  title={title}
+  description={description}
+  page="suburb"
+  suburbSlug={s.slug}
+  smsSuburb={s.name}
+  faq={s.faq}
+>
+  <Breadcrumbs
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Areas we serve', href: '/areas-we-serve/' },
+      { label: s.name },
+    ]}
+  />
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <p class="hero__area">
+          <Icon name="pin" size={14} /> {s.name} {s.postcode} &middot; {s.area}
+        </p>
+        <h1>Plumber in {s.name}</h1>
+        <p class="lede hero__lede">
+          {s.intro}{' '}
+          {s.base
+            ? 'Licensed plumber and gas fitter, water and gas from the one trade, and the site gets cleaned up before we leave.'
+            : `We are a licensed plumber and gas fitter based in Yeppoon, about ${s.km} km away, covering the water and the gas from the one trade.`}
+        </p>
+
+        <div class="btn-row hero__actions">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+          <a class="btn btn--ghost-light" href={`${business.smsHref}?&body=${smsBody}`}>
+            <Icon name="message" size={18} />Text us
+          </a>
+          <a class="btn btn--ghost-light" href="#quote">Short form</a>
+        </div>
+
+        <Promises />
+      </div>
+
+      <figure class="hero__figure">
+        <Image
+          src={heroImg}
+          alt={heroAlt}
+          widths={[420, 640, 900]}
+          sizes="(min-width: 900px) 460px, 92vw"
+          quality={72}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= THE LOCAL SUBSTANCE ================= -->
+  <section class="section" aria-labelledby="local-heading">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Plumbing in {s.name}</span>
+        <h2 id="local-heading">What we know about the pipes in {s.name}</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>{s.local}</p>
+        </div>
+
+        <div class="callout" style="margin-top:32px">
+          <h3 style="font-size:1.125rem">{s.fault.title}</h3>
+          <p>{s.fault.body}</p>
+        </div>
+      </div>
+
+      <div>
+        <figure class="media-round">
+          <Image
+            src={photo.img}
+            alt={photo.alt}
+            widths={[400, 560, 780]}
+            sizes="(min-width: 880px) 560px, 92vw"
+            quality={72}
+            loading="lazy"
+          />
+          <figcaption
+            style="padding:16px 20px;background:var(--mist);font-size:.875rem;line-height:1.5;color:var(--ink)"
+          >
+            {photo.cap}
+            {!s.hasRealJob && (
+              <span style="display:block;margin-top:8px;color:var(--slate)">
+                A Flowtek job. We have not recorded which street it was on, so we
+                are not going to claim it was this one.
+              </span>
+            )}
+          </figcaption>
+        </figure>
+
+        <ul class="factlist" style="margin-top:32px">
+          {s.facts.map(([k, v]: [string, string]) => (
+            <li><span class="k">{k}</span><span class="v">{v}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ACCESS ================= -->
+  <section class="section section--tight section--mist" aria-labelledby="access-heading">
+    <div class="container">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Getting to you</span>
+          <h2 id="access-heading">Access and parking in {s.name}</h2>
+        </div>
+        <div>
+          <p style="color:var(--ink)">{s.access}</p>
+          <p style="margin-top:16px;color:var(--ink)">
+            <strong>{s.base ? 'This is our base.' : `${s.name} is about ${s.km} km from our Yeppoon base.`}</strong>
+            {' '}That is a distance, not a promise about the clock. {business.emergencyLine}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+  <section class="section" aria-labelledby="svc-heading">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What we do here</span>
+        <h2 id="svc-heading">Plumbing and gas services in {s.name}</h2>
+        <p>
+          Six things, and the three at the top are what {s.name} rings us about most.
+          Every one of them is done by a licensed plumber and gas fitter, and the site
+          gets cleaned up before we leave.
+        </p>
+      </div>
+
+      <div class="grid grid--3" style="margin-bottom:32px">
+        {lead.map((svc: any, i: number) => (
+          <article class="card card--linked">
+            <span class="numeral" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 style="font-size:1.25rem;margin-top:8px">{svc.name} in {s.name}</h3>
+            <p>{svc.hook} {svc.blurb}</p>
+            <a class="card__link card__stretch" href={`/services/${svc.slug}/`}>
+              More on {svc.navName.toLowerCase()} <Icon name="arrow" size={16} />
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <h3 style="font-size:1.125rem;margin:48px 0 16px">Everything else we cover in {s.name}</h3>
+      <ServiceCards suburb={s.name} />
+    </div>
+  </section>
+
+  <!-- ================= PROOF ================= -->
+  <section class="section section--navy on-dark" aria-labelledby="proof-heading">
+    <div class="container split">
+      <div>
+        <span class="eyebrow eyebrow--on-dark">Proof</span>
+        <h2 id="proof-heading">Have we worked in {s.name}?</h2>
+        <p style="margin-top:16px">
+          {s.hasRealJob
+            ? `Yes, and it is on this page. The stormwater job above was done here in ${s.name}, and it is written up on our projects page with the fault, the cause and the fix.`
+            : `We work across ${s.area} from Yeppoon, but we are not going to put a made-up job or a borrowed photo on this page to prove it. If we have done work at your place in ${s.name}, a Google review helps your neighbours far more than anything we could write here.`}
+        </p>
+        <div class="btn-row" style="margin-top:24px">
+          <a class="btn btn--primary" href="/projects/">See a job written up</a>
+          <a class="btn btn--ghost-light" href="/reviews/">Read the reviews</a>
+        </div>
+      </div>
+      <div>
+        {/* ------------------------------------------------------------------
+            OPEN PROOF SLOT for {s.name}.
+            To close it, Jason supplies: (1) one job photograph taken in this
+            suburb, named suburb-service-YYYYMMDD.jpg per /OS/brand/photography.md,
+            and (2) the name and month of one customer in this suburb who has left
+            a Google review, with their permission to show the suburb.
+            Until both arrive, nothing is claimed here. Do not fill this with a
+            photo from another suburb. See /docs/outstanding-proof.md.
+        ------------------------------------------------------------------ */}
+        <ul class="ticklist">
+          <li><Icon name="tick" size={20} /><span>{business.credential}</span></li>
+          <li><Icon name="tick" size={20} /><span>Based in Yeppoon, not a call centre in another state</span></li>
+          <li><Icon name="tick" size={20} /><span>Water and gas from the one trade on the same job</span></li>
+          <li><Icon name="tick" size={20} /><span>We turn up on time, and we clean up afterwards</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Reviews
+    seed={s.slug}
+    tags={s.reviewTags}
+    heading={`What customers said about the work`}
+    intro="Google reviews from across Yeppoon, Rockhampton and the Capricorn Coast, quoted exactly as they were written."
+  />
+
+  <!-- ================= FAQ ================= -->
+  <section class="section" aria-labelledby="faq-heading">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <span class="eyebrow">Straight answers</span>
+        <h2 id="faq-heading">{s.name} questions we actually get asked</h2>
+      </div>
+      <div class="faq">
+        {s.faq.map((f: { q: string; a: string }) => (
+          <details>
+            <summary>{f.q}</summary>
+            <div><p>{f.a}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FORM ================= -->
+  <section class="section section--mist" id="quote" aria-labelledby="quote-form-heading">
+    <div class="container split">
+      <div>
+        <QuoteForm
+          suburb={s.name}
+          service={s.leadServices[0]}
+          heading={`Get a ${s.name} plumber out`}
+          intro={`Fill this in and we will come back to you with what the job actually involves. If it is urgent, ring instead, it is faster.`}
+        />
+      </div>
+      <div>
+        <h3>Three ways to get us</h3>
+        <ul class="factlist" style="margin-top:16px">
+          <li>
+            <span class="k">Ring</span>
+            <span class="v"><a href={business.phoneHref}>{business.phone}</a></span>
+          </li>
+          <li>
+            <span class="k">Text</span>
+            <span class="v"><a href={`${business.smsHref}?&body=${smsBody}`}>Send a text with your suburb</a></span>
+          </li>
+          <li>
+            <span class="k">Form</span>
+            <span class="v">The one on the left. Four fields.</span>
+          </li>
+          <li>
+            <span class="k">Emergency</span>
+            <span class="v">{business.emergencyLine}</span>
+          </li>
+        </ul>
+        <p style="margin-top:24px" class="badge-credential">{business.credential}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NEARBY ================= -->
+  {neighbours.length > 0 && (
+    <section class="section section--tight" aria-labelledby="near-heading">
+      <div class="container">
+        <div class="section-head" style="margin-bottom:24px">
+          <span class="eyebrow">Next door</span>
+          <h2 id="near-heading" style="font-size:1.5rem">We cover the streets either side of {s.name} too</h2>
+        </div>
+        <ul class="arealist">
+          {neighbours.map((n: any) => (
+            <li>
+              <a href={`/plumber-${n.slug}/`}>
+                <Icon name="pin" size={16} />
+                Plumber {n.name}
+                <span class="km">{n.km} km</span>
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/areas-we-serve/">
+              <Icon name="arrow" size={16} />
+              Every area we serve
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <CtaBand
+    heading={`Need a plumber in ${s.name} today?`}
+    suburb={s.name}
+  />
+</Base>

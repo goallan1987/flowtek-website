@@ -1,0 +1,137 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { business } from '../../data/business.js';
+
+import imgTrench from '../../assets/job-stormwater-trench-taranganba.jpg';
+import imgRiser from '../../assets/project-2405.png';
+import imgGasTrench from '../../assets/project-2406.png';
+import imgCommercialGas from '../../assets/project-2407.png';
+import imgRegulator from '../../assets/project-2408.png';
+import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
+
+const gallery = [
+  {
+    img: imgRiser,
+    alt: 'A capped PVC drainage riser standing in an open trench, carrying a green inspection sticker approving the pipework to be covered up',
+    cap: 'Drainage riser inspected and signed off before backfill. The green sticker is the approval to cover the pipework.',
+  },
+  {
+    img: imgGasTrench,
+    alt: 'An open service trench cut across a lawn beside a block retaining wall, with yellow warning marker tape laid along the bottom',
+    cap: 'Service trench with marker tape laid before backfill, so whoever digs here in twenty years knows what is down there.',
+  },
+  {
+    img: imgCommercialGas,
+    alt: 'Copper gas lines with braided flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel commercial kitchen',
+    cap: 'Commercial kitchen gas fit-off. The restraint chains are there so an appliance can be pulled out for cleaning without stressing the connection.',
+  },
+  {
+    img: imgRegulator,
+    alt: 'A gas regulator mounted on an exterior wall with copper gas lines running to it and capped test points either side',
+    cap: 'Regulator and test points on an exterior wall, set up so the installation can actually be tested.',
+  },
+  {
+    img: imgConduit,
+    alt: 'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame',
+    cap: 'Rough-in on a timber frame, tools laid on the slab inside the working arc.',
+  },
+];
+---
+<Base
+  title="Projects | Flowtek Services, Plumber Yeppoon & Rockhampton"
+  description="A stormwater drainage job at Taranganba, plus gas fitting, drainage and rough-in work across Yeppoon, Rockhampton and the Capricorn Coast."
+>
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Projects' }]} />
+
+  <section class="hero">
+    <div class="container hero__inner" style="grid-template-columns:1fr">
+      <div style="max-width:780px">
+        <p class="hero__area">Work we have done</p>
+        <h1>Projects</h1>
+        <p class="lede hero__lede">
+          Every photograph on this page is from a Flowtek job. None of it is stock, and
+          where we have not recorded which street a job was on, we say so rather than
+          picking a suburb that sounds good.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <figure class="media-round">
+        <Image
+          src={imgTrench}
+          alt="A gravel drainage path running beside a red brick building at Taranganba, with a black drainage pit set into the gravel and an open trench cut along the fence line"
+          widths={[420, 640, 900]}
+          sizes="(min-width: 880px) 560px, 92vw"
+          quality={72}
+          loading="eager"
+        />
+      </figure>
+      <div>
+        <span class="eyebrow"><Icon name="pin" size={14} /> Taranganba</span>
+        <h2>Stormwater solutions in Taranganba</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>
+            <strong>The problem.</strong> In March of the previous year a significant
+            flooding event occurred, because the ground level sloped inwards towards the
+            building, and there was no adequate stormwater drainage in the vicinity to
+            take the water once it got there.
+          </p>
+          <p>
+            <strong>The challenge.</strong> Inward sloping ground. On a site like this
+            you cannot regrade your way out of it, and no amount of guttering helps once
+            the water is already on the ground and heading for the wall.
+          </p>
+          <p>
+            <strong>What we did.</strong> We installed strategically placed drainage
+            pits to capture and redirect surface water away from the building. The pits
+            went where the water actually collected rather than where it arrived, and
+            they were piped to somewhere that still had somewhere to discharge.
+          </p>
+        </div>
+        <p style="margin-top:32px">
+          <a class="btn btn--secondary" href="/plumber-taranganba/">Plumber in Taranganba</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">From the ute</span>
+        <h2>Other jobs, and what is going on in each one</h2>
+        <p>
+          These are Flowtek jobs. We have not recorded the street for each of them, so
+          we are not going to attach a suburb to one just because it would read well.
+        </p>
+      </div>
+      <div class="grid grid--3">
+        {gallery.map((g) => (
+          <figure class="card card--plain" style="padding:0;overflow:hidden">
+            <Image
+              src={g.img}
+              alt={g.alt}
+              widths={[360, 560, 760]}
+              sizes="(min-width: 960px) 400px, (min-width: 620px) 46vw, 92vw"
+              quality={72}
+              loading="lazy"
+              style="width:100%;aspect-ratio:4/3;object-fit:cover"
+            />
+            <figcaption style="padding:20px;font-size:.9375rem;line-height:1.5;color:var(--ink)">
+              {g.cap}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Got something similar going on?" />
+</Base>

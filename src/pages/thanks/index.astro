@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { business } from '../../data/business.js';
+---
+<Base
+  title="Thanks, we have got it | Flowtek Services"
+  description="Your enquiry has reached Flowtek Services. We will come back to you."
+  noindex={true}
+>
+  <section class="section" style="min-height:52vh;display:flex;align-items:center">
+    <div class="container container--narrow" style="text-align:left">
+      <span class="eyebrow">Sorted</span>
+      <h1>Thanks, we have got it</h1>
+      <p class="lede" style="margin-top:24px;color:var(--slate)">
+        Your message has come through to us. We will come back to you on the number you
+        gave us.
+      </p>
+      <p style="margin-top:16px;color:var(--slate)">
+        If it turns out to be urgent while you are waiting, ring instead. That is always
+        faster than a form.
+      </p>
+      <div class="btn-row" style="margin-top:32px">
+        <a class="btn btn--primary" href={business.phoneHref}>
+          <Icon name="phone" size={18} />Call {business.phone}
+        </a>
+        <a class="btn btn--ghost" href="/">Back to the home page</a>
+      </div>
+    </div>
+  </section>
+</Base>

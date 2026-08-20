@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../data/business.js';
+
+interface Props { suburb?: string; only?: string[] }
+const { suburb, only } = Astro.props;
+const list = only ? only.map((s) => services.find((x) => x.slug === s)!).filter(Boolean) : services;
+
+const icons: Record<string, string> = {
+  'hot-water': 'flame',
+  'blocked-drains': 'drop',
+  renovations: 'wrench',
+  'gas-fitting': 'flame',
+  'backflow-tmv-testing': 'shield',
+  'emergency-plumbing': 'clock',
+};
+---
+<div class="grid grid--3">
+  {list.map((s) => (
+    <article class="card card--linked">
+      <div style="color:var(--orange-deep);margin-bottom:12px">
+        <Icon name={icons[s.slug] ?? 'wrench'} size={28} />
+      </div>
+      <h3 style="font-size:1.25rem">{suburb ? `${s.name} in ${suburb}` : s.name}</h3>
+      <p>{s.hook} {s.blurb}</p>
+      <a class="card__link card__stretch" href={`/services/${s.slug}/`}>
+        {s.navName} <Icon name="arrow" size={16} />
+      </a>
+    </article>
+  ))}
+</div>

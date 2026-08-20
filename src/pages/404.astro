@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business.js';
+import { byRank } from '../data/suburbs.js';
+const top = byRank.slice(0, 6);
+---
+<Base
+  title="Page not found | Flowtek Services"
+  description="That page is not here. Try the services, the areas we serve, or just ring us on 0448 726 474."
+  noindex={true}
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="eyebrow">404</span>
+      <h1>That one has gone down the drain</h1>
+      <p class="lede" style="margin-top:24px;color:var(--slate)">
+        The page you were after is not here. Here is where most people were heading.
+      </p>
+      <div class="btn-row" style="margin-top:32px">
+        <a class="btn btn--primary" href={business.phoneHref}>
+          <Icon name="phone" size={18} />Call {business.phone}
+        </a>
+        <a class="btn btn--ghost" href="/services/">Services</a>
+        <a class="btn btn--ghost" href="/areas-we-serve/">Areas we serve</a>
+      </div>
+      <h2 style="font-size:1.25rem;margin-top:48px">Popular suburbs</h2>
+      <ul class="arealist" style="margin-top:16px">
+        {top.map((s) => (
+          <li>
+            <a href={`/plumber-${s.slug}/`}>
+              <Icon name="pin" size={16} />Plumber {s.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

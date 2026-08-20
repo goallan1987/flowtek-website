@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+import { business, services } from '../data/business.js';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+<header class="header">
+  <div class="container header__bar">
+    <a href="/" class="header__logo" aria-label="Flowtek Services home">
+      <img
+        src="/img/flowtek-services-logo.png"
+        alt="Flowtek Services"
+        width="151"
+        height="87"
+        fetchpriority="high"
+      />
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a class="nav__link" href="/" aria-current={isCurrent('/') ? 'page' : undefined}>Home</a>
+      <a class="nav__link" href="/services/" aria-current={isCurrent('/services/') ? 'page' : undefined}>Services</a>
+      <a class="nav__link" href="/areas-we-serve/" aria-current={isCurrent('/areas-we-serve/') || path.startsWith('/plumber-') ? 'page' : undefined}>Areas we serve</a>
+      <a class="nav__link" href="/reviews/" aria-current={isCurrent('/reviews/') ? 'page' : undefined}>Reviews</a>
+      <a class="nav__link" href="/about/" aria-current={isCurrent('/about/') ? 'page' : undefined}>About</a>
+      <a class="nav__link" href="/contact/" aria-current={isCurrent('/contact/') ? 'page' : undefined}>Contact</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__phone" href={business.phoneHref}>
+        <Icon name="phone" size={18} />
+        <span>{business.phone}</span>
+      </a>
+      <a class="btn btn--primary header__cta" href="/contact/">Get a quote</a>
+      <button
+        type="button"
+        class="menu-toggle"
+        id="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <Icon name="menu" size={20} />
+        <span>Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" data-open="false">
+    <div class="container">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/services/">Services</a></li>
+      </ul>
+      <ul class="mobile-nav__sub">
+        {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
+      </ul>
+      <ul>
+        <li><a href="/areas-we-serve/">Areas we serve</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/about/">About us</a></li>
+        <li><a href="/contact/">Contact us</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById('menu-toggle');
+    var nav = document.getElementById('mobile-nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.getAttribute('data-open') === 'true') {
+        nav.setAttribute('data-open', 'false');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.focus();
+      }
+    });
+  })();
+</script>

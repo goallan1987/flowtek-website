@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/business.js';
+
+interface Props { suburb?: string }
+const { suburb } = Astro.props;
+const body = encodeURIComponent(business.smsBody + (suburb ?? ''));
+---
+{/* Fixed on phones only. The call button is the primary action and it never
+    scrolls away. 60px tall, well over the 44px minimum tap target. */}
+<div class="action-bar">
+  <a class="action-bar__call" href={business.phoneHref}>
+    <Icon name="phone" size={20} />
+    <span>Call {business.phone}</span>
+  </a>
+  <a class="action-bar__sms" href={`${business.smsHref}?&body=${body}`}>
+    <Icon name="message" size={20} />
+    <span>Text us</span>
+  </a>
+</div>

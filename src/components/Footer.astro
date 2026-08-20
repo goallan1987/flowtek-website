@@ -1,0 +1,72 @@
+---
+import Icon from './Icon.astro';
+import { business, services } from '../data/business.js';
+import { byRank } from '../data/suburbs.js';
+
+const topSuburbs = byRank.slice(0, 10);
+const year = 2026;
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <img
+        src="/img/flowtek-logo-white.png"
+        alt="Flowtek Services"
+        width="228"
+        height="132"
+        loading="lazy"
+        class="footer__logo"
+      />
+      <p style="max-width:34ch">{business.descriptor}. {business.areaLine}.</p>
+      <p style="margin-top:16px">
+        <a class="phone-big" href={business.phoneHref}>
+          <Icon name="phone" size={22} />{business.phone}
+        </a>
+      </p>
+      <p style="font-size:.875rem;margin-top:8px">
+        <a href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}>Send us a text instead</a>
+      </p>
+    </div>
+
+    <nav aria-labelledby="f-services">
+      <h2 id="f-services">Services</h2>
+      <ul>
+        {services.map((s) => (
+          <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="f-areas">
+      <h2 id="f-areas">Areas we serve</h2>
+      <ul>
+        {topSuburbs.map((s) => (
+          <li><a href={`/plumber-${s.slug}/`}>Plumber {s.name}</a></li>
+        ))}
+        <li><a href="/areas-we-serve/">All areas</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <h2>Flowtek Services</h2>
+      <ul>
+        <li><a href="/about/">About us</a></li>
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/contact/">Contact us</a></li>
+      </ul>
+      <p style="margin-top:16px;font-size:.9375rem">
+        {business.credential}<br />
+        Based in {business.suburb}, {business.regionCode}
+      </p>
+      <p style="margin-top:12px;font-size:.875rem">{business.emergencyLine}</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="footer__legal">
+      <span>&copy; {year} {business.name}. {business.tagline}.</span>
+      <span>{business.areaLine}.</span>
+    </div>
+  </div>
+</footer>

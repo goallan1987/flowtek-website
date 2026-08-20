@@ -1,0 +1,55 @@
+---
+import { pickReviews } from '../data/reviews.js';
+
+interface Props {
+  seed: string;
+  count?: number;
+  tags?: string[];
+  heading?: string;
+  intro?: string;
+  mist?: boolean;
+}
+const {
+  seed,
+  count = 3,
+  tags = [],
+  heading = 'What customers actually said',
+  intro,
+  mist = true,
+} = Astro.props;
+
+const chosen = pickReviews(seed, count, tags);
+---
+<section class={mist ? 'section section--mist' : 'section'} aria-labelledby={`rev-${seed}`}>
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Reviews</span>
+      <h2 id={`rev-${seed}`}>{heading}</h2>
+      {intro && <p>{intro}</p>}
+    </div>
+
+    <div class="grid grid--3">
+      {chosen.map((r) => (
+        <article class="review">
+          <blockquote><p>{r.text}</p></blockquote>
+          <div class="review__by">
+            {r.name}
+            <span class="review__src">Google review, {r.date}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    {/* These are customers describing their own jobs. Flowtek has not published a
+        response time and does not promise one. Register row 5. */}
+    <p class="muted" style="margin-top:32px;font-size:.875rem;max-width:70ch">
+      These are customers' own words about their own jobs, published on our Google
+      Business Profile and quoted here exactly as they wrote them, misspellings of
+      our name included. They describe what happened on those days. They are not a
+      promise about how quickly we can get to you.
+    </p>
+    <p style="margin-top:16px">
+      <a class="btn btn--ghost" href="/reviews/">Read more reviews</a>
+    </p>
+  </div>
+</section>

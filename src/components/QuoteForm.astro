@@ -1,0 +1,106 @@
+---
+import { services } from '../data/business.js';
+import { byRank } from '../data/suburbs.js';
+
+interface Props {
+  id?: string;
+  suburb?: string;
+  service?: string;
+  heading?: string;
+  intro?: string;
+}
+const {
+  id = 'quote-form',
+  suburb = '',
+  service = '',
+  heading = 'Tell us what has gone wrong',
+  intro = 'Four fields. We read every one of them, and we will come back to you with what the job actually involves.',
+} = Astro.props;
+
+const suburbNames = byRank.map((s) => s.name).sort((a, b) => a.localeCompare(b));
+---
+<div>
+  <h2 id={`${id}-heading`}>{heading}</h2>
+  <p class="muted" style="margin-top:12px">{intro}</p>
+
+  {/* Netlify Forms. The hidden form-name field is required for the POST to be
+      matched to the form. bot-field is the honeypot, hidden from people and
+      from screen readers, but a bot fills it in and the submission is dropped. */}
+  <form
+    class="form"
+    name="quote"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/thanks/"
+    aria-labelledby={`${id}-heading`}
+    style="margin-top:32px"
+  >
+    <input type="hidden" name="form-name" value="quote" />
+    <p class="hp" aria-hidden="true">
+      <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div class="field">
+      <label for={`${id}-name`}>Your name <span class="req" aria-hidden="true">*</span></label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" required />
+    </div>
+
+    <div class="field">
+      <label for={`${id}-phone`}>Phone <span class="req" aria-hidden="true">*</span></label>
+      <input
+        id={`${id}-phone`}
+        name="phone"
+        type="tel"
+        inputmode="tel"
+        autocomplete="tel"
+        required
+        aria-describedby={`${id}-phone-hint`}
+      />
+      <span class="hint" id={`${id}-phone-hint`}>The quickest way for us to get back to you.</span>
+    </div>
+
+    <div class="field">
+      <label for={`${id}-suburb`}>Your suburb <span class="req" aria-hidden="true">*</span></label>
+      <input
+        id={`${id}-suburb`}
+        name="suburb"
+        type="text"
+        list={`${id}-suburbs`}
+        value={suburb}
+        autocomplete="address-level2"
+        required
+        aria-describedby={`${id}-suburb-hint`}
+      />
+      <datalist id={`${id}-suburbs`}>
+        {suburbNames.map((n) => <option value={n}></option>)}
+      </datalist>
+      <span class="hint" id={`${id}-suburb-hint`}>Not on the list? Type it in and we will tell you straight whether we come out there.</span>
+    </div>
+
+    <div class="field">
+      <label for={`${id}-service`}>What do you need?</label>
+      <select id={`${id}-service`} name="service">
+        <option value="">Not sure, have a look</option>
+        {services.map((s) => (
+          <option value={s.name} selected={s.slug === service}>{s.name}</option>
+        ))}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for={`${id}-message`}>What is happening?</label>
+      <textarea
+        id={`${id}-message`}
+        name="message"
+        rows="5"
+        aria-describedby={`${id}-message-hint`}
+      ></textarea>
+      <span class="hint" id={`${id}-message-hint`}>The make and age of the unit, or where the water is coming from, saves us both a trip.</span>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn--primary btn--block">Send it through</button>
+    </div>
+  </form>
+</div>

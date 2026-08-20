@@ -1,0 +1,323 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Promises from '../components/Promises.astro';
+import ServiceCards from '../components/ServiceCards.astro';
+import Reviews from '../components/Reviews.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, emergencySteps } from '../data/business.js';
+import { byRank, coastSuburbs, rockySuburbs } from '../data/suburbs.js';
+
+import imgConduit from '../assets/job-conduit-timber-frame.jpg';
+import imgHotWater from '../assets/job-old-hot-water-unit.jpg';
+import imgCommercialGas from '../assets/project-2407.png';
+
+const top = byRank.slice(0, 9);
+
+const faq = [
+  {
+    q: 'Which suburbs do you actually come out to?',
+    a: 'Yeppoon, Rockhampton, Taranganba and the Capricorn Coast, and the suburbs in between. Every suburb with a page on this site has one because there is something specific to say about the plumbing there. If your suburb is not listed, ring us and ask rather than guessing.',
+  },
+  {
+    q: 'Do you do emergency work?',
+    a: business.emergencyLine + ' That is the offer, stated plainly, and we are not going to dress it up into something we cannot keep. If you have water going everywhere right now, turn it off at the main and ring us on ' + business.phone + '.',
+  },
+  {
+    q: 'Do you do both plumbing and gas?',
+    a: 'Yes, and that is the useful part. Gas fitting is licensed work, so a kitchen with a gas cooktop normally takes two trades. We are licensed for both, which means one visit, one person responsible, and no waiting for the other trade to turn up.',
+  },
+  {
+    q: 'How do I get a price?',
+    a: 'Ring, text or fill in the form. Tell us what has gone wrong, and for a hot water job the make and rough age of the unit. We will tell you what the job involves before we start it rather than after.',
+  },
+  {
+    q: 'Are you licensed?',
+    a: 'Flowtek is a licensed plumber and gas fitter. If you want the licence details for your own records, ask us on the phone and we will give them to you.',
+  },
+];
+---
+<Base
+  title="Plumber Yeppoon & Rockhampton | Gas Fitter | Flowtek Services"
+  description="Licensed plumber and gas fitter in Yeppoon, Rockhampton and across the Capricorn Coast. Hot water, blocked drains, gas and renovations. Call 0448 726 474."
+  page="home"
+  faq={faq}
+>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <p class="hero__area">{business.areaLine}</p>
+        <h1>Let it flow</h1>
+        <p class="lede hero__lede">
+          The local plumber with a human touch. Hot water that has gone cold, a drain
+          that will not clear, gas that needs doing properly. We are based in Yeppoon,
+          we are licensed for water and gas, and we clean up before we leave.
+        </p>
+
+        <div class="btn-row hero__actions">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+          <a
+            class="btn btn--ghost-light"
+            href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}
+          >
+            <Icon name="message" size={18} />Text us
+          </a>
+          <a class="btn btn--ghost-light" href="#quote">Short form</a>
+        </div>
+
+        <Promises />
+      </div>
+
+      <figure class="hero__figure">
+        <Image
+          src={imgConduit}
+          alt="A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, tools laid out on the slab beside him"
+          widths={[420, 640, 900]}
+          sizes="(min-width: 900px) 460px, 92vw"
+          quality={72}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption class="hero__caption">
+          Rough-in on a timber frame. The part of a job nobody sees, and the part that
+          decides whether the rest of it holds up.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= CREDENTIAL STRIP ================= -->
+  <section class="section section--tight">
+    <div class="container">
+      <div
+        style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between"
+      >
+        <p class="badge-credential" style="margin:0">{business.credential}</p>
+        <p class="muted" style="margin:0;max-width:52ch">
+          100% Local. 100% Committed. Based in Yeppoon, on the road to Rockhampton and
+          up and down the Capricorn Coast, most days of the week.
+        </p>
+        <a class="btn btn--ghost" href="/areas-we-serve/">See every area we serve</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+  <section class="section section--mist" aria-labelledby="svc">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What we do</span>
+        <h2 id="svc">Six things, done properly</h2>
+        <p>
+          Whether it is a blocked dunny, leaky taps, gas issues or more, we have got you
+          covered for all your plumbing maintenance and upgrade needs.
+        </p>
+      </div>
+      <ServiceCards />
+      <p style="margin-top:40px">
+        <a class="btn btn--secondary" href="/services/">All services in detail</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= WHY ================= -->
+  <section class="section" aria-labelledby="why">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Hi, we're Flowtek</span>
+        <h2 id="why">Plumbing is a funny business</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>
+            Imagine standing in a yard with water up to your ankles. It is moments like
+            these where you have got to find the humour in the job.
+          </p>
+          <p>
+            At Flowtek we embrace that. Sure, we are professionals who do a bang-up job,
+            turn up on time and communicate effectively, but we also like to bring a
+            human touch to every project, whether that is helping to create your dream
+            bathroom, installing an energy efficient hot water system, or unblocking your
+            dunny.
+          </p>
+          <p>
+            So if you are in Yeppoon, Rockhampton, the Capricorn Coast or anywhere in
+            between, we are here to help, and have a laugh while doing it.
+          </p>
+        </div>
+        <div class="btn-row" style="margin-top:32px">
+          <a class="btn btn--ghost" href="/about/">About Jason and the team</a>
+        </div>
+      </div>
+      <figure class="media-round">
+        <Image
+          src={imgHotWater}
+          alt="A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house"
+          widths={[400, 560, 780]}
+          sizes="(min-width: 880px) 560px, 92vw"
+          quality={72}
+          loading="lazy"
+        />
+        <figcaption style="padding:16px 20px;background:var(--mist);font-size:.875rem;color:var(--ink)">
+          A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= AREAS ================= -->
+  <section class="section section--mist" aria-labelledby="areas">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Where we work</span>
+        <h2 id="areas">Find your suburb</h2>
+        <p>
+          Every suburb below has its own page, and each one says something specific
+          about the plumbing there: the age of the housing, what breaks first, and what
+          the ground does when it rains. Because a plumber who has never been to your
+          street is no use to you.
+        </p>
+      </div>
+      <ul class="arealist">
+        {top.map((s) => (
+          <li>
+            <a href={`/plumber-${s.slug}/`}>
+              <Icon name="pin" size={16} />
+              Plumber {s.name}
+              <span class="km">{s.base ? 'our base' : `${s.km} km`}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top:32px">
+        <a class="btn btn--secondary" href="/areas-we-serve/">
+          All {coastSuburbs.length + rockySuburbs.length} areas
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= EMERGENCY ================= -->
+  <section class="section section--ink on-dark" aria-labelledby="emerg">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--on-dark">Before we get there</span>
+        <h2 id="emerg">Plumbing dramas don't take a break</h2>
+        <p>
+          {business.emergencyLine} Here is what to do in the meantime, so the damage
+          stops while you are waiting.
+        </p>
+      </div>
+      <ul class="steps">
+        {emergencySteps.map((e, i) => (
+          <li>
+            <span class="steps__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3 style="font-size:1.25rem">{e.title}</h3>
+            <ol style="list-style:decimal;margin-left:20px;color:rgba(255,255,255,.88)">
+              {e.steps.map((st) => <li style="margin-bottom:6px">{st}</li>)}
+            </ol>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top:40px">
+        <a class="btn btn--primary" href="/services/emergency-plumbing/">
+          More on emergency plumbing
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <Reviews
+    seed="home"
+    count={3}
+    tags={['flagship']}
+    heading="What customers actually said"
+    intro="Reviews published on our Google Business Profile, quoted exactly as they were written. We have not tidied the spelling of our own name."
+    mist={false}
+  />
+
+  <!-- ================= COMMERCIAL ================= -->
+  <section class="section section--mist" aria-labelledby="comm">
+    <div class="container split split--reverse">
+      <figure class="media-round">
+        <Image
+          src={imgCommercialGas}
+          alt="Copper gas lines with braided flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel commercial kitchen"
+          widths={[400, 560, 780]}
+          sizes="(min-width: 880px) 560px, 92vw"
+          quality={72}
+          loading="lazy"
+        />
+      </figure>
+      <div>
+        <span class="eyebrow">For business owners</span>
+        <h2 id="comm">Commercial work, and the test that comes round every year</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>
+            We do commercial fitout, gas fitting for commercial kitchens, and routine
+            maintenance for businesses across Rockhampton and the Capricorn Coast.
+          </p>
+          <p>
+            The one that matters most is the one that runs on a calendar rather than on
+            a breakdown. Backflow prevention devices and thermostatic mixing valves have
+            to be tested, and if we find a problem we fix it on the same visit rather
+            than booking a second one. You get the report for your records.
+          </p>
+        </div>
+        <div class="btn-row" style="margin-top:32px">
+          <a class="btn btn--ghost" href="/services/backflow-tmv-testing/">
+            Backflow and TMV testing
+          </a>
+          <a class="btn btn--ghost" href="/services/gas-fitting/">Commercial gas fitting</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="section" aria-labelledby="faq-h">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <span class="eyebrow">Straight answers</span>
+        <h2 id="faq-h">Questions we get asked</h2>
+      </div>
+      <div class="faq">
+        {faq.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <div><p>{f.a}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FORM ================= -->
+  <section class="section section--mist" id="quote" aria-labelledby="quote-form-heading">
+    <div class="container split">
+      <QuoteForm heading="Get a quote" />
+      <div>
+        <h3>Or just ring. It is faster.</h3>
+        <p class="muted" style="margin-top:12px;color:var(--ink)">
+          Jason answers the phone. If he is under a house he will ring you back.
+        </p>
+        <p style="margin-top:24px">
+          <a class="btn btn--primary btn--block" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+        </p>
+        <ul class="factlist" style="margin-top:32px">
+          <li><span class="k">Based in</span><span class="v">Yeppoon, Queensland</span></li>
+          <li><span class="k">We cover</span><span class="v">{business.areaLine.replace('Servicing ', '')}</span></li>
+          <li><span class="k">Trade</span><span class="v">{business.credential}</span></li>
+          <li><span class="k">Emergency</span><span class="v">{business.emergencyLine}</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

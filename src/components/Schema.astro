@@ -1,0 +1,150 @@
+---
+/**
+ * Structured data.
+ *
+ * DELIBERATELY ABSENT, AND EACH ABSENCE IS A RULE NOT AN OVERSIGHT:
+ * - aggregateRating and review: the live Google figure moves on its own, so
+ *   freezing it into a template is banned (CLAUDE.md hard rule 4). Reviews are
+ *   shown on the page as quotes; they are not marked up as ratings.
+ * - openingHours: unknown. /OS/decisions.md register row 5.
+ * - priceRange: unknown. Register rows 6 and 8.
+ * - streetAddress and email: unknown. Register row 3.
+ * - sameAs: no social accounts exist. Register row 3.
+ * - vatID / taxID: no ABN supplied. Register row 1.
+ * Add each one only when its register row closes.
+ */
+import { business, services } from '../data/business.js';
+import { suburbs } from '../data/suburbs.js';
+
+interface Props {
+  page: 'home' | 'service' | 'suburb' | 'generic';
+  url: string;
+  serviceSlug?: string;
+  suburbSlug?: string;
+  faq?: { q: string; a: string }[];
+}
+const { page, url, serviceSlug, suburbSlug, faq } = Astro.props;
+
+const site = business.site;
+const ORG_ID = `${site}/#business`;
+const abs = (p: string) => new URL(p, site).href;
+
+const suburb = suburbSlug ? suburbs.find((s) => s.slug === suburbSlug) : undefined;
+const service = serviceSlug ? services.find((s) => s.slug === serviceSlug) : undefined;
+
+const areaServed = suburb
+  ? [
+      {
+        '@type': 'City',
+        name: suburb.name,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: suburb.name,
+          addressRegion: business.regionCode,
+          postalCode: suburb.postcode,
+          addressCountry: business.country,
+        },
+      },
+    ]
+  : suburbs.map((s) => ({
+      '@type': 'City',
+      name: s.name,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: s.name,
+        addressRegion: business.regionCode,
+        postalCode: s.postcode,
+        addressCountry: business.country,
+      },
+    }));
+
+const organisation = {
+  '@type': 'Plumber',
+  '@id': ORG_ID,
+  name: business.name,
+  alternateName: business.shortName,
+  description:
+    'Licensed plumber and gas fitter based in Yeppoon, servicing Yeppoon, Rockhampton, Taranganba and the Capricorn Coast. Hot water, blocked drains, renovations, gas fitting, backflow and TMV testing, and emergency plumbing during active business hours.',
+  url: site,
+  telephone: '+61448726474',
+  logo: abs('/img/flowtek-services-logo.png'),
+  image: abs('/img/flowtek-services-logo.png'),
+  slogan: business.tagline,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: business.suburb,
+    addressRegion: business.regionCode,
+    postalCode: business.postcode,
+    addressCountry: business.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.lat, longitude: business.lng },
+  areaServed,
+  knowsLanguage: 'en-AU',
+  currenciesAccepted: 'AUD',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Plumbing and gas fitting services',
+    itemListElement: services.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: s.name,
+        description: s.blurb,
+        url: abs(`/services/${s.slug}/`),
+      },
+    })),
+  },
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${site}/#website`,
+  url: site,
+  name: business.name,
+  inLanguage: 'en-AU',
+  publisher: { '@id': ORG_ID },
+};
+
+const graph: any[] = [organisation, website];
+
+if (page === 'service' && service) {
+  graph.push({
+    '@type': 'Service',
+    '@id': `${abs(url)}#service`,
+    name: service.name,
+    serviceType: service.keyword,
+    description: service.blurb,
+    provider: { '@id': ORG_ID },
+    areaServed,
+    url: abs(url),
+  });
+}
+
+if (page === 'suburb' && suburb) {
+  graph.push({
+    '@type': 'Service',
+    '@id': `${abs(url)}#service`,
+    name: `Plumber in ${suburb.name}`,
+    serviceType: 'Plumbing and gas fitting',
+    description: `Licensed plumbing and gas fitting in ${suburb.name}, ${suburb.postcode}. ${suburb.intro}`,
+    provider: { '@id': ORG_ID },
+    areaServed,
+    url: abs(url),
+  });
+}
+
+if (faq && faq.length) {
+  graph.push({
+    '@type': 'FAQPage',
+    '@id': `${abs(url)}#faq`,
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+
+const jsonld = { '@context': 'https://schema.org', '@graph': graph };
+---
+<script type="application/ld+json" set:html={JSON.stringify(jsonld)} />

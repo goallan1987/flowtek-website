@@ -1,0 +1,231 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import Promises from '../../components/Promises.astro';
+import Reviews from '../../components/Reviews.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { business, services } from '../../data/business.js';
+import { serviceContent } from '../../data/service-content.js';
+import { byRank } from '../../data/suburbs.js';
+
+import imgHotWater from '../../assets/job-old-hot-water-unit.jpg';
+import imgRiser from '../../assets/project-2405.png';
+import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
+import imgCommercialGas from '../../assets/project-2407.png';
+import imgRegulator from '../../assets/project-2408.png';
+import imgGasTrench from '../../assets/project-2406.png';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { service: s.slug }, props: { svc: s } }));
+}
+
+const { svc } = Astro.props;
+const c = serviceContent[svc.slug as keyof typeof serviceContent];
+
+const media: Record<string, { img: any; alt: string; cap: string }> = {
+  'hot-water': {
+    img: imgHotWater,
+    alt: 'A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house',
+    cap: 'A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.',
+  },
+  'blocked-drains': {
+    img: imgRiser,
+    alt: 'A capped PVC drainage riser standing in an open trench, carrying a green inspection sticker approving the pipework to be covered up',
+    cap: 'Drainage riser inspected and approved before backfill. The sticker is the sign-off.',
+  },
+  renovations: {
+    img: imgConduit,
+    alt: 'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, tools laid out on the slab',
+    cap: 'Rough-in on a timber frame. Get this right and the tiler never has to be called back.',
+  },
+  'gas-fitting': {
+    img: imgCommercialGas,
+    alt: 'Copper gas lines with braided flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel commercial kitchen',
+    cap: 'Commercial kitchen gas fit-off, with the flexible connectors restrained the way they have to be.',
+  },
+  'backflow-tmv-testing': {
+    img: imgRegulator,
+    alt: 'A gas regulator mounted on an exterior wall with copper lines running to it and capped test points',
+    cap: 'Anything with a test point on it has a test interval attached to it.',
+  },
+  'emergency-plumbing': {
+    img: imgGasTrench,
+    alt: 'An open service trench across a lawn beside a retaining wall, with yellow warning marker tape laid along the bottom of the trench',
+    cap: 'Getting to a buried line is most of the job. Locating it first is what keeps the trench short.',
+  },
+};
+const m = media[svc.slug];
+const otherServices = services.filter((s) => s.slug !== svc.slug);
+const topSuburbs = byRank.slice(0, 12);
+---
+<Base
+  title={c.metaTitle}
+  description={c.metaDesc}
+  page="service"
+  serviceSlug={svc.slug}
+  faq={c.faq}
+>
+  <Breadcrumbs
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services/' },
+      { label: svc.navName },
+    ]}
+  />
+
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <p class="hero__area">{business.areaLine}</p>
+        <h1>{c.h1}</h1>
+        <p class="lede hero__lede">{c.lede} {svc.blurb}</p>
+        <div class="btn-row hero__actions">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+          <a
+            class="btn btn--ghost-light"
+            href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}
+          >
+            <Icon name="message" size={18} />Text us
+          </a>
+          <a class="btn btn--ghost-light" href="#quote">Short form</a>
+        </div>
+        <Promises />
+      </div>
+      <figure class="hero__figure">
+        <Image
+          src={m.img}
+          alt={m.alt}
+          widths={[420, 640, 900]}
+          sizes="(min-width: 900px) 460px, 92vw"
+          quality={72}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption class="hero__caption">{m.cap}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split" style="align-items:start">
+      <div class="prose">
+        {c.body.map((block: any) => (
+          <div>
+            <h2>{block.h}</h2>
+            {block.p.map((para: string) => <p>{para}</p>)}
+            {block.table && (
+              <ul class="factlist" style="margin:24px 0">
+                {block.table.map(([k, v]: [string, string]) => (
+                  <li><span class="k">{k}</span><span class="v" style="font-size:1rem">{v}</span></li>
+                ))}
+              </ul>
+            )}
+            {block.after && <p>{block.after}</p>}
+          </div>
+        ))}
+      </div>
+
+      <aside style="position:sticky;top:100px">
+        <div class="card card--plain" style="border-top:5px solid var(--orange)">
+          <h3 style="font-size:1.125rem">What this covers</h3>
+          <ul class="ticklist" style="margin-top:16px">
+            {svc.items.map((i: string) => (
+              <li><Icon name="tick" size={18} /><span style="font-size:.9375rem">{i}</span></li>
+            ))}
+          </ul>
+          <a class="btn btn--primary" href={business.phoneHref} style="margin-top:24px">
+            <Icon name="phone" size={18} />{business.phone}
+          </a>
+        </div>
+
+        <div class="callout" style="margin-top:24px">
+          <h3 style="font-size:1rem">Where we do it</h3>
+          <p style="font-size:.9375rem">
+            {business.areaLine}, from our base in Yeppoon.
+          </p>
+          <p style="font-size:.9375rem;margin-top:12px">
+            <a href="/areas-we-serve/">See every suburb we cover</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Suburb links. These are the pages that carry the local detail, so this is
+       the internal link that actually helps a searcher, not a keyword dump. -->
+  <section class="section section--mist" aria-labelledby="where">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">By suburb</span>
+        <h2 id="where">{svc.name}, where you are</h2>
+        <p>
+          Each suburb page says what the housing, the ground and the water actually do
+          there, and what that means for this kind of work.
+        </p>
+      </div>
+      <ul class="arealist">
+        {topSuburbs.map((s) => (
+          <li>
+            <a href={`/plumber-${s.slug}/`}>
+              <Icon name="pin" size={16} />
+              {svc.navName} in {s.name}
+              <span class="km">{s.base ? 'our base' : `${s.km} km`}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top:32px">
+        <a class="btn btn--secondary" href="/areas-we-serve/">All areas we serve</a>
+      </p>
+    </div>
+  </section>
+
+  <Reviews seed={svc.slug} tags={[svc.slug, ...svc.slug.split('-')]} mist={false} />
+
+  <section class="section section--mist" aria-labelledby="faq-h">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <span class="eyebrow">Straight answers</span>
+        <h2 id="faq-h">{svc.navName} questions we get asked</h2>
+      </div>
+      <div class="faq">
+        {c.faq.map((f: { q: string; a: string }) => (
+          <details>
+            <summary>{f.q}</summary>
+            <div><p>{f.a}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quote" aria-labelledby="quote-form-heading">
+    <div class="container split">
+      <QuoteForm
+        service={svc.slug}
+        heading={`Get a price on ${svc.name.toLowerCase()}`}
+        intro="Tell us what is going on and we will come back to you with what the job actually involves."
+      />
+      <div>
+        <h2 style="font-size:1.25rem">The other five</h2>
+        <ul class="arealist" style="grid-template-columns:1fr;margin-top:16px">
+          {otherServices.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}/`}>
+                <Icon name="arrow" size={16} />{s.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p style="margin-top:24px" class="badge-credential">{business.credential}</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading={`Need ${svc.navName.toLowerCase()} sorted?`} />
+</Base>

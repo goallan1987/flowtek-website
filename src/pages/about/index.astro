@@ -1,0 +1,156 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import Promises from '../../components/Promises.astro';
+import Reviews from '../../components/Reviews.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { business } from '../../data/business.js';
+import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
+import imgHotWater from '../../assets/job-old-hot-water-unit.jpg';
+---
+<Base
+  title="About Flowtek Services | Yeppoon Plumber & Gas Fitter"
+  description="Jason Breingan is the director and lead tradesperson at Flowtek Services, a licensed plumber and gas fitter based in Yeppoon, Queensland."
+>
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About us' }]} />
+
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <p class="hero__area">Hi, we're Flowtek</p>
+        <h1>The local plumber with a human touch</h1>
+        <p class="lede hero__lede">
+          Plumbing is a funny business. Face it, when you are stood in someone's yard at
+          2am trying to fix a leak, warm dirty water gushing over the tops of your
+          gumboots, you cannot help but see the funny side of things.
+        </p>
+        <Promises />
+      </div>
+      <figure class="hero__figure">
+        <Image
+          src={imgConduit}
+          alt="A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, with his tools laid out on the concrete slab"
+          widths={[420, 640, 900]}
+          sizes="(min-width: 900px) 460px, 92vw"
+          quality={72}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Our team</span>
+        <h2>Meet Jason, your plumbing and gas guide</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>
+            At Flowtek Services, a plumber is more than just a tradesperson, they are a
+            reliable guide through the world of plumbing and gas. I'm Jason, delivering
+            dependable, high quality service across Yeppoon, Rockhampton and the
+            Capricorn Coast.
+          </p>
+          <p>
+            With me at the helm, you will get attentive and cheerful service, whether it
+            is routine maintenance or a significant upgrade. I'm all about precision,
+            fairness in pricing, and leaving your premises in impeccable condition.
+          </p>
+          <p>
+            Brad is on the tools with me. Between us, we cover the water and the gas, so
+            you are not waiting on a second trade to turn up.
+          </p>
+        </div>
+      </div>
+      <div>
+        <figure class="media-round">
+          <Image
+            src={imgHotWater}
+            alt="A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house"
+            widths={[400, 560, 780]}
+            sizes="(min-width: 880px) 560px, 92vw"
+            quality={72}
+            loading="lazy"
+          />
+        </figure>
+        <p class="badge-credential" style="margin-top:24px">{business.credential}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--navy on-dark">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--on-dark">Why Flowtek</span>
+        <h2>We embrace the funny side, and we still do the job right</h2>
+      </div>
+      <div class="grid grid--3">
+        <article>
+          <span class="numeral" aria-hidden="true">01</span>
+          <h3 style="font-size:1.25rem;margin-top:8px">Water and gas, one trade</h3>
+          <p style="color:rgba(255,255,255,.88);margin-top:12px">
+            Gas fitting is licensed work, so most kitchens with a gas cooktop need two
+            trades. We hold both, which means one visit and one person responsible for
+            where the two meet.
+          </p>
+        </article>
+        <article>
+          <span class="numeral" aria-hidden="true">02</span>
+          <h3 style="font-size:1.25rem;margin-top:8px">We tell you the easy fix first</h3>
+          <p style="color:rgba(255,255,255,.88);margin-top:12px">
+            Try the plunger. Check whether there is hot water anywhere else in the
+            house. Read your meter with the taps off. Giving away the easy fix is what
+            earns the trust on the hard job.
+          </p>
+        </article>
+        <article>
+          <span class="numeral" aria-hidden="true">03</span>
+          <h3 style="font-size:1.25rem;margin-top:8px">We only claim what is true</h3>
+          <p style="color:rgba(255,255,255,.88);margin-top:12px">
+            Our emergency response runs during active business hours. That is the
+            offer, and we are not going to dress it up. We would rather tell you what
+            we can actually do on the phone than take a job and leave you waiting.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Where we work</span>
+        <h2>Yeppoon, Rockhampton, and everywhere in between</h2>
+        <div class="prose" style="margin-top:24px">
+          <p style="color:var(--ink)">
+            We are based in Yeppoon. That means the Capricorn Coast is on our doorstep
+            and Rockhampton is a little over forty kilometres down the road.
+          </p>
+          <p style="color:var(--ink)">
+            So if you are in Yeppoon, Rockhampton, the Capricorn Coast or anywhere in
+            between, we are here to help, and have a laugh while doing it.
+          </p>
+        </div>
+        <p style="margin-top:32px">
+          <a class="btn btn--secondary" href="/areas-we-serve/">See every area we serve</a>
+        </p>
+      </div>
+      <div>
+        <ul class="factlist">
+          <li><span class="k">Trade</span><span class="v">{business.credential}</span></li>
+          <li><span class="k">Based in</span><span class="v">Yeppoon, Queensland</span></li>
+          <li><span class="k">Director and lead tradesperson</span><span class="v">Jason Breingan</span></li>
+          <li><span class="k">On the tools</span><span class="v">Brad</span></li>
+          <li><span class="k">Emergency</span><span class="v">{business.emergencyLine}</span></li>
+          <li><span class="k">Phone</span><span class="v"><a href={business.phoneHref}>{business.phone}</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Reviews seed="about" tags={['flagship', 'repeat']} mist={false} />
+  <CtaBand />
+</Base>

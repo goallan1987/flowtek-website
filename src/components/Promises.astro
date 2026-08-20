@@ -1,0 +1,9 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/business.js';
+---
+<ul class="promises">
+  {business.promises.map((p) => (
+    <li><Icon name="tick" size={18} /><span>{p}</span></li>
+  ))}
+</ul>
