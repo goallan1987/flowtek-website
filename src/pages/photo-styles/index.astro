@@ -2,20 +2,27 @@
 /**
  * Internal review page. noindex, and excluded from the sitemap.
  *
- * TEN ARTWORK STYLES, generated with Higgsfield (nano_banana_pro) from Jason's
- * own photographs, each with a subtle CSS motion treatment on top.
+ * ARTWORK STYLES generated with Higgsfield (nano_banana_pro) from Jason's own
+ * photographs, each with a subtle CSS motion treatment on top.
+ *
+ * Round one (the "print" set) was rejected: too graphic, too cool, too muted.
+ * Round two is bright, warm and friendly, and is ordered with the PAINTERLY
+ * family first because Gregory said the watercolour was closest.
  *
  * WHY THIS IS ALLOWED, when a composited landmark photo is not.
- * These are obviously, deliberately non-photographic. Nobody looks at a linocut
- * or a flat vector drawing and reads it as documentary evidence. They are
- * derived from Jason's real photographs, at his own request, of himself, doing
- * the work he actually does, in the uniform he actually wears. That is
- * illustration, which is what every trade brand uses.
+ * These are obviously, deliberately non-photographic. Nobody reads a watercolour
+ * as documentary evidence. They are derived from Jason's real photographs, at
+ * his own request, of himself, doing the work he actually does, in the uniform
+ * he actually wears. That is illustration.
  *
- * The line they must not cross: none of these may be captioned or placed so as
- * to imply a job, a suburb or a customer that does not exist. They are brand
- * artwork, not proof. Proof stays photographic. See /OS/brand/photography.md
- * and docs/outstanding-proof.md.
+ * The line: none of these may be captioned or placed so as to imply a job, a
+ * suburb or a customer that does not exist. Brand artwork, not proof. Proof
+ * stays photographic. See /OS/brand/photography.md and docs/outstanding-proof.md.
+ *
+ * PALETTE NOTE: /OS/brand/colours.md is Navy + Orange and the photography spec
+ * is hard-sun documentary. This bright colourful direction is a deliberate
+ * departure, approved by Gregory on 21/08/2026. The charcoal polo with the
+ * orange collar is preserved in every image, so the uniform stays accurate.
  */
 import Base from '../../layouts/Base.astro';
 import AnimPhoto from '../../components/AnimPhoto.astro';
@@ -23,123 +30,140 @@ import AnimPhotoScript from '../../components/AnimPhotoScript.astro';
 import Icon from '../../components/Icon.astro';
 import { business } from '../../data/business.js';
 
-import art01 from '../../assets/art/jason-01-flat-vector.jpg';
-import art02 from '../../assets/art/jason-02-comic-halftone.jpg';
-import art03 from '../../assets/art/jason-03-screenprint-poster.jpg';
-import art04 from '../../assets/art/jason-04-ink-watercolour.jpg';
-import art05 from '../../assets/art/jason-05-decal-sticker.jpg';
-import art06 from '../../assets/art/jason-06-papercut.jpg';
-import art07 from '../../assets/art/jason-07-risograph.jpg';
-import art08 from '../../assets/art/jason-08-3d-character.jpg';
-import art09 from '../../assets/art/jason-09-linocut.jpg';
-import art10 from '../../assets/art/jason-10-isometric.jpg';
+/* Painterly family, the direction Gregory picked */
+import p21 from '../../assets/art2/j-21-bright-watercolour.jpg';
+import p29 from '../../assets/art2/j-29-watercolour-ink.jpg';
+import p22 from '../../assets/art2/j-22-gouache.jpg';
+import p16 from '../../assets/art2/j-16-gouache-editorial.jpg';
+import p13 from '../../assets/art2/j-13-picture-book.jpg';
+import p26 from '../../assets/art2/j-26-digital-painting.jpg';
+import p23 from '../../assets/art2/j-23-acrylic.jpg';
+import p28 from '../../assets/art2/j-28-impressionist.jpg';
+import p24 from '../../assets/art2/j-24-pastel.jpg';
+import p25 from '../../assets/art2/j-25-coloured-pencil.jpg';
+import p27 from '../../assets/art2/j-27-marker.jpg';
+import p30 from '../../assets/art2/j-30-collage-paint.jpg';
+
+/* Character family, bright and friendly but not painted */
+import c11 from '../../assets/art2/j-11-bright-flat.jpg';
+import c12 from '../../assets/art2/j-12-3d-bright.jpg';
+import c14 from '../../assets/art2/j-14-bright-cartoon.jpg';
+import c19 from '../../assets/art2/j-19-retro-cartoon.jpg';
+import c15 from '../../assets/art2/j-15-claymation.jpg';
+import c20 from '../../assets/art2/j-20-inflatable.jpg';
+import c17 from '../../assets/art2/j-17-sticker.jpg';
+import c18 from '../../assets/art2/j-18-bright-isometric.jpg';
 
 import jasonLaughing from '../../assets/jason-laughing.jpg';
 
 const alt = (style: string) =>
-  `${style} illustration of Jason Breingan of Flowtek Services, in the charcoal polo with the orange collar, holding a shovel beside an open trench in an Australian suburban front yard`;
+  `${style} illustration of Jason Breingan of Flowtek Services, in the charcoal polo with the orange collar, holding a shovel and waving in a sunny Australian suburban garden`;
 
-const styles = [
-  {
-    n: '01', name: 'Flat vector', src: art01, anim: 'kenburns' as const,
-    what: 'Clean flat vector. Bold shapes, no gradients, navy and orange only.',
-    use: 'The safest and most useful of the ten. Service card headers, the areas hub, anywhere a photo would be too heavy.',
-    watch: 'Reads as a proper brand asset rather than a filter. This is the one I would put money on.',
-  },
-  {
-    n: '02', name: 'Comic halftone', src: art02, anim: 'sunsweep' as const,
-    what: 'Inked comic panel with visible halftone dots and off-register colour.',
-    use: 'The emergency page, and the "before we get there" steps. It suits a story told in stages.',
-    watch: 'Plenty of personality. Use it in one place or it starts to shout.',
-  },
-  {
-    n: '03', name: 'Screenprint poster', src: art03, anim: 'hairline' as const,
-    what: 'Vintage Australian travel poster. Layered flat inks, paper grain, slight misregistration.',
-    use: 'The areas we serve hub, and the suburb pages. It is a coastal Queensland idiom and Flowtek is a coastal Queensland business.',
-    watch: 'The most distinctly Australian of the ten, and the least like every other plumber site.',
-  },
-  {
-    n: '04', name: 'Ink and watercolour', src: art04, anim: 'rack' as const,
-    what: 'Loose pen linework with transparent washes bleeding past the lines.',
-    use: 'The About page. It is the warmest and least corporate.',
-    watch: 'Soft. It will not hold up against the hard-sun photographs on the same screen.',
-  },
-  {
-    n: '05', name: 'Van decal', src: art05, anim: 'edge' as const,
-    what: 'Thick single-weight outline, four flat colours, mascot proportions.',
-    use: 'Small and repeated: favicons, the 404, form confirmations, a footer mark.',
-    watch: 'Genuinely could be cut as vinyl for the van. That is a real second use.',
-  },
-  {
-    n: '06', name: 'Cut paper', src: art06, anim: 'parallax' as const,
-    what: 'Layered torn paper with real shadows between the layers.',
-    use: 'A single feature band between sections.',
-    watch: 'The depth is real, so it takes the parallax treatment better than any of the others.',
-  },
-  {
-    n: '07', name: 'Risograph', src: art07, anim: 'grain' as const,
-    what: 'Two inks only, navy and fluorescent orange, deliberately misregistered on off-white stock.',
-    use: 'Section openers, or the reviews page.',
-    watch: 'The only one that uses the exact brand pair and nothing else. Strongest graphic punch of the ten.',
-  },
-  {
-    n: '08', name: '3D character', src: art08, anim: 'tilt' as const,
-    what: 'Warm stylised 3D render, animated-feature look.',
-    use: 'The home hero, if you want approachable over documentary.',
-    watch: 'The most likeable and the most generic. Every trade brand is reaching for this right now.',
-  },
-  {
-    n: '09', name: 'Linocut', src: art09, anim: 'venetian' as const,
-    what: 'Hand-carved relief print. Black ink, one orange spot colour, cream stock.',
-    use: 'Projects, or a print job: invoices, letterhead, a shirt.',
-    watch: 'Works in one colour, which means it survives embroidery and signage. Worth knowing given there is still no vector logo master.',
-  },
-  {
-    n: '10', name: 'Isometric diorama', src: art10, anim: 'duotone' as const,
-    what: 'Tiny toy-like scene of the job on a floating tile.',
-    use: 'Explaining a process. The emergency steps, or how a job runs.',
-    watch: 'The only one that shows the whole job rather than the man. Good for diagrams, wrong for a hero.',
-  },
+const painterly = [
+  { n: '01', name: 'Bright watercolour', src: p21, anim: 'rack' as const, pick: true,
+    what: 'Loose saturated washes, wet-in-wet bleeds, white paper glowing through.',
+    my: 'The closest to what you liked, pushed much brighter. Warm, human, and it does not look like any other plumber in Queensland.' },
+  { n: '02', name: 'Watercolour and ink', src: p29, anim: 'hairline' as const, pick: true,
+    what: 'Bright washes with fine ink linework sitting slightly off the colour. Native garden, and a dog.',
+    my: 'The friendliest of the twenty. The linework keeps it crisp enough to hold up small, which watercolour alone does not.' },
+  { n: '03', name: 'Gouache', src: p22, anim: 'kenburns' as const, pick: true,
+    what: 'Opaque matte paint, confident flat brushstrokes, chalky finish.',
+    my: 'The most versatile. Bright and warm but still tidy enough for service cards and headers.' },
+  { n: '04', name: 'Gouache and pencil', src: p16, anim: 'grain' as const,
+    what: 'Painted shapes with coloured pencil hatching worked over the top.',
+    my: 'More texture than 03, slightly more editorial. Good for longer pages.' },
+  { n: '05', name: 'Picture book', src: p13, anim: 'duotone' as const,
+    what: 'Warm gouache with visible brush texture and paper tooth. Whimsical.',
+    my: 'Charming. Watch it does not tip into childish on a page about burst pipes.' },
+  { n: '06', name: 'Digital painting', src: p26, anim: 'sunsweep' as const,
+    what: 'Textured brushwork, warm rim light, dappled shade.',
+    my: 'The richest and most polished. Least obviously hand-made, which cuts both ways.' },
+  { n: '07', name: 'Acrylic impasto', src: p23, anim: 'parallax' as const,
+    what: 'Thick loaded brush on canvas, colour mixed on the surface.',
+    my: 'Real painterly energy. Heavy at small sizes, strong as a feature band.' },
+  { n: '08', name: 'Impressionist', src: p28, anim: 'kenburns' as const,
+    what: 'Broken colour in short dabs, no black anywhere, coloured shadows.',
+    my: 'The most beautiful and the least legible. A hero, never a card.' },
+  { n: '09', name: 'Soft pastel', src: p24, anim: 'rack' as const,
+    what: 'Chalk on textured paper, finger-blended, bloomy light.',
+    my: 'Gentle and warm. Softest of the set, which may read as too soft for a trade.' },
+  { n: '10', name: 'Coloured pencil', src: p25, anim: 'grain' as const,
+    what: 'Layered burnished pencil on cream, paper grain showing.',
+    my: 'Quietly lovely. Understated, and it holds detail better than the wet media.' },
+  { n: '11', name: 'Marker', src: p27, anim: 'edge' as const,
+    what: 'Streaky alcohol marker with brush-pen line, colour running past the edges.',
+    my: 'Fresh and immediate, sketchbook energy. The loosest of the painterly set.' },
+  { n: '12', name: 'Paint collage', src: p30, anim: 'venetian' as const,
+    what: 'Torn painted paper layered with crayon and gouache marks.',
+    my: 'The most experimental. Great as one feature, wrong repeated.' },
+];
+
+const character = [
+  { n: '13', name: 'Bright flat character', src: c11, anim: 'kenburns' as const,
+    what: 'Rounded friendly vector, vivid palette, waving.',
+    my: 'The workhorse if you want flat rather than painted.' },
+  { n: '14', name: '3D character, bright', src: c12, anim: 'tilt' as const,
+    what: 'Warm animated-film render, saturated and sunny.',
+    my: 'Very likeable. Also what every trade brand is doing right now.' },
+  { n: '15', name: 'Bright cartoon', src: c14, anim: 'sunsweep' as const,
+    what: 'Bold outlines, flat bright fills, thumbs up.',
+    my: 'High energy. Suits the emergency page.' },
+  { n: '16', name: 'Retro cartoon', src: c19, anim: 'hairline' as const,
+    what: '1960s animation warmth, mustard and teal and coral.',
+    my: 'Genuine character. The most distinctive of the flat options.' },
+  { n: '17', name: 'Claymation', src: c15, anim: 'parallax' as const,
+    what: 'Real plasticine set with thumbprints and tool marks.',
+    my: 'Delightful and completely ownable. Nobody else will have this.' },
+  { n: '18', name: 'Soft inflatable', src: c20, anim: 'duotone' as const,
+    what: 'Puffy rounded soft-toy forms, pastel-bright.',
+    my: 'Extremely approachable. Possibly too soft for gas fitting.' },
+  { n: '19', name: 'Sticker', src: c17, anim: 'edge' as const,
+    what: 'Chunky die-cut character, glossy, big wave.',
+    my: 'For small repeated use: favicon, 404, form confirmations.' },
+  { n: '20', name: 'Bright isometric', src: c18, anim: 'venetian' as const,
+    what: 'Colourful toy diorama of the whole job on a tile.',
+    my: 'For explaining a process, not for a hero.' },
 ];
 ---
 <Base
   title="Artwork styles, internal review | Flowtek Services"
-  description="Ten generated artwork treatments of Jason, for internal review."
+  description="Twenty generated artwork treatments of Jason, for internal review."
   noindex={true}
 >
   <section class="section">
     <div class="container">
       <div class="section-head" style="max-width:820px">
-        <span class="eyebrow">Internal review &middot; 10 styles</span>
-        <h1>Artwork styles</h1>
+        <span class="eyebrow">Internal review &middot; 20 styles &middot; round two</span>
+        <h1>Artwork styles, bright and friendly</h1>
         <p>
-          Ten illustration styles generated from Jason's own photographs, each
-          with a subtle motion treatment on top. Same source photo, same pose,
-          same uniform, so the only variable is the style.
+          Round one was too graphic and too muted, so this is a full reset:
+          brighter, warmer, more colourful, and led by the painterly family
+          because the watercolour was closest. Same source photo throughout, so
+          the only variable is the style.
         </p>
       </div>
 
       <div class="split" style="align-items:start;margin-bottom:64px">
         <div class="callout">
-          <h2 style="font-size:1.0625rem">How to read this page</h2>
+          <h2 style="font-size:1.0625rem">Three things worth knowing</h2>
           <p style="font-size:.9375rem">
-            <strong>Pick one, maybe two.</strong> These are strong styles. Two
-            used consistently will look like a brand. Six will look like a
-            software demo.
+            <strong>The first three are my picks.</strong> Bright watercolour,
+            watercolour and ink, and gouache. All three are warm, colourful and
+            still legible at card size, which is where most of them fail.
           </p>
           <p style="font-size:.9375rem;margin-top:12px">
-            <strong>Artwork is not proof.</strong> None of these can be captioned
-            as a job, a suburb or a customer. They are brand illustration. The
-            photographs stay photographic and keep doing the proving.
+            <strong>This is a departure from the brand spec, deliberately.</strong>
+            <code>colours.md</code> is navy and orange, and the photography spec
+            is hard-sun documentary. These are bright and multicoloured. The
+            charcoal polo with the orange collar is kept in every single one, so
+            the uniform stays right even where the palette opens up.
           </p>
           <p style="font-size:.9375rem;margin-top:12px">
-            <strong>They are all Jason.</strong> Same face, same charcoal polo
-            with the orange collar, same shovel, same trench. Derived from his
-            own photo, of himself, doing his own work.
+            <strong>Artwork is not proof.</strong> None of these gets captioned
+            as a job, a suburb or a customer. The photographs keep doing the
+            proving.
           </p>
         </div>
-        {/* The control image carries no treatment. It is the reference the ten
-            styles are judged against, so it is always plainly visible. */}
         <figure class="pa pa--4x3">
           <img
             src={jasonLaughing.src}
@@ -156,24 +180,30 @@ const styles = [
         </figure>
       </div>
 
+      <h2 class="rule-top" style="padding-top:32px">Painted, 01 to 12</h2>
+      <p class="muted" style="margin-top:12px;margin-bottom:48px;max-width:70ch">
+        The direction you picked, in twelve media. Ordered strongest first.
+      </p>
+
       <div class="stack-lg">
-        {styles.map((s, i) => (
+        {painterly.map((s, i) => (
           <article class="rule-top" style="padding-top:40px">
             <div class="split" style="align-items:start">
               <div>
                 <span class="distance" style="border-top:0;padding-top:0;gap:16px">
-                  <span class="distance__fig" style="font-size:3rem;line-height:1">{s.n}</span>
+                  <span class="distance__fig" style={`font-size:3rem;line-height:1;${s.pick ? 'color:var(--orange-deep)' : ''}`}>{s.n}</span>
                   <span class="distance__meta" style="padding-bottom:0.35em">{s.name}</span>
                 </span>
+                {s.pick && (
+                  <p class="badge-credential" style="margin-top:16px;font-size:1rem;padding:8px 16px">
+                    My pick
+                  </p>
+                )}
                 <dl style="margin:24px 0 0">
-                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">The style</dt>
+                  <dt style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">The medium</dt>
                   <dd style="margin:4px 0 16px">{s.what}</dd>
-                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">Where it belongs</dt>
-                  <dd style="margin:4px 0 16px">{s.use}</dd>
-                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">My read</dt>
-                  <dd style="margin:4px 0 0;color:var(--slate)">{s.watch}</dd>
-                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);margin-top:16px">Motion</dt>
-                  <dd style="margin:4px 0 0;color:var(--slate)">{s.anim}</dd>
+                  <dt style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">My read</dt>
+                  <dd style="margin:4px 0 0;color:var(--slate)">{s.my}</dd>
                 </dl>
               </div>
               <AnimPhoto
@@ -190,12 +220,51 @@ const styles = [
         ))}
       </div>
 
+      <h2 class="rule-top" style="padding-top:32px;margin-top:80px">Character, 13 to 20</h2>
+      <p class="muted" style="margin-top:12px;margin-bottom:48px;max-width:70ch">
+        Bright and friendly, but drawn or built rather than painted. Here in case
+        the painted direction is not it after all.
+      </p>
+
+      <div class="stack-lg">
+        {character.map((s) => (
+          <article class="rule-top" style="padding-top:40px">
+            <div class="split" style="align-items:start">
+              <div>
+                <span class="distance" style="border-top:0;padding-top:0;gap:16px">
+                  <span class="distance__fig" style="font-size:3rem;line-height:1">{s.n}</span>
+                  <span class="distance__meta" style="padding-bottom:0.35em">{s.name}</span>
+                </span>
+                <dl style="margin:24px 0 0">
+                  <dt style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">The style</dt>
+                  <dd style="margin:4px 0 16px">{s.what}</dd>
+                  <dt style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">My read</dt>
+                  <dd style="margin:4px 0 0;color:var(--slate)">{s.my}</dd>
+                </dl>
+              </div>
+              <AnimPhoto
+                src={s.src}
+                alt={alt(s.name)}
+                anim={s.anim}
+                ratio="4x3"
+                widths={[420, 640, 900]}
+                sizes="(min-width: 880px) 560px, 92vw"
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+
       <div class="rule-top" style="padding-top:40px;margin-top:56px">
         <h2>Tell me which one</h2>
         <p style="margin-top:16px">
-          Give me the number and where it goes. If you want the chosen style
-          rendered from the other photographs too, or from a specific service
-          shot, say so and I will generate the set.
+          Give me the number. Once you pick, I will render the chosen style
+          across the rest: one per service, the van, and Jason on his own for
+          the About page, so the whole site is one consistent hand.
+        </p>
+        <p style="margin-top:16px">
+          If none of these is right, say what is off and I will go again. Cheap
+          to iterate, two credits an image.
         </p>
         <p style="margin-top:24px">
           <a class="btn btn--primary" href={business.phoneHref}>
