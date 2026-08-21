@@ -35,6 +35,10 @@
 .pa--3x4 { aspect-ratio: 3 / 4; }
 .pa--1x1 { aspect-ratio: 1 / 1; }
 .pa--16x9 { aspect-ratio: 16 / 9; }
+/* Wide banner. Falls back to a taller crop on a phone so the figures stay
+   readable rather than becoming a thin strip. */
+.pa--21x9 { aspect-ratio: 16 / 9; }
+@media (min-width: 700px) { .pa--21x9 { aspect-ratio: 21 / 9; } }
 
 /* Shared entry: nothing moves until the observer adds .is-in */
 .pa[data-anim] > img { transition: none; }
