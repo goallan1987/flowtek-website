@@ -68,6 +68,19 @@
       }
     }, 1200);
 
+    /* --- Release the compositing hint once a one-shot reveal has finished.
+       kenburns, grain and sunsweep animate forever and keep theirs. --- */
+    var CONTINUOUS = { kenburns: 1, grain: 1, sunsweep: 1, parallax: 1, tilt: 1 };
+    frames.forEach(function (f) {
+      if (CONTINUOUS[f.getAttribute('data-anim')]) return;
+      var done = function () { f.classList.add('is-done'); };
+      f.addEventListener('transitionend', done, { once: true });
+      f.addEventListener('animationend', done, { once: true });
+      // Fallback for treatments whose visible change is on a pseudo-element,
+      // where neither event fires on the frame itself.
+      window.setTimeout(done, 2600);
+    });
+
     /* --- parallax: shift the image against the frame on scroll --- */
     var par = frames.filter(function (f) { return f.getAttribute('data-anim') === 'parallax'; });
     if (par.length) {

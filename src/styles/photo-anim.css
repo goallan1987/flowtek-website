@@ -27,10 +27,19 @@
   height: 100%;
   object-fit: cover;
 }
-/* will-change is applied only while a frame is actually animating. Leaving it
-   on every image permanently pins a compositing layer per photo and costs GPU
-   memory on a phone for no benefit. */
-.pa.is-in > img { will-change: transform, filter; }
+/* will-change costs a GPU compositing layer per image, so it is granted only to
+   the treatments that genuinely animate forever, and it is dropped from the
+   one-shot reveals the moment they finish (see AnimPhotoScript). Ten banners
+   each holding a permanent layer is real memory on a phone. */
+.pa.is-in[data-anim='kenburns'] > img,
+.pa.is-in[data-anim='parallax'] > img { will-change: transform; }
+.pa.is-in[data-anim='rack'] > img,
+.pa.is-in[data-anim='duotone'] > img,
+.pa.is-in[data-anim='hairline'] > img,
+.pa.is-in[data-anim='edge'] > img,
+.pa.is-in[data-anim='venetian'] > img { will-change: transform, filter, clip-path; }
+/* Once a one-shot reveal has finished, the hint is no longer worth its cost. */
+.pa.is-done > img { will-change: auto; }
 .pa--4x3 { aspect-ratio: 4 / 3; }
 .pa--3x4 { aspect-ratio: 3 / 4; }
 .pa--1x1 { aspect-ratio: 1 / 1; }
