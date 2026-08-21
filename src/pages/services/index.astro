@@ -6,6 +6,8 @@ import ServiceCards from '../../components/ServiceCards.astro';
 import Reviews from '../../components/Reviews.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { business, services } from '../../data/business.js';
+import ArtHero from '../../components/ArtHero.astro';
+import heroArt from '../../assets/hero/h-services.jpg';
 ---
 <Base
   title="Plumbing & Gas Services | Yeppoon & Rockhampton | Flowtek"
@@ -13,26 +15,13 @@ import { business, services } from '../../data/business.js';
 >
   <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Services' }]} />
 
-  <section class="hero">
-    <div class="container hero__inner" style="grid-template-columns:1fr">
-      <div style="max-width:820px">
-        <p class="hero__area">{business.areaLine}</p>
-        <h1>Six things, done properly</h1>
-        <p class="lede hero__lede">
-          Whether it is a blocked dunny, leaky taps, gas issues or more, we have got you
-          covered for all your plumbing maintenance and upgrade needs. We are licensed
-          for water and for gas, which on a kitchen with a gas cooktop means one trade
-          instead of two.
-        </p>
-        <div class="btn-row hero__actions">
-          <a class="btn btn--primary" href={business.phoneHref}>
-            <Icon name="phone" size={18} />Call {business.phone}
-          </a>
-          <a class="btn btn--ghost-light" href="/contact/">Get a quote</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ArtHero
+    img={heroArt}
+    alt="Painted illustration of Jason Breingan of Flowtek Services in the charcoal polo with the orange collar, at the open rear doors of the Flowtek van, reaching for a tool from shelves of copper fittings and a drain camera reel"
+    eyebrow={business.areaLine}
+    heading="Six things, done properly"
+    lede="Whether it is a blocked dunny, leaky taps, gas issues or more, we have got you covered. We are licensed for water and for gas, which on a kitchen with a gas cooktop means one trade instead of two."
+  />
 
   <section class="section" aria-labelledby="all-svc">
     <div class="container">

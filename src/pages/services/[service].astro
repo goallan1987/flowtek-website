@@ -18,6 +18,25 @@ import imgCommercialGas from '../../assets/project-2407.png';
 import imgRegulator from '../../assets/project-2408.png';
 import imgGasTrench from '../../assets/project-2406.png';
 
+import ArtHero from '../../components/ArtHero.astro';
+import artHotWater from '../../assets/hero/h-hot-water.jpg';
+import artDrains from '../../assets/hero/h-blocked-drains.jpg';
+import artReno from '../../assets/hero/h-renovations.jpg';
+import artGas from '../../assets/hero/h-gas-fitting.jpg';
+import artBackflow from '../../assets/hero/h-backflow.jpg';
+import artEmergency from '../../assets/hero/h-emergency.jpg';
+
+/* One illustration per service, each showing that actual work. Illustration
+   positions, it does not prove: no caption here claims a specific job. */
+const artBySlug: Record<string, { img: any; alt: string }> = {
+  'hot-water': { img: artHotWater, alt: 'Painted illustration of Jason kneeling beside an instantaneous gas hot water unit on a brick wall, spanner in hand, the old storage cylinder on the pavers beside him' },
+  'blocked-drains': { img: artDrains, alt: 'Painted illustration of Jason crouched over an open drainage inspection point in a suburban lawn, feeding a drain camera down the line with the screen beside him' },
+  renovations: { img: artReno, alt: 'Painted illustration of Jason fitting copper pipework into an open timber-framed wall in a half-finished bathroom renovation, before the plasterboard goes on' },
+  'gas-fitting': { img: artGas, alt: 'Painted illustration of Jason connecting a gas line to a stainless steel cooktop in a bright kitchen, spanner on the fitting and a leak test bottle beside him' },
+  'backflow-tmv-testing': { img: artBackflow, alt: 'Painted illustration of Jason testing a brass backflow prevention device on an exterior wall, a test kit with gauges connected and a test report under his arm' },
+  'emergency-plumbing': { img: artEmergency, alt: 'Painted illustration of Jason crouched at a water meter at the front boundary, turning the water off at the isolation tap, the Flowtek van at the kerb behind him' },
+};
+
 export function getStaticPaths() {
   return services.map((s) => ({ params: { service: s.slug }, props: { svc: s } }));
 }
@@ -76,40 +95,14 @@ const topSuburbs = byRank.slice(0, 12);
     ]}
   />
 
-  <section class="hero">
-    <div class="container hero__inner">
-      <div>
-        <p class="hero__area">{business.areaLine}</p>
-        <h1>{c.h1}</h1>
-        <p class="lede hero__lede">{c.lede} {svc.blurb}</p>
-        <div class="btn-row hero__actions">
-          <a class="btn btn--primary" href={business.phoneHref}>
-            <Icon name="phone" size={18} />Call {business.phone}
-          </a>
-          <a
-            class="btn btn--ghost-light"
-            href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}
-          >
-            <Icon name="message" size={18} />Text us
-          </a>
-          <a class="btn btn--ghost-light" href="#quote">Short form</a>
-        </div>
-        <Promises />
-      </div>
-      <figure class="hero__figure">
-        <Image
-          src={m.img}
-          alt={m.alt}
-          widths={[420, 640, 900]}
-          sizes="(min-width: 900px) 460px, 92vw"
-          quality={72}
-          loading="eager"
-          fetchpriority="high"
-        />
-        <figcaption class="hero__caption">{m.cap}</figcaption>
-      </figure>
-    </div>
-  </section>
+  <ArtHero
+    img={artBySlug[svc.slug].img}
+    alt={artBySlug[svc.slug].alt}
+    eyebrow={business.areaLine}
+    heading={c.h1}
+    lede={`${c.lede} ${svc.blurb}`}
+    promises={true}
+  />
 
   <section class="section">
     <div class="container split" style="align-items:start">

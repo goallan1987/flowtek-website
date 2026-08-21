@@ -1,0 +1,80 @@
+---
+/**
+ * The illustrated hero band.
+ *
+ * WHAT THESE IMAGES ARE, and the rule that governs them.
+ * Painted illustrations generated from Jason's own photographs. They position:
+ * they say "this is the work we do and this is the coast we do it on", which is
+ * true. They never prove. No caption on one of these may assert a specific job,
+ * a specific customer, a specific suburb visit or a review.
+ * Photographic proof lives in the page body. See /OS/brand/photography.md and
+ * docs/outstanding-proof.md.
+ *
+ * The illustration sits behind the text with a navy scrim over it, so the
+ * headline contrast is carried by the scrim rather than by luck.
+ */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import Promises from './Promises.astro';
+import { business } from '../data/business.js';
+
+interface Props {
+  img: ImageMetadata;
+  alt: string;
+  eyebrow?: string;
+  heading: string;
+  lede?: string;
+  smsSuburb?: string;
+  actions?: boolean;
+  promises?: boolean;
+  h1?: boolean;
+}
+const {
+  img,
+  alt,
+  eyebrow,
+  heading,
+  lede,
+  smsSuburb = '',
+  actions = true,
+  promises = false,
+  h1 = true,
+} = Astro.props;
+
+const smsBody = encodeURIComponent(business.smsBody + smsSuburb);
+---
+<section class="arthero">
+  <div class="arthero__media">
+    <Image
+      src={img}
+      alt={alt}
+      widths={[900, 1400, 2000]}
+      sizes="100vw"
+      quality={78}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+
+  <div class="container arthero__inner">
+    <div class="arthero__text">
+      {eyebrow && <p class="hero__area">{eyebrow}</p>}
+      {h1 ? <h1>{heading}</h1> : <h2 class="arthero__h">{heading}</h2>}
+      {lede && <p class="lede hero__lede">{lede}</p>}
+
+      {actions && (
+        <div class="btn-row hero__actions">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+          <a class="btn btn--ghost-light" href={`${business.smsHref}?&body=${smsBody}`}>
+            <Icon name="message" size={18} />Text us
+          </a>
+          <a class="btn btn--ghost-light" href="#quote">Short form</a>
+        </div>
+      )}
+
+      {promises && <Promises />}
+    </div>
+  </div>
+</section>

@@ -9,6 +9,8 @@ import CtaBand from '../../components/CtaBand.astro';
 import { business } from '../../data/business.js';
 import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
 import imgHotWater from '../../assets/job-old-hot-water-unit.jpg';
+import ArtHero from '../../components/ArtHero.astro';
+import heroArt from '../../assets/hero/h-about.jpg';
 ---
 <Base
   title="About Flowtek Services | Yeppoon Plumber & Gas Fitter"
@@ -16,31 +18,14 @@ import imgHotWater from '../../assets/job-old-hot-water-unit.jpg';
 >
   <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About us' }]} />
 
-  <section class="hero">
-    <div class="container hero__inner">
-      <div>
-        <p class="hero__area">Hi, we're Flowtek</p>
-        <h1>The local plumber with a human touch</h1>
-        <p class="lede hero__lede">
-          Plumbing is a funny business. Face it, when you are stood in someone's yard at
-          2am trying to fix a leak, warm dirty water gushing over the tops of your
-          gumboots, you cannot help but see the funny side of things.
-        </p>
-        <Promises />
-      </div>
-      <figure class="hero__figure">
-        <Image
-          src={imgConduit}
-          alt="A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, with his tools laid out on the concrete slab"
-          widths={[420, 640, 900]}
-          sizes="(min-width: 900px) 460px, 92vw"
-          quality={72}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </figure>
-    </div>
-  </section>
+  <ArtHero
+    img={heroArt}
+    alt="Painted illustration of Jason Breingan of Flowtek Services in the charcoal polo with the orange collar, leaning against the front of the Flowtek van with a pipe wrench in one hand, smiling at the viewer"
+    eyebrow="Hi, we're Flowtek"
+    heading="The local plumber with a human touch"
+    lede="Plumbing is a funny business. Face it, when you are stood in someone's yard at 2am trying to fix a leak, warm dirty water gushing over the tops of your gumboots, you cannot help but see the funny side of things."
+    promises={true}
+  />
 
   <section class="section">
     <div class="container split">

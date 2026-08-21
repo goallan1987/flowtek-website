@@ -10,6 +10,8 @@ import CtaBand from '../components/CtaBand.astro';
 import { business, emergencySteps } from '../data/business.js';
 import { byRank, coastSuburbs, rockySuburbs } from '../data/suburbs.js';
 
+import ArtHero from '../components/ArtHero.astro';
+import heroArt from '../assets/art3/b-36-concept-art.jpg';
 import imgConduit from '../assets/job-conduit-timber-frame.jpg';
 import imgHotWater from '../assets/job-old-hot-water-unit.jpg';
 import imgCommercialGas from '../assets/project-2407.png';
@@ -46,50 +48,14 @@ const faq = [
   faq={faq}
 >
   <!-- ================= HERO ================= -->
-  <section class="hero">
-    <div class="container hero__inner">
-      <div>
-        <p class="hero__area">{business.areaLine}</p>
-        <h1>Let it flow</h1>
-        <p class="lede hero__lede">
-          The local plumber with a human touch. Hot water that has gone cold, a drain
-          that will not clear, gas that needs doing properly. We are based in Yeppoon,
-          we are licensed for water and gas, and we clean up before we leave.
-        </p>
-
-        <div class="btn-row hero__actions">
-          <a class="btn btn--primary" href={business.phoneHref}>
-            <Icon name="phone" size={18} />Call {business.phone}
-          </a>
-          <a
-            class="btn btn--ghost-light"
-            href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}
-          >
-            <Icon name="message" size={18} />Text us
-          </a>
-          <a class="btn btn--ghost-light" href="#quote">Short form</a>
-        </div>
-
-        <Promises />
-      </div>
-
-      <figure class="hero__figure">
-        <Image
-          src={imgConduit}
-          alt="A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, tools laid out on the slab beside him"
-          widths={[420, 640, 900]}
-          sizes="(min-width: 900px) 460px, 92vw"
-          quality={72}
-          loading="eager"
-          fetchpriority="high"
-        />
-        <figcaption class="hero__caption">
-          Rough-in on a timber frame. The part of a job nobody sees, and the part that
-          decides whether the rest of it holds up.
-        </figcaption>
-      </figure>
-    </div>
-  </section>
+  <ArtHero
+    img={heroArt}
+    alt="Painted illustration of Jason Breingan of Flowtek Services in the charcoal polo with the orange collar, holding a pipe wrench and talking with two homeowners, the Flowtek van behind them on the Capricorn Coast"
+    eyebrow={business.areaLine}
+    heading="Let it flow"
+    lede="The local plumber with a human touch. Hot water that has gone cold, a drain that will not clear, gas that needs doing properly. We are based in Yeppoon, we are licensed for water and gas, and we clean up before we leave."
+    promises={true}
+  />
 
   <!-- ================= CREDENTIAL STRIP ================= -->
   <section class="section section--tight">

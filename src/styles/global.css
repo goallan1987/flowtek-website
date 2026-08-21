@@ -644,3 +644,56 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
   color: var(--slate); letter-spacing: 0;
 }
 .section--navy .field .opt, .section--ink .field .opt { color: rgba(255,255,255,0.75); }
+
+/* ==========================================================================
+   Illustrated hero band
+   The painted illustration sits behind the copy under a Navy scrim, so the
+   headline contrast is guaranteed by the scrim rather than by whatever happens
+   to be in that corner of the artwork. Measured: white on the scrimmed navy
+   holds well past 4.5:1 at every breakpoint.
+   ========================================================================== */
+.arthero {
+  position: relative;
+  background: var(--navy);
+  color: var(--white);
+  isolation: isolate;
+  overflow: hidden;
+}
+.arthero__media { position: absolute; inset: 0; z-index: 0; }
+.arthero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+/* Scrim. Heavier on the reading side, lighter over the artwork, so the picture
+   is still legible as a picture. */
+.arthero::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(30,47,102,0.94) 0%, rgba(30,47,102,0.86) 34%, rgba(30,47,102,0.48) 64%, rgba(30,47,102,0.30) 100%),
+    linear-gradient(180deg, rgba(33,33,33,0.28), rgba(33,33,33,0.10));
+}
+@media (max-width: 780px) {
+  /* On a phone the text needs the whole width, so the scrim goes flat. */
+  .arthero::after {
+    background: linear-gradient(180deg, rgba(30,47,102,0.80) 0%, rgba(30,47,102,0.92) 62%, rgba(30,47,102,0.96) 100%);
+  }
+  .arthero__media img { object-position: 68% 42%; }
+}
+.arthero__inner { position: relative; z-index: 2; padding-block: clamp(44px, 5.5vw, 84px); }
+/* The column is wide enough for three buttons in a row; the prose inside it is
+   held to a comfortable measure separately. */
+.arthero__text { max-width: 46rem; }
+.arthero__text h1, .arthero__text .arthero__h { max-width: 24ch; }
+.arthero__text .lede { max-width: 46ch; }
+.arthero__text .hero__area { max-width: 44ch; }
+.arthero h1, .arthero .arthero__h { color: var(--white); }
+.arthero .arthero__h {
+  font-size: clamp(2.1rem, 1.35rem + 3.2vw, 3.44rem);
+  line-height: 1.08;
+}
+.arthero .hero__lede { color: rgba(255, 255, 255, 0.94); }
+.arthero .promises li { background: rgba(255, 255, 255, 0.12); }
+
+/* Full-width illustrated band. Shorter on a phone so it stays a band and does
+   not become a page of its own. */
+.bandart { display: block; background: var(--navy); }
+.bandart img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% 55%; }
+@media (min-width: 780px) { .bandart img { aspect-ratio: 32 / 9; } }

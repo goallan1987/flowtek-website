@@ -5,6 +5,8 @@ import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { business } from '../../data/business.js';
 import { reviews } from '../../data/reviews.js';
+import ArtHero from '../../components/ArtHero.astro';
+import heroArt from '../../assets/hero/h-reviews.jpg';
 ---
 <Base
   title="Reviews | Flowtek Services, Plumber Yeppoon & Rockhampton"
@@ -12,25 +14,14 @@ import { reviews } from '../../data/reviews.js';
 >
   <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reviews' }]} />
 
-  <section class="hero">
-    <div class="container hero__inner" style="grid-template-columns:1fr">
-      <div style="max-width:800px">
-        <p class="hero__area">In their words, not ours</p>
-        <h1>Reviews</h1>
-        <p class="lede hero__lede">
-          Every quote on this page is copied exactly from a review published on our
-          Google Business Profile. Nothing has been shortened, tidied or corrected.
-          Customers spell our name Flowtech, Flowtex and Flowtec, and we have left
-          that alone too.
-        </p>
-        <div class="btn-row hero__actions">
-          <a class="btn btn--primary" href={business.phoneHref}>
-            <Icon name="phone" size={18} />Call {business.phone}
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ArtHero
+    img={heroArt}
+    alt="Painted illustration of Jason Breingan of Flowtek Services in the charcoal polo with the orange collar, shaking hands with a homeowner at her front door, the job finished and the site left clean"
+    eyebrow="In their words, not ours"
+    heading="Reviews"
+    lede="Every quote on this page is copied exactly from a review published on our Google Business Profile. Nothing has been shortened, tidied or corrected."
+    actions={false}
+  />
 
   <section class="section">
     <div class="container">

@@ -40,6 +40,8 @@ const gallery = [
     cap: 'Rough-in on a timber frame, tools laid on the slab inside the working arc.',
   },
 ];
+import ArtHero from '../../components/ArtHero.astro';
+import heroArt from '../../assets/hero/h-projects.jpg';
 ---
 <Base
   title="Projects | Flowtek Services, Plumber Yeppoon & Rockhampton"
@@ -47,19 +49,14 @@ const gallery = [
 >
   <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Projects' }]} />
 
-  <section class="hero">
-    <div class="container hero__inner" style="grid-template-columns:1fr">
-      <div style="max-width:780px">
-        <p class="hero__area">Yeppoon, Rockhampton and the Capricorn Coast</p>
-        <h1>Projects</h1>
-        <p class="lede hero__lede">
-          Every photograph on this page is from a Flowtek job. None of it is stock, and
-          where we have not recorded which street a job was on, we say so rather than
-          picking a suburb that sounds good.
-        </p>
-      </div>
-    </div>
-  </section>
+  <ArtHero
+    img={heroArt}
+    alt="Painted illustration of Jason Breingan of Flowtek Services in the charcoal polo with the orange collar, standing in an open stormwater drainage trench beside a red brick building, laying a drainage pit into a gravel bed"
+    eyebrow="Yeppoon, Rockhampton and the Capricorn Coast"
+    heading="Projects"
+    lede="Every photograph on this page is from a Flowtek job. None of it is stock, and where we have not recorded which street a job was on, we say so rather than picking a suburb that sounds good."
+    actions={false}
+  />
 
   <section class="section">
     <div class="container split">
