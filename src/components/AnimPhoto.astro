@@ -1,0 +1,58 @@
+---
+/**
+ * One animated photograph.
+ *
+ * Every photograph passed to this component must be a real Flowtek photograph.
+ * No stock, no composite, no generated image. See /OS/brand/photography.md and
+ * the outstanding proof list. The animation is a treatment on a true photo; it
+ * is never a substitute for having one.
+ */
+import { Image } from 'astro:assets';
+import '../styles/photo-anim.css';
+
+/* The ten treatments. See src/styles/photo-anim.css for what each one does. */
+type AnimStyle = 'kenburns' | 'sunsweep' | 'duotone' | 'hairline' | 'grain'
+  | 'parallax' | 'rack' | 'edge' | 'venetian' | 'tilt';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  anim: AnimStyle;
+  ratio?: '4x3' | '3x4' | '1x1' | '16x9';
+  caption?: string;
+  widths?: number[];
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  anim,
+  ratio = '4x3',
+  caption,
+  widths = [420, 640, 900],
+  sizes = '(min-width: 900px) 560px, 92vw',
+  eager = false,
+  class: cls = '',
+} = Astro.props;
+---
+<figure class={`pa pa--${ratio} ${cls}`} data-anim={anim}>
+  <Image
+    src={src}
+    alt={alt}
+    widths={widths}
+    sizes={sizes}
+    quality={74}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+  />
+  {anim === 'venetian' && (
+    <div class="pa__bands" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+  )}
+  {caption && <figcaption class="pa__cap">{caption}</figcaption>}
+</figure>

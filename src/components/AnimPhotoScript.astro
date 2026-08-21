@@ -1,0 +1,118 @@
+---
+/**
+ * The whole runtime for every animated photograph on the site.
+ * One IntersectionObserver, one optional scroll handler, one optional pointer
+ * handler. No framework. Include once per page that uses AnimPhoto.
+ *
+ * If prefers-reduced-motion is set, this script attaches nothing at all and the
+ * stylesheet leaves every photograph in its final, fully visible state.
+ */
+---
+<script is:inline>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduce.matches) return;
+
+    var frames = Array.prototype.slice.call(document.querySelectorAll('.pa[data-anim]'));
+    if (!frames.length) return;
+
+    /* --- Safety first: reveal anything already on screen, synchronously.
+       If IntersectionObserver never fires (broken polyfill, odd embedded
+       viewport, a browser bug), a treated photograph would otherwise sit
+       hidden forever behind a clip-path or a blur. A photo of Jason doing the
+       work is the whole point of the page, so it is never allowed to be the
+       thing that breaks. --- */
+    var revealIfVisible = function () {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      frames.forEach(function (f) {
+        if (f.classList.contains('is-in')) return;
+        var r = f.getBoundingClientRect();
+        if (r.top < vh * 0.92 && r.bottom > 0) f.classList.add('is-in');
+      });
+    };
+    revealIfVisible();
+
+    /* --- in-view trigger --- */
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              // one-shot reveals never need watching again
+              var a = e.target.getAttribute('data-anim');
+              if (a !== 'kenburns' && a !== 'grain' && a !== 'sunsweep') io.unobserve(e.target);
+            } else if (e.target.getAttribute('data-anim') === 'kenburns') {
+              // pause the continuous ones when they leave, to save battery
+              e.target.classList.remove('is-in');
+            }
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.2 }
+      );
+      frames.forEach(function (f) { io.observe(f); });
+    } else {
+      // No observer available: reveal on scroll instead.
+      var onScrollFallback = function () { revealIfVisible(); };
+      window.addEventListener('scroll', onScrollFallback, { passive: true });
+      window.addEventListener('resize', onScrollFallback, { passive: true });
+    }
+
+    // Belt and braces: if nothing has been revealed shortly after load, the
+    // observer is not working. Reveal what is on screen and keep going.
+    window.setTimeout(function () {
+      var any = frames.some(function (f) { return f.classList.contains('is-in'); });
+      if (!any) {
+        revealIfVisible();
+        window.addEventListener('scroll', revealIfVisible, { passive: true });
+      }
+    }, 1200);
+
+    /* --- parallax: shift the image against the frame on scroll --- */
+    var par = frames.filter(function (f) { return f.getAttribute('data-anim') === 'parallax'; });
+    if (par.length) {
+      var ticking = false;
+      var onScroll = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          var vh = window.innerHeight;
+          par.forEach(function (f) {
+            var r = f.getBoundingClientRect();
+            if (r.bottom < -200 || r.top > vh + 200) return;
+            // -1 when entering from below, +1 when leaving at the top
+            var p = (r.top + r.height / 2 - vh / 2) / (vh / 2);
+            f.style.setProperty('--pa-shift', (p * -34).toFixed(2));
+          });
+          ticking = false;
+        });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    }
+
+    /* --- tilt: fine pointers only, so never on a phone --- */
+    var tilt = frames.filter(function (f) { return f.getAttribute('data-anim') === 'tilt'; });
+    if (tilt.length && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      tilt.forEach(function (f) {
+        f.addEventListener('pointermove', function (ev) {
+          var r = f.getBoundingClientRect();
+          var x = (ev.clientX - r.left) / r.width - 0.5;
+          var y = (ev.clientY - r.top) / r.height - 0.5;
+          f.style.setProperty('--pa-rx', (x * 7).toFixed(2));
+          f.style.setProperty('--pa-ry', (-y * 7).toFixed(2));
+        });
+        f.addEventListener('pointerleave', function () {
+          f.style.setProperty('--pa-rx', '0');
+          f.style.setProperty('--pa-ry', '0');
+        });
+      });
+    }
+
+    /* --- honour a mid-session change to the motion preference --- */
+    reduce.addEventListener('change', function (e) {
+      if (e.matches) location.reload();
+    });
+  })();
+</script>

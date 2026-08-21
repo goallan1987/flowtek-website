@@ -1,0 +1,245 @@
+/* ==========================================================================
+   Flowtek: animated photo treatments
+   Ten styles. Every one is CSS only, uses nothing but the confirmed brand
+   tokens, and animates transform / opacity / filter so nothing reflows.
+
+   RULES THIS FILE OBEYS
+   - prefers-reduced-motion: reduce kills every animation dead. The photograph
+     is fully visible and final in that state, never mid-transition.
+   - No animation runs until the frame is in view, so nothing burns CPU
+     off-screen and nothing has finished before the visitor arrives.
+   - Motion is 300 to 900ms for reveals, and slow ambient drift where it is
+     continuous. Nothing bounces. This is a trade business, not a showreel.
+   - Every treatment leaves the photograph readable. The subject is Jason
+     doing the work, and no treatment is allowed to obscure that.
+   ========================================================================== */
+
+.pa {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--mist);
+  isolation: isolate;
+}
+.pa > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* will-change is applied only while a frame is actually animating. Leaving it
+   on every image permanently pins a compositing layer per photo and costs GPU
+   memory on a phone for no benefit. */
+.pa.is-in > img { will-change: transform, filter; }
+.pa--4x3 { aspect-ratio: 4 / 3; }
+.pa--3x4 { aspect-ratio: 3 / 4; }
+.pa--1x1 { aspect-ratio: 1 / 1; }
+.pa--16x9 { aspect-ratio: 16 / 9; }
+
+/* Shared entry: nothing moves until the observer adds .is-in */
+.pa[data-anim] > img { transition: none; }
+
+/* ---------- 01 Ken Burns. Slow scale and drift, continuous. ---------- */
+.pa[data-anim='kenburns'] > img {
+  animation: pa-kenburns 26s ease-in-out infinite alternate;
+  animation-play-state: paused;
+  transform-origin: 58% 62%;
+}
+.pa[data-anim='kenburns'].is-in > img { animation-play-state: running; }
+@keyframes pa-kenburns {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.14) translate3d(-1.5%, -2%, 0); }
+}
+
+/* ---------- 02 Hard-sun sweep. A specular band crosses the frame,
+     which is the light this business is actually photographed in. ---------- */
+.pa[data-anim='sunsweep']::after {
+  content: '';
+  position: absolute; inset: -20% -60%;
+  background: linear-gradient(
+    100deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.34) 48%,
+    rgba(255, 255, 255, 0.08) 56%,
+    transparent 64%
+  );
+  transform: translate3d(-70%, 0, 0);
+  pointer-events: none;
+}
+.pa[data-anim='sunsweep'].is-in::after {
+  animation: pa-sweep 7s cubic-bezier(0.4, 0, 0.2, 1) 0.4s infinite;
+}
+@keyframes pa-sweep {
+  0%   { transform: translate3d(-70%, 0, 0); }
+  55%  { transform: translate3d(70%, 0, 0); }
+  100% { transform: translate3d(70%, 0, 0); }
+}
+
+/* ---------- 03 Duotone resolve. Opens in Navy/Orange duotone and
+     resolves to the real photograph. Brand colours, no invention. ---------- */
+.pa[data-anim='duotone'] > img {
+  filter: grayscale(1) contrast(1.15);
+  transition: filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pa[data-anim='duotone']::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(150deg, var(--navy), var(--orange));
+  mix-blend-mode: color;
+  opacity: 1;
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.pa[data-anim='duotone'].is-in > img { filter: none; }
+.pa[data-anim='duotone'].is-in::before { opacity: 0; }
+
+/* ---------- 04 Hairline wipe. Swiss. Thin rules pass over the frame
+     and the image arrives behind them. ---------- */
+.pa[data-anim='hairline'] > img {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.95s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.pa[data-anim='hairline'].is-in > img { clip-path: inset(0 0 0 0); }
+.pa[data-anim='hairline']::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; left: 0; width: 2px;
+  background: var(--orange);
+  transform: translate3d(0, 0, 0);
+  opacity: 0;
+  pointer-events: none;
+}
+.pa[data-anim='hairline'].is-in::after {
+  animation: pa-hairline 0.95s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes pa-hairline {
+  0%   { transform: translate3d(0, 0, 0); opacity: 1; }
+  99%  { transform: translate3d(calc(100% * 0 + 100vw), 0, 0); opacity: 1; }
+  100% { opacity: 0; }
+}
+/* keep the rule inside the frame */
+.pa[data-anim='hairline'] { --pa-w: 100%; }
+.pa[data-anim='hairline'].is-in::after { animation-name: pa-hairline-in; }
+@keyframes pa-hairline-in {
+  0%   { left: 0; opacity: 1; }
+  99%  { left: 100%; opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* ---------- 05 Grain drift. Documentary texture, slowly moving.
+     1 to 3 percent, per the photography spec. ---------- */
+.pa[data-anim='grain']::after {
+  content: '';
+  position: absolute; inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.pa[data-anim='grain'].is-in::after {
+  animation: pa-grain 14s steps(6, end) infinite;
+}
+@keyframes pa-grain {
+  0%   { transform: translate3d(0, 0, 0); }
+  25%  { transform: translate3d(-3%, 2%, 0); }
+  50%  { transform: translate3d(2%, -3%, 0); }
+  75%  { transform: translate3d(-2%, -2%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ---------- 06 Depth parallax. The photograph moves slower than the
+     frame as the page scrolls. Driven by a scroll-linked variable. ---------- */
+.pa[data-anim='parallax'] > img {
+  transform: translate3d(0, calc(var(--pa-shift, 0) * 1px), 0) scale(1.16);
+}
+
+/* ---------- 07 Focus rack. Blur resolves to sharp on entry. ---------- */
+.pa[data-anim='rack'] > img {
+  filter: blur(14px) saturate(0.85);
+  transform: scale(1.06);
+  transition: filter 0.9s ease-out, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pa[data-anim='rack'].is-in > img { filter: none; transform: scale(1); }
+
+/* ---------- 08 Orange edge draw. The accent rule draws around the
+     frame. The brand's own border token, animated. ---------- */
+.pa[data-anim='edge']::before,
+.pa[data-anim='edge']::after {
+  content: '';
+  position: absolute; background: var(--orange);
+  pointer-events: none; z-index: 2;
+}
+.pa[data-anim='edge']::before { left: 0; bottom: 0; height: 5px; width: 0; }
+.pa[data-anim='edge']::after  { left: 0; bottom: 0; width: 5px; height: 0; }
+.pa[data-anim='edge'].is-in::before { animation: pa-edge-x 0.7s 0.1s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.pa[data-anim='edge'].is-in::after  { animation: pa-edge-y 0.5s 0.75s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+@keyframes pa-edge-x { to { width: 100%; } }
+@keyframes pa-edge-y { to { height: 42%; } }
+.pa[data-anim='edge'] > img { transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1); transform: scale(1.05); }
+.pa[data-anim='edge'].is-in > img { transform: scale(1); }
+
+/* ---------- 09 Venetian reveal. Horizontal bands stagger in.
+     Reads like a shutter opening on the job. ---------- */
+.pa[data-anim='venetian'] { display: grid; }
+.pa[data-anim='venetian'] > img { grid-area: 1 / 1; }
+.pa__bands {
+  grid-area: 1 / 1; position: relative; z-index: 2;
+  display: grid; grid-template-rows: repeat(7, 1fr);
+  pointer-events: none;
+}
+.pa__bands span { background: var(--ink); transform-origin: left center; }
+.pa[data-anim='venetian'].is-in .pa__bands span {
+  animation: pa-band 0.62s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.pa__bands span:nth-child(1) { animation-delay: 0.00s; }
+.pa__bands span:nth-child(2) { animation-delay: 0.06s; }
+.pa__bands span:nth-child(3) { animation-delay: 0.12s; }
+.pa__bands span:nth-child(4) { animation-delay: 0.18s; }
+.pa__bands span:nth-child(5) { animation-delay: 0.24s; }
+.pa__bands span:nth-child(6) { animation-delay: 0.30s; }
+.pa__bands span:nth-child(7) { animation-delay: 0.36s; }
+@keyframes pa-band { to { transform: scaleX(0); } }
+
+/* ---------- 10 Pointer tilt. Subtle 3D following the cursor.
+     Desktop pointer only. Never on touch, never on reduced motion. ---------- */
+.pa[data-anim='tilt'] { perspective: 900px; }
+.pa[data-anim='tilt'] > img {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: rotateX(calc(var(--pa-ry, 0) * 1deg)) rotateY(calc(var(--pa-rx, 0) * 1deg)) scale(1.07);
+}
+
+/* ---------- Caption, shared ---------- */
+.pa__cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--scrim-heavy);
+  color: var(--white);
+  font-size: 0.875rem; line-height: 1.45;
+  transform: translate3d(0, 100%, 0);
+  transition: transform 0.5s 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pa.is-in .pa__cap { transform: translate3d(0, 0, 0); }
+
+/* ==========================================================================
+   Reduced motion. Everything off, photograph final and fully visible.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .pa > img,
+  .pa::before,
+  .pa::after,
+  .pa .pa__bands span,
+  .pa .pa__cap {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+    opacity: 1;
+  }
+  .pa[data-anim='duotone']::before { opacity: 0; }
+  .pa[data-anim='hairline']::after,
+  .pa[data-anim='sunsweep']::after { display: none; }
+  .pa[data-anim='edge']::before { width: 100%; height: 5px; }
+  .pa[data-anim='edge']::after { height: 42%; width: 5px; }
+  .pa .pa__bands span { transform: scaleX(0) !important; }
+  .pa[data-anim='grain']::after { display: block; opacity: 0.14; }
+}

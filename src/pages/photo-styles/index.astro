@@ -1,0 +1,211 @@
+---
+/**
+ * Internal review page. noindex, and excluded from the sitemap.
+ * Ten animated treatments on Flowtek's own photographs, side by side, so Jason
+ * and Gregory can pick. Delete this page once a treatment is chosen, or keep it
+ * as the reference for whoever works on the site next.
+ */
+import Base from '../../layouts/Base.astro';
+import AnimPhoto from '../../components/AnimPhoto.astro';
+import AnimPhotoScript from '../../components/AnimPhotoScript.astro';
+import Icon from '../../components/Icon.astro';
+import { business } from '../../data/business.js';
+
+import jasonDigging from '../../assets/jason-digging.jpg';
+import jasonLaughing from '../../assets/jason-laughing.jpg';
+import jasonPortrait from '../../assets/jason-portrait.jpg';
+import vanSide from '../../assets/flowtek-van-side.jpg';
+import vanBack from '../../assets/flowtek-van-back.jpg';
+import conduit from '../../assets/job-conduit-timber-frame.jpg';
+
+const ALT = {
+  digging:
+    'Jason Breingan of Flowtek Services in a charcoal polo with an orange collar, standing in a suburban front yard beside a freshly dug trench with a shovel, in hard Central Queensland sun',
+  laughing:
+    'Jason Breingan laughing, leaning on a shovel beside an open trench on a suburban verge, palms and a Queenslander house behind him',
+  portrait:
+    'Jason Breingan standing with a shovel in a front yard, wearing the charcoal Flowtek polo with the orange collar and his name embroidered on the chest',
+  vanSide:
+    'The Flowtek Services van photographed from the side, showing the wordmark, the service list on the window and the roof ladder',
+  vanBack:
+    'The rear of the Flowtek Services van showing the logo, the six services, the phone number and the website address',
+  conduit:
+    'A Flowtek plumber threading conduit through a timber wall frame, tools laid out on the slab',
+};
+
+const styles = [
+  {
+    id: 'kenburns',
+    n: '01',
+    name: 'Ken Burns',
+    what: 'Slow scale and drift, running continuously.',
+    use: 'Hero images. It gives a still photograph a pulse without asking anything of the visitor.',
+    watch: 'Continuous motion, so it pauses itself when scrolled out of view to save battery.',
+    src: jasonDigging, alt: ALT.digging, ratio: '4x3' as const,
+  },
+  {
+    id: 'sunsweep',
+    n: '02',
+    name: 'Hard-sun sweep',
+    what: 'A specular band crosses the frame every few seconds.',
+    use: 'Anywhere the photograph was shot in full sun, which on this coast is most of them.',
+    watch: 'The one treatment that references the actual light this business works in.',
+    src: jasonLaughing, alt: ALT.laughing, ratio: '4x3' as const,
+  },
+  {
+    id: 'duotone',
+    n: '03',
+    name: 'Duotone resolve',
+    what: 'Opens in Navy and Orange duotone, resolves to the real photograph.',
+    use: 'Section openers. It brands the image for a second, then gets out of the way.',
+    watch: 'Uses the two confirmed brand colours and nothing else.',
+    src: jasonPortrait, alt: ALT.portrait, ratio: '3x4' as const,
+  },
+  {
+    id: 'hairline',
+    n: '04',
+    name: 'Hairline wipe',
+    what: 'A 2px orange rule crosses the frame and the photograph arrives behind it.',
+    use: 'The most restrained of the ten. Suits the suburb pages, where the rule already appears.',
+    watch: 'This is the treatment that matches the site’s existing hairline structure.',
+    src: vanSide, alt: ALT.vanSide, ratio: '4x3' as const,
+  },
+  {
+    id: 'grain',
+    n: '05',
+    name: 'Grain drift',
+    what: 'Fine film grain, slowly moving.',
+    use: 'Older or lower-resolution photographs. Grain hides softness that sharpening cannot.',
+    watch: 'Useful on the recovered library photos, which are phone shots from 2023.',
+    src: conduit, alt: ALT.conduit, ratio: '4x3' as const,
+  },
+  {
+    id: 'parallax',
+    n: '06',
+    name: 'Depth parallax',
+    what: 'The photograph tracks slower than the page as you scroll.',
+    use: 'Full-width bands between sections.',
+    watch: 'Scroll the page to see it. It does nothing while the page is still.',
+    src: jasonDigging, alt: ALT.digging, ratio: '16x9' as const,
+  },
+  {
+    id: 'rack',
+    n: '07',
+    name: 'Focus rack',
+    what: 'Blur resolves to sharp as the frame enters view.',
+    use: 'Card grids, where several images land in sequence.',
+    watch: 'Reads as a camera finding focus. Cheap and effective, slightly overused on the web.',
+    src: jasonLaughing, alt: ALT.laughing, ratio: '1x1' as const,
+  },
+  {
+    id: 'edge',
+    n: '08',
+    name: 'Orange edge draw',
+    what: 'The 5px accent rule draws along the bottom and up the left.',
+    use: 'Service cards. It is the card’s own top rule, moved and animated.',
+    watch: 'The most on-brand of the ten, because the rule already exists in the design system.',
+    src: vanBack, alt: ALT.vanBack, ratio: '3x4' as const,
+  },
+  {
+    id: 'venetian',
+    n: '09',
+    name: 'Venetian reveal',
+    what: 'Seven bands retract in sequence to uncover the photograph.',
+    use: 'A single feature image. Too much personality to use more than once per page.',
+    watch: 'The most noticeable of the ten. Test it on a phone before committing.',
+    src: jasonPortrait, alt: ALT.portrait, ratio: '3x4' as const,
+  },
+  {
+    id: 'tilt',
+    n: '10',
+    name: 'Pointer tilt',
+    what: 'Subtle three-dimensional tilt following the cursor.',
+    use: 'Desktop hero only.',
+    watch: 'Does nothing on a phone, by design. Most of this site’s traffic will be phones, so it earns its place only above 1024px.',
+    src: vanSide, alt: ALT.vanSide, ratio: '4x3' as const,
+  },
+];
+---
+<Base
+  title="Photo treatments, internal review | Flowtek Services"
+  description="Ten animated photograph treatments on Flowtek's own images, for internal review."
+  noindex={true}
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head" style="max-width:820px">
+        <span class="eyebrow">Internal review &middot; 10 treatments</span>
+        <h1>Animated photo treatments</h1>
+        <p>
+          Ten styles, every one running on a real Flowtek photograph. All CSS,
+          no framework, nothing loaded from another domain. Each one pauses or
+          disappears entirely if the visitor has asked their device to reduce
+          motion.
+        </p>
+      </div>
+
+      <div class="callout" style="max-width:820px;margin-bottom:56px">
+        <h2 style="font-size:1.0625rem">Two notes before you pick</h2>
+        <p style="font-size:.9375rem">
+          <strong>Pick one, maybe two.</strong> Ten treatments on one site reads
+          as a demo, not a business. The usual answer is one for heroes and one
+          for card grids, used consistently everywhere.
+        </p>
+        <p style="font-size:.9375rem;margin-top:12px">
+          <strong>Every photograph here is genuinely Flowtek’s.</strong> Jason
+          in the charcoal polo, the van, and the recovered job photos. Nothing is
+          stock, nothing is composited and nothing is generated. The treatment is
+          a finish on a true photograph, never a way of manufacturing one.
+        </p>
+      </div>
+
+      <div class="stack-lg">
+        {styles.map((s, i) => (
+          <article class="rule-top" style="padding-top:40px">
+            <div class="split" style="align-items:start">
+              <div>
+                <span class="distance" style="border-top:0;padding-top:0;gap:16px">
+                  <span class="distance__fig" style="font-size:3rem;line-height:1">{s.n}</span>
+                  <span class="distance__meta" style="padding-bottom:0.35em">{s.name}</span>
+                </span>
+                <dl style="margin:24px 0 0">
+                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">What it does</dt>
+                  <dd style="margin:4px 0 16px">{s.what}</dd>
+                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">Where it belongs</dt>
+                  <dd style="margin:4px 0 16px">{s.use}</dd>
+                  <dt class="k" style="font-family:var(--font-heading);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)">Worth knowing</dt>
+                  <dd style="margin:4px 0 0;color:var(--slate)">{s.watch}</dd>
+                </dl>
+              </div>
+              <AnimPhoto
+                src={s.src}
+                alt={s.alt}
+                anim={s.id as any}
+                ratio={s.ratio}
+                eager={i < 3}
+                widths={[420, 640, 900]}
+                sizes="(min-width: 880px) 560px, 92vw"
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="rule-top" style="padding-top:40px;margin-top:56px">
+        <h2>Tell me which one</h2>
+        <p style="margin-top:16px">
+          Say the number and where it goes, and I will wire it across the site.
+          If you want to see any of them on a phone first, the page works at
+          375px, and the tilt one deliberately does nothing there.
+        </p>
+        <p style="margin-top:24px">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />{business.phone}
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <AnimPhotoScript />
+</Base>

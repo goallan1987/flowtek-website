@@ -11,7 +11,7 @@ export default defineConfig({
       changefreq: 'monthly',
       lastmod: new Date('2026-08-20'),
       // /thanks/ is a form confirmation and carries noindex. Keep it out.
-      filter: (page) => !page.includes('/thanks/'),
+      filter: (page) => !page.includes('/thanks/') && !page.includes('/photo-styles/'),
       serialize(item) {
         // The home page and the two hub pages carry the most weight.
         if (item.url === 'https://flowtekservices.com.au/') item.priority = 1.0;
