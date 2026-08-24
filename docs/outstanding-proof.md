@@ -107,3 +107,30 @@ Each one is a rule, not an oversight. Do not add any of them without the matchin
 2. **The placeholder testimonial beginning "Porem ipsum", attributed to "Jessie", is not on
    this site.** It is still live on the old WordPress site.
    `/OS/brand/decisions.md` row 8.
+
+---
+
+## The photograph library is now the binding constraint (25/08/2026)
+
+Sixteen photographs are carrying 520 image slots across 43 pages. That is fine, because
+the same service photograph on 27 suburb pages is honest repetition. But two things are
+now limited by supply rather than by design:
+
+1. **One photograph repeats on the home page.** The commercial kitchen gas shot is both
+   the gas fitting card and the commercial section figure. There is no second commercial
+   gas photograph to put in either slot.
+2. **Three services have only two photographs each**, so their page galleries run at two
+   items and cannot carry an inline photograph as well as a gallery.
+
+### What would fix it, in priority order
+
+| Want | Why it is the top of the list |
+|---|---|
+| A second commercial gas or commercial kitchen job | Removes the only repeat on the highest-traffic page, and commercial is the higher-value customer |
+| A backflow or TMV device being tested, second angle | Backflow is the annual-recurring service and has exactly one photograph |
+| Any hot water job in the charcoal polo | The current hot water detail photograph is the off-brand blue tee |
+| A suburb recorded against any job, any suburb | 26 of 27 suburb pages carry no photograph tied to that suburb. One documented job per suburb would change what those pages can honestly say |
+
+The last row is worth more than the other three together. **Photographing the street sign
+or a recognisable landmark on the way out of a job, with the date, costs nothing and turns
+a page that says "we work here" into one that shows it.**
