@@ -732,3 +732,77 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
   margin-top: var(--sp-6); font-size: 0.875rem; color: var(--slate); max-width: 60ch;
 }
 .section--mist .gallery__note { color: var(--ink); }
+
+/* ---------- Card with a photograph -------------------------------------
+   The photo runs full bleed to the card edge under the orange rule, and the
+   service icon sits in a white chip that straddles the join. The icon is
+   aria-hidden: the heading below it already names the service, so announcing
+   it again would just be noise. -------------------------------------------- */
+.card--photo { padding: 0; overflow: hidden; }
+.card--photo .card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--mist);
+}
+/* Absolute, not height:100%. A percentage height inside a flex item whose own
+   height comes from aspect-ratio does not resolve, so the image falls back to
+   its intrinsic ratio and drags the frame with it: six cards, six different
+   photo heights. Taking the image out of flow fixes the frame to 16:9. */
+.card--photo .card__media img {
+  position: absolute; inset: 0;
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card--photo:hover .card__media img { transform: scale(1.04); }
+.card__badge {
+  position: absolute; left: var(--sp-4); bottom: -22px; z-index: 1;
+  width: 46px; height: 46px; border-radius: var(--r-sm);
+  background: var(--white); color: var(--orange-deep);
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-card);
+}
+.card--photo .card__body {
+  display: flex; flex-direction: column; flex: 1;
+  padding: var(--sp-5); padding-top: 36px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card--photo .card__media img { transition: none; }
+  .card--photo:hover .card__media img { transform: none; }
+}
+
+/* ---------- Media card: photograph beside the copy ----------------------
+   Used where the grid is two up and the cards are wide, so a full-width photo
+   band would push the copy below the fold. Stacks on a phone. ------------- */
+.card--media { padding: 0; overflow: hidden; }
+.card--media .card__side { position: relative; aspect-ratio: 16 / 9; background: var(--mist); }
+.card--media .card__side img {
+  position: absolute; inset: 0;
+  display: block; width: 100%; height: 100%; object-fit: cover;
+}
+.card--media .card__body { display: flex; flex-direction: column; flex: 1; padding: var(--sp-5); }
+@media (min-width: 560px) {
+  .card--media { flex-direction: row; align-items: stretch; }
+  .card--media .card__side { flex: 0 0 38%; aspect-ratio: auto; }
+}
+
+/* Rank numeral over a card photograph. Sits on the navy scrim so it is legible
+   whatever the picture underneath is doing. */
+.card__rank {
+  position: absolute; right: var(--sp-4); top: var(--sp-3); z-index: 1;
+  font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem;
+  line-height: 1; color: var(--white);
+  padding: 6px 10px; border-radius: var(--r-sm);
+  background: rgba(11, 31, 59, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+/* ---------- Photograph inside a long read ------------------------------ */
+.prose-fig { margin: var(--sp-6) 0; }
+.prose-fig img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--r-md); border-top: 5px solid var(--orange);
+}
+.prose-fig figcaption {
+  margin-top: var(--sp-3);
+  font-size: 0.875rem; line-height: 1.55; color: var(--slate);
+}

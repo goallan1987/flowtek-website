@@ -9,17 +9,10 @@ import Reviews from '../components/Reviews.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
-import { photos, photosForService } from '../data/photos.js';
+import { photos, photosForService, serviceCardPhoto } from '../data/photos.js';
 import { business, serviceBySlug } from '../data/business.js';
 import { suburbs, nearbyPages } from '../data/suburbs.js';
 
-import imgConduit from '../assets/job-conduit-timber-frame.jpg';
-import imgHotWater from '../assets/job-old-hot-water-unit.jpg';
-import imgTrenchTaranganba from '../assets/job-stormwater-trench-taranganba.jpg';
-import imgRiser from '../assets/project-2405.png';
-import imgGasTrench from '../assets/project-2406.png';
-import imgCommercialGas from '../assets/project-2407.png';
-import imgRegulator from '../assets/project-2408.png';
 
 export function getStaticPaths() {
   return suburbs.map((s) => ({ params: { suburb: s.slug }, props: { s } }));
@@ -32,73 +25,83 @@ const { s } = Astro.props;
    suburb, because that job is documented on the live site. The rest are captioned
    as Flowtek work without a location claim, because the location was not recorded.
    See the outstanding proof list in /docs/outstanding-proof.md. */
-const photoSets: Record<string, { img: any; alt: string; cap: string }> = {
-  'hot-water': {
-    img: imgHotWater,
-    alt: 'A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house',
-    cap: 'A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.',
-  },
-  'blocked-drains': {
-    img: imgRiser,
-    alt: 'A capped PVC drainage riser standing in an open trench, carrying a green inspection sticker approving the pipework to be covered up',
-    cap: 'Drainage riser signed off before backfill. The green sticker is the inspection approving the pipework to be covered.',
-  },
-  renovations: {
-    img: imgConduit,
-    alt: 'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room, threading conduit through a wall frame with his tools laid out on the slab',
-    cap: 'Rough-in on a timber frame. This is the part of a renovation nobody sees, and the part that ruins one.',
-  },
-  'gas-fitting': {
-    img: imgCommercialGas,
-    alt: 'Copper gas lines with flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel kitchen',
-    cap: 'Commercial kitchen gas fit-off, with the flexible connectors restrained the way they have to be.',
-  },
-  'backflow-tmv-testing': {
-    img: imgRegulator,
-    alt: 'A gas regulator mounted on an exterior wall with copper gas lines running to it and capped test points',
-    cap: 'Regulator and test points. Anything with a test point on it has a test interval attached to it.',
-  },
-  'emergency-plumbing': {
-    img: imgGasTrench,
-    alt: 'An open service trench across a lawn beside a retaining wall, with yellow gas warning marker tape laid along the bottom',
-    cap: 'Open trench with marker tape down. Getting to a buried line is most of the job.',
-  },
-};
+/* EVERY photograph on this page comes from src/data/photos.js, so the alt text
+   and the caption are written once. They used to be re-typed here and had
+   already drifted from the library copy.
 
-const photo = s.hasRealJob
-  ? {
-      img: imgTrenchTaranganba,
-      alt: 'A gravel drainage path running beside a red brick building at Taranganba, with a black drainage pit set into the gravel and an open trench cut along the fence line',
-      cap: 'Taranganba. Drainage pits placed to catch surface water and take it away from the building, on a site where the ground fell back towards the wall.',
+   Three slots, and no photograph is allowed to fill two of them:
+     hero     the charcoal polo shot, the uniform of record, same on every page
+     feature  varies by the suburb's lead service
+     gallery  three more, chosen below
+   The service cards take their own photographs and are excluded from all three. */
+const LIB = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/**/*.{jpg,jpeg,png}', { eager: true });
+const resolve = (file: string) => LIB[`../assets/${file}`]?.default;
+
+const heroPhoto = photos.conduitRoughIn;
+
+const cardFiles = new Set(
+  Object.values(serviceCardPhoto).map((k: any) => (photos as any)[k]?.file)
+);
+
+const featurePhoto = (() => {
+  if (s.hasRealJob) return photos.taranganbaDrainage;
+  for (const slug of s.leadServices) {
+    for (const ph of photosForService(slug, 4)) {
+      if (ph.file === heroPhoto.file) continue;
+      if (cardFiles.has(ph.file)) continue;
+      return ph;
     }
-  : photoSets[s.leadServices[0]] ?? photoSets['blocked-drains'];
-
-/* The hero uses the charcoal polo photograph on every suburb page, deliberately.
-   It is the reference image for the uniform of record in /OS/brand/photography.md.
-   The blue tee photograph is a real Flowtek job but the shirt is off brand, so it
-   is kept off the most-seen slot until the reshoot in brand register row 16. The
-   image that varies page to page is the one further down, chosen by lead service. */
-const heroImg = imgConduit;
-const heroAlt =
-  'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, with his tools laid out on the slab';
+  }
+  return photos.drainageRiser;
+})();
 
 const lead = s.leadServices.map((slug: string) => serviceBySlug[slug]);
+
+/* The three services this suburb is NOT led by. The section below used to
+   repeat all six, so the top three appeared twice on the one page under a
+   heading that said "everything else". */
+const restSlugs = Object.keys(serviceBySlug).filter(
+  (slug) => !s.leadServices.includes(slug)
+);
+
+/* Photograph for each lead service card. Chosen by SERVICE, never by suburb:
+   the heading may say "in Taranganba", the picture never does. */
+const cardPic = (slug: string) => {
+  const e = (photos as any)[(serviceCardPhoto as any)[slug]];
+  const img = e && resolve(e.file);
+  return img ? { img, alt: e.alt } : null;
+};
 
 /* Photographs chosen by this suburb's lead services, so neighbouring suburbs do
    not show an identical set. Taranganba additionally gets the one photograph on
    the site whose suburb is actually documented. */
+/* The nine service cards on this page already carry nine photographs. The
+   gallery below them must bring something new, so anything already on a card
+   is skipped. Falls back to the full pool if that would leave it empty. */
 const galleryItems = (() => {
-  const seen = new Set<string>();
-  const out: any[] = [];
-  if (s.hasRealJob) { out.push(photos.taranganbaDrainage); seen.add(photos.taranganbaDrainage.file); }
-  for (const slug of s.leadServices) {
-    for (const ph of photosForService(slug, 3)) {
-      if (seen.has(ph.file)) continue;
-      seen.add(ph.file); out.push(ph);
-      if (out.length >= 3) return out;
+  const onCards = new Set(
+    Object.values(serviceCardPhoto).map((k: any) => (photos as any)[k]?.file)
+  );
+  const pick = (skipCards: boolean) => {
+    const seen = new Set<string>();
+    const out: any[] = [];
+    if (s.hasRealJob && featurePhoto.file !== photos.taranganbaDrainage.file) {
+      out.push(photos.taranganbaDrainage); seen.add(photos.taranganbaDrainage.file);
     }
-  }
-  return out;
+    for (const slug of s.leadServices) {
+      for (const ph of photosForService(slug, 4)) {
+        if (seen.has(ph.file)) continue;
+        if (ph.file === heroPhoto.file || ph.file === featurePhoto.file) continue;
+        if (skipCards && onCards.has(ph.file)) continue;
+        seen.add(ph.file); out.push(ph);
+        if (out.length >= 3) return out;
+      }
+    }
+    return out;
+  };
+  const strict = pick(true);
+  return strict.length >= 2 ? strict : pick(false);
 })();
 const neighbours = nearbyPages(s);
 const smsBody = encodeURIComponent(business.smsBody + s.name);
@@ -160,8 +163,8 @@ const description =
 
       <figure class="hero__figure">
         <Image
-          src={heroImg}
-          alt={heroAlt}
+          src={resolve(heroPhoto.file)}
+          alt={heroPhoto.alt}
           widths={[420, 640, 900]}
           sizes="(min-width: 900px) 460px, 92vw"
           quality={72}
@@ -191,8 +194,8 @@ const description =
       <div>
         <figure class="media-round">
           <Image
-            src={photo.img}
-            alt={photo.alt}
+            src={resolve(featurePhoto.file)}
+            alt={featurePhoto.alt}
             widths={[400, 560, 780]}
             sizes="(min-width: 880px) 560px, 92vw"
             quality={72}
@@ -201,7 +204,7 @@ const description =
           <figcaption
             style="padding:16px 20px;background:var(--mist);font-size:.875rem;line-height:1.5;color:var(--ink)"
           >
-            {photo.cap}
+            {featurePhoto.caption}
             {!s.hasRealJob && (
               <span style="display:block;margin-top:8px;color:var(--slate)">
                 A Flowtek job. We have not recorded which street it was on, so we
@@ -265,20 +268,38 @@ const description =
       </div>
 
       <div class="grid grid--3" style="margin-bottom:32px">
-        {lead.map((svc: any, i: number) => (
-          <article class="card card--linked">
-            <span class="numeral" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <h3 style="font-size:1.25rem;margin-top:8px">{svc.name} in {s.name}</h3>
-            <p>{svc.hook} {svc.blurb}</p>
-            <a class="card__link card__stretch" href={`/services/${svc.slug}/`}>
-              More on {svc.navName.toLowerCase()} <Icon name="arrow" size={16} />
-            </a>
-          </article>
-        ))}
+        {lead.map((svc: any, i: number) => {
+          const p = cardPic(svc.slug);
+          return (
+            <article class:list={['card', 'card--linked', p && 'card--photo']}>
+              {p && (
+                <div class="card__media">
+                  <Image
+                    src={p.img}
+                    alt={p.alt}
+                    widths={[400, 640, 900]}
+                    sizes="(min-width:960px) 380px, (min-width:640px) 45vw, 92vw"
+                    quality={74}
+                    loading="lazy"
+                  />
+                  <span class="card__rank" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                </div>
+              )}
+              <div class="card__body">
+                {!p && <span class="numeral" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>}
+                <h3 style="font-size:1.25rem">{svc.name} in {s.name}</h3>
+                <p>{svc.hook} {svc.blurb}</p>
+                <a class="card__link card__stretch" href={`/services/${svc.slug}/`}>
+                  More on {svc.navName.toLowerCase()} <Icon name="arrow" size={16} />
+                </a>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       <h3 style="font-size:1.125rem;margin:48px 0 16px">Everything else we cover in {s.name}</h3>
-      <ServiceCards suburb={s.name} />
+      <ServiceCards suburb={s.name} only={restSlugs} />
     </div>
   </section>
 

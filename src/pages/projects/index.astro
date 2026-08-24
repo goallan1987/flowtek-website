@@ -4,46 +4,27 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { business } from '../../data/business.js';
-
-import imgTrench from '../../assets/job-stormwater-trench-taranganba.jpg';
-import imgRiser from '../../assets/project-2405.png';
-import imgGasTrench from '../../assets/project-2406.png';
-import imgCommercialGas from '../../assets/project-2407.png';
-import imgRegulator from '../../assets/project-2408.png';
-import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
-
-const gallery = [
-  {
-    img: imgRiser,
-    alt: 'A capped PVC drainage riser standing in an open trench, carrying a green inspection sticker approving the pipework to be covered up',
-    cap: 'Drainage riser inspected and signed off before backfill. The green sticker is the approval to cover the pipework.',
-  },
-  {
-    img: imgGasTrench,
-    alt: 'An open service trench cut across a lawn beside a block retaining wall, with yellow warning marker tape laid along the bottom',
-    cap: 'Service trench with marker tape laid before backfill, so whoever digs here in twenty years knows what is down there.',
-  },
-  {
-    img: imgCommercialGas,
-    alt: 'Copper gas lines with braided flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel commercial kitchen',
-    cap: 'Commercial kitchen gas fit-off. The restraint chains are there so an appliance can be pulled out for cleaning without stressing the connection.',
-  },
-  {
-    img: imgRegulator,
-    alt: 'A gas regulator mounted on an exterior wall with copper gas lines running to it and capped test points either side',
-    cap: 'Regulator and test points on an exterior wall, set up so the installation can actually be tested.',
-  },
-  {
-    img: imgConduit,
-    alt: 'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame',
-    cap: 'Rough-in on a timber frame, tools laid on the slab inside the working arc.',
-  },
-];
 import ArtHero from '../../components/ArtHero.astro';
-import heroArt from '../../assets/hero/h-projects.jpg';
 import PhotoGallery from '../../components/PhotoGallery.astro';
+import { business } from '../../data/business.js';
 import { photos } from '../../data/photos.js';
+import heroArt from '../../assets/hero/plumbing-gas-projects-yeppoon-capricorn-coast.jpg';
+
+const LIB = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/**/*.{jpg,jpeg,png}', { eager: true });
+const resolve = (file: string) => LIB[`../../assets/${file}`]?.default;
+
+/* Read from the photograph library rather than re-typing the alt text and the
+   caption here. The copies that used to live in this file had already drifted
+   from the library wording. */
+const lead = photos.taranganbaDrainage;
+const gallery = [
+  photos.drainageRiser,
+  photos.serviceTrench,
+  photos.commercialGas,
+  photos.gasRegulator,
+  photos.conduitRoughIn,
+];
 ---
 <Base
   title="Projects | Flowtek Services, Plumber Yeppoon & Rockhampton"
@@ -64,7 +45,7 @@ import { photos } from '../../data/photos.js';
     <div class="container split">
       <figure class="media-round">
         <Image
-          src={imgTrench}
+          src={resolve(lead.file)}
           alt="A gravel drainage path running beside a red brick building at Taranganba, with a black drainage pit set into the gravel and an open trench cut along the fence line"
           widths={[420, 640, 900]}
           sizes="(min-width: 880px) 560px, 92vw"
@@ -114,7 +95,7 @@ import { photos } from '../../data/photos.js';
         {gallery.map((g) => (
           <figure class="card card--plain" style="padding:0;overflow:hidden">
             <Image
-              src={g.img}
+              src={resolve(g.file)}
               alt={g.alt}
               widths={[360, 560, 760]}
               sizes="(min-width: 960px) 400px, (min-width: 620px) 46vw, 92vw"
@@ -123,7 +104,7 @@ import { photos } from '../../data/photos.js';
               style="width:100%;aspect-ratio:4/3;object-fit:cover"
             />
             <figcaption style="padding:20px;font-size:.9375rem;line-height:1.5;color:var(--ink)">
-              {g.cap}
+              {g.caption}
             </figcaption>
           </figure>
         ))}
@@ -132,7 +113,7 @@ import { photos } from '../../data/photos.js';
   </section>
 
   <PhotoGallery
-    items={[photos.heritageSite, photos.drainageInstall, photos.backflowTest, photos.commercialGas, photos.drainageRiser, photos.serviceTrench]}
+    items={[photos.heritageSite, photos.drainageInstall, photos.backflowTest, photos.hotWaterInstalled, photos.gasHotWaterService, photos.vanSide]}
     eyebrow="From the ute"
     heading="More jobs, and what is going on in each one"
     intro="We have not recorded the street for every one of these, so we do not attach a suburb to a photograph just because it would read well."

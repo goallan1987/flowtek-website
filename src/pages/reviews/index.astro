@@ -3,10 +3,11 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
 import { business } from '../../data/business.js';
 import { reviews } from '../../data/reviews.js';
 import ArtHero from '../../components/ArtHero.astro';
-import heroArt from '../../assets/hero/h-reviews.jpg';
+import heroArt from '../../assets/hero/flowtek-services-customer-reviews-plumber-yeppoon.jpg';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import { photos } from '../../data/photos.js';
 ---
@@ -42,7 +43,7 @@ import { photos } from '../../data/photos.js';
   </section>
 
   <PhotoGallery
-    items={[photos.backflowTest, photos.drainageInstall, photos.conduitRoughIn]}
+    items={[photos.conduitRoughIn, photos.drainageRiser, photos.gasRegulator]}
     eyebrow="The work behind them"
     heading="What those reviews are about"
     intro="The customers wrote the words. These are photographs of the kind of work they were writing about."
@@ -65,6 +66,16 @@ import { photos } from '../../data/photos.js';
           tell you that here than have you find out the hard way.
         </p>
       </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="rev-svc">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="rev-svc">What they called us out for</h2>
+        <p>The six things we do, with a photograph of each.</p>
+      </div>
+      <ServiceCards />
     </div>
   </section>
 

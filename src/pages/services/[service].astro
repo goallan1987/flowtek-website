@@ -11,22 +11,23 @@ import { business, services } from '../../data/business.js';
 import { serviceContent } from '../../data/service-content.js';
 import { byRank } from '../../data/suburbs.js';
 
-import imgHotWater from '../../assets/job-old-hot-water-unit.jpg';
-import imgRiser from '../../assets/project-2405.png';
-import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
-import imgCommercialGas from '../../assets/project-2407.png';
-import imgRegulator from '../../assets/project-2408.png';
-import imgGasTrench from '../../assets/project-2406.png';
+import imgHotWater from '../../assets/electric-storage-hot-water-system-installation-yeppoon.jpg';
+import imgRiser from '../../assets/blocked-drain-pvc-riser-inspection-approved-yeppoon.png';
+import imgConduit from '../../assets/bathroom-renovation-plumbing-rough-in-yeppoon.jpg';
+import imgCommercialGas from '../../assets/commercial-kitchen-gas-fitting-rockhampton-yeppoon.png';
+import imgRegulator from '../../assets/gas-regulator-installation-test-points-yeppoon.png';
+import imgGasTrench from '../../assets/gas-line-service-trench-marker-tape-yeppoon.png';
 
 import ArtHero from '../../components/ArtHero.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
-import { photosForService } from '../../data/photos.js';
-import artHotWater from '../../assets/hero/h-hot-water.jpg';
-import artDrains from '../../assets/hero/h-blocked-drains.jpg';
-import artReno from '../../assets/hero/h-renovations.jpg';
-import artGas from '../../assets/hero/h-gas-fitting.jpg';
-import artBackflow from '../../assets/hero/h-backflow.jpg';
-import artEmergency from '../../assets/hero/h-emergency.jpg';
+import ServiceCards from '../../components/ServiceCards.astro';
+import { photos, serviceCardPhoto, serviceDetailPhoto, photosForService } from '../../data/photos.js';
+import artHotWater from '../../assets/hero/hot-water-system-installation-repairs-yeppoon-rockhampton.jpg';
+import artDrains from '../../assets/hero/blocked-drains-drain-cleaning-yeppoon-rockhampton.jpg';
+import artReno from '../../assets/hero/bathroom-kitchen-renovation-plumbing-yeppoon-rockhampton.jpg';
+import artGas from '../../assets/hero/gas-fitting-gas-installation-yeppoon-rockhampton.jpg';
+import artBackflow from '../../assets/hero/backflow-tmv-testing-yeppoon-rockhampton.jpg';
+import artEmergency from '../../assets/hero/emergency-plumber-yeppoon-rockhampton.jpg';
 
 /* One illustration per service, each showing that actual work. Illustration
    positions, it does not prove: no caption here claims a specific job. */
@@ -80,6 +81,36 @@ const media: Record<string, { img: any; alt: string; cap: string }> = {
 };
 const m = media[svc.slug];
 const otherServices = services.filter((s) => s.slug !== svc.slug);
+
+/* An inline photograph inside the prose. It is the SECOND photo for this
+   service, so the gallery further down still has something new to show. A long
+   read on a phone needs something to break it up, and the honest thing to break
+   it up with is the work itself. */
+const inlineLib = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/**/*.{jpg,jpeg,png}', { eager: true });
+const detailKey = (serviceDetailPhoto as any)[svc.slug];
+const detailEntry = (photos as any)[detailKey];
+
+/* The gallery further down must not repeat the inline photograph. Two services
+   only have two photographs to their name, and for those the gallery wins:
+   two proof photos side by side beat one photo shown twice. */
+const allForService = photosForService(svc.slug, 4);
+
+/* The other five cards further down already show five photographs, and some of
+   those are tagged to this service too. Keep them out of the gallery so the
+   page never shows the same picture twice under two different headings. */
+const usedByCards = new Set(
+  otherServices.map((o: any) => (serviceCardPhoto as any)[o.slug])
+);
+const galleryPhotos = allForService.filter(
+  (x: any) => x.key !== detailKey && !usedByCards.has(x.key)
+);
+const useInline = galleryPhotos.length >= 2;
+
+const inlinePhoto = useInline && detailEntry
+  ? { img: inlineLib[`../../assets/${detailEntry.file}`]?.default, alt: detailEntry.alt, caption: detailEntry.caption }
+  : null;
+
 const topSuburbs = byRank.slice(0, 12);
 ---
 <Base
@@ -109,10 +140,23 @@ const topSuburbs = byRank.slice(0, 12);
   <section class="section">
     <div class="container split" style="align-items:start">
       <div class="prose">
-        {c.body.map((block: any) => (
+        {c.body.map((block: any, bi: number) => (
           <div>
             <h2>{block.h}</h2>
             {block.p.map((para: string) => <p>{para}</p>)}
+            {bi === 0 && inlinePhoto?.img && (
+              <figure class="prose-fig">
+                <Image
+                  src={inlinePhoto.img}
+                  alt={inlinePhoto.alt}
+                  widths={[520, 800, 1100]}
+                  sizes="(min-width:960px) 620px, 92vw"
+                  quality={76}
+                  loading="lazy"
+                />
+                <figcaption>{inlinePhoto.caption}</figcaption>
+              </figure>
+            )}
             {block.table && (
               <ul class="factlist" style="margin:24px 0">
                 {block.table.map(([k, v]: [string, string]) => (
@@ -152,7 +196,7 @@ const topSuburbs = byRank.slice(0, 12);
   </section>
 
   <PhotoGallery
-    items={photosForService(svc.slug, 3)}
+    items={(useInline ? galleryPhotos : allForService).slice(0, 3)}
     eyebrow="Real jobs"
     heading={`${svc.name} we have actually done`}
     intro="Photographs from Flowtek jobs, not stock. What the work looks like when it is going properly."
@@ -214,18 +258,23 @@ const topSuburbs = byRank.slice(0, 12);
         intro="Tell us what is going on and we will come back to you with what the job actually involves."
       />
       <div>
-        <h2 style="font-size:1.25rem">The other five</h2>
-        <ul class="arealist" style="grid-template-columns:1fr;margin-top:16px">
-          {otherServices.map((s) => (
-            <li>
-              <a href={`/services/${s.slug}/`}>
-                <Icon name="arrow" size={16} />{s.name}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <h2 style="font-size:1.25rem">While we are there</h2>
+        <p style="font-size:.9375rem;margin-top:12px">
+          We are licensed for water and for gas, so if something else is playing up
+          while we are on site, say so on the form. It saves you a second call out.
+        </p>
         <p style="margin-top:24px" class="badge-credential">{business.credential}</p>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--mist" aria-labelledby="other-five">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="other-five">The other five</h2>
+        <p>The rest of what we do, with a photograph of each so you can see what it looks like.</p>
+      </div>
+      <ServiceCards only={otherServices.map((o: any) => o.slug)} />
     </div>
   </section>
 

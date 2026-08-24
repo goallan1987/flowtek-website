@@ -3,9 +3,10 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Icon from '../../components/Icon.astro';
 import QuoteForm from '../../components/QuoteForm.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
 import { business, emergencySteps } from '../../data/business.js';
 import ArtHero from '../../components/ArtHero.astro';
-import heroArt from '../../assets/hero/h-contact.jpg';
+import heroArt from '../../assets/hero/contact-flowtek-services-plumber-yeppoon.jpg';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import { photos } from '../../data/photos.js';
 ---
@@ -70,6 +71,16 @@ import { photos } from '../../data/photos.js';
     heading="The van, and the bloke driving it"
     intro="If we are coming to you, this is what pulls into the driveway."
   />
+
+  <section class="section section--mist" aria-labelledby="con-svc">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="con-svc">What people usually ring about</h2>
+        <p>If it is one of these, say so on the phone and we will know what to bring.</p>
+      </div>
+      <ServiceCards />
+    </div>
+  </section>
 
   <section class="section section--ink on-dark">
     <div class="container">

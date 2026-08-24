@@ -1,6 +1,17 @@
 ---
+/**
+ * The six service cards. Used on the home page, the services page and all 27
+ * suburb pages.
+ *
+ * Every card carries a REAL photograph of that service. The photograph is
+ * chosen by service, never by suburb: on a Taranganba page the heading may say
+ * "Hot water systems in Taranganba", but the picture and its alt text say only
+ * what the picture actually shows. See src/data/photos.js.
+ */
+import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import { services } from '../data/business.js';
+import { photos, serviceCardPhoto } from '../data/photos.js';
 
 interface Props { suburb?: string; only?: string[] }
 const { suburb, only } = Astro.props;
@@ -14,18 +25,51 @@ const icons: Record<string, string> = {
   'backflow-tmv-testing': 'shield',
   'emergency-plumbing': 'clock',
 };
+
+const LIBRARY = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/**/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+const pic = (slug: string) => {
+  const entry = (photos as any)[(serviceCardPhoto as any)[slug]];
+  if (!entry) return null;
+  const img = LIBRARY[`../assets/${entry.file}`]?.default;
+  return img ? { img, alt: entry.alt } : null;
+};
 ---
 <div class="grid grid--3">
-  {list.map((s) => (
-    <article class="card card--linked">
-      <div style="color:var(--orange-deep);margin-bottom:12px">
-        <Icon name={icons[s.slug] ?? 'wrench'} size={28} />
-      </div>
-      <h3 style="font-size:1.25rem">{suburb ? `${s.name} in ${suburb}` : s.name}</h3>
-      <p>{s.hook} {s.blurb}</p>
-      <a class="card__link card__stretch" href={`/services/${s.slug}/`}>
-        {s.navName} <Icon name="arrow" size={16} />
-      </a>
-    </article>
-  ))}
+  {list.map((s) => {
+    const p = pic(s.slug);
+    return (
+      <article class:list={['card', 'card--linked', p && 'card--photo']}>
+        {p && (
+          <div class="card__media">
+            <Image
+              src={p.img}
+              alt={p.alt}
+              widths={[400, 640, 900]}
+              sizes="(min-width:960px) 380px, (min-width:640px) 45vw, 92vw"
+              quality={74}
+              loading="lazy"
+            />
+            <span class="card__badge" aria-hidden="true">
+              <Icon name={icons[s.slug] ?? 'wrench'} size={22} />
+            </span>
+          </div>
+        )}
+        <div class="card__body">
+          {!p && (
+            <div style="color:var(--orange-deep);margin-bottom:12px">
+              <Icon name={icons[s.slug] ?? 'wrench'} size={28} />
+            </div>
+          )}
+          <h3 style="font-size:1.25rem">{suburb ? `${s.name} in ${suburb}` : s.name}</h3>
+          <p>{s.hook} {s.blurb}</p>
+          <a class="card__link card__stretch" href={`/services/${s.slug}/`}>
+            {s.navName} <Icon name="arrow" size={16} />
+          </a>
+        </div>
+      </article>
+    );
+  })}
 </div>

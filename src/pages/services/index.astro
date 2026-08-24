@@ -7,9 +7,19 @@ import Reviews from '../../components/Reviews.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { business, services } from '../../data/business.js';
 import ArtHero from '../../components/ArtHero.astro';
-import heroArt from '../../assets/hero/h-services.jpg';
-import PhotoGallery from '../../components/PhotoGallery.astro';
-import { photos } from '../../data/photos.js';
+import heroArt from '../../assets/hero/plumbing-gas-services-yeppoon-rockhampton.jpg';
+import { Image } from 'astro:assets';
+import { photos, serviceDetailPhoto } from '../../data/photos.js';
+
+/* A SECOND photograph per service, different from the one on the cards above,
+   so the page does not show the same six pictures twice on one screen. */
+const LIBRARY = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/**/*.{jpg,jpeg,png}', { eager: true });
+const pic = (slug: string) => {
+  const e = (photos as any)[(serviceDetailPhoto as any)[slug]];
+  const img = e && LIBRARY[`../../assets/${e.file}`]?.default;
+  return img ? { img, alt: e.alt, caption: e.caption } : null;
+};
 ---
 <Base
   title="Plumbing & Gas Services | Yeppoon & Rockhampton | Flowtek"
@@ -40,31 +50,41 @@ import { photos } from '../../data/photos.js';
         <h2>What each one actually involves</h2>
       </div>
       <div class="grid grid--2">
-        {services.map((s) => (
-          <article class="card card--plain">
-            <h3 style="font-size:1.25rem">{s.name}</h3>
-            <p style="margin-top:12px">{s.blurb}</p>
-            <ul class="ticklist" style="margin-top:16px">
-              {s.items.map((i) => (
-                <li><Icon name="tick" size={16} /><span style="font-size:.9375rem">{i}</span></li>
-              ))}
-            </ul>
-            <a class="card__link" href={`/services/${s.slug}/`}>
-              Read more <Icon name="arrow" size={16} />
-            </a>
-          </article>
-        ))}
+        {services.map((s) => {
+          const p = pic(s.slug);
+          return (
+            <article class:list={['card', 'card--plain', p && 'card--media']}>
+              {p && (
+                <div class="card__side">
+                  <Image
+                    src={p.img}
+                    alt={p.alt}
+                    widths={[320, 520, 760]}
+                    sizes="(min-width:960px) 220px, (min-width:560px) 30vw, 92vw"
+                    quality={74}
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div class="card__body">
+                <h3 style="font-size:1.25rem">{s.name}</h3>
+                <p style="margin-top:12px">{s.blurb}</p>
+                <ul class="ticklist" style="margin-top:16px">
+                  {s.items.map((i) => (
+                    <li><Icon name="tick" size={16} /><span style="font-size:.9375rem">{i}</span></li>
+                  ))}
+                </ul>
+                <a class="card__link" href={`/services/${s.slug}/`}>
+                  Read more <Icon name="arrow" size={16} />
+                </a>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   </section>
 
-  <PhotoGallery
-    items={[photos.hotWaterInstalled, photos.drainageInstall, photos.conduitRoughIn, photos.commercialGas, photos.backflowTest, photos.serviceTrench]}
-    eyebrow="One photo per service"
-    heading="What each of the six actually looks like"
-    intro="Real photographs from Flowtek jobs, one for each thing we do."
-    mist={true}
-  />
 
   <Reviews seed="services" mist={false} />
   <CtaBand />

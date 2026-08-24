@@ -11,10 +11,10 @@ import { business, emergencySteps } from '../data/business.js';
 import { byRank, coastSuburbs, rockySuburbs } from '../data/suburbs.js';
 
 import ArtHero from '../components/ArtHero.astro';
-import heroArt from '../assets/art3/b-36-concept-art.jpg';
-import imgConduit from '../assets/job-conduit-timber-frame.jpg';
-import imgHotWater from '../assets/job-old-hot-water-unit.jpg';
-import imgCommercialGas from '../assets/project-2407.png';
+import heroArt from '../assets/hero/plumber-yeppoon-rockhampton-flowtek-services.jpg';
+import imgConduit from '../assets/bathroom-renovation-plumbing-rough-in-yeppoon.jpg';
+import imgJasonLaughing from '../assets/jason-breingan-flowtek-services-plumber-yeppoon.jpg';
+import imgCommercialGas from '../assets/commercial-kitchen-gas-fitting-rockhampton-yeppoon.png';
 
 const top = byRank.slice(0, 9);
 
@@ -131,22 +131,22 @@ import { photos } from '../data/photos.js';
       </div>
       <figure class="media-round">
         <Image
-          src={imgHotWater}
-          alt="A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house"
+          src={imgJasonLaughing}
+          alt="Jason Breingan of Flowtek Services laughing, leaning on a shovel beside an open trench on a suburban verge with palms and a Queenslander house behind him"
           widths={[400, 560, 780]}
           sizes="(min-width: 880px) 560px, 92vw"
           quality={72}
           loading="lazy"
         />
         <figcaption style="padding:16px 20px;background:var(--mist);font-size:.875rem;color:var(--ink)">
-          A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.
+          We talk to you (and have a laugh). It is on the van for a reason.
         </figcaption>
       </figure>
     </div>
   </section>
 
   <PhotoGallery
-    items={[photos.backflowTest, photos.drainageInstall, photos.conduitRoughIn, photos.commercialGas, photos.hotWaterInstalled, photos.heritageSite]}
+    items={[photos.conduitRoughIn, photos.drainageRiser, photos.serviceTrench, photos.gasRegulator, photos.gasHotWaterService, photos.taranganbaDrainage]}
     eyebrow="Real jobs, real photos"
     heading="This is what the work actually looks like"
     intro="Every photograph on this site is from a Flowtek job. None of it is stock, none of it is generated, and none of it is borrowed from another plumber."
