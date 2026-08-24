@@ -42,6 +42,8 @@ const gallery = [
 ];
 import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/h-projects.jpg';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photos } from '../../data/photos.js';
 ---
 <Base
   title="Projects | Flowtek Services, Plumber Yeppoon & Rockhampton"
@@ -128,6 +130,14 @@ import heroArt from '../../assets/hero/h-projects.jpg';
       </div>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.heritageSite, photos.drainageInstall, photos.backflowTest, photos.commercialGas, photos.drainageRiser, photos.serviceTrench]}
+    eyebrow="From the ute"
+    heading="More jobs, and what is going on in each one"
+    intro="We have not recorded the street for every one of these, so we do not attach a suburb to a photograph just because it would read well."
+    mist={true}
+  />
 
   <CtaBand heading="Got something similar going on?" />
 </Base>

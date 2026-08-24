@@ -697,3 +697,38 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .bandart { display: block; background: var(--navy); }
 .bandart img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% 55%; }
 @media (min-width: 780px) { .bandart img { aspect-ratio: 32 / 9; } }
+
+/* ---------- Photograph gallery ----------
+   The proof half of the site. Real photographs, real captions. */
+.gallery { display: grid; gap: var(--sp-5); }
+@media (min-width: 620px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .gallery--3 { grid-template-columns: repeat(3, 1fr); } }
+.gallery--2 { grid-template-columns: 1fr; }
+@media (min-width: 900px) { .gallery--2 { grid-template-columns: repeat(2, 1fr); } }
+
+.gallery__fig {
+  display: flex; flex-direction: column;
+  background: var(--white);
+  border: var(--border-hairline);
+  border-top: 5px solid var(--orange);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.gallery__fig img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.gallery__fig figcaption {
+  padding: var(--sp-4) var(--sp-5) var(--sp-5);
+  font-size: 0.9375rem; line-height: 1.5; color: var(--ink);
+  flex: 1;
+}
+.gallery__tag {
+  display: inline-block; margin-top: var(--sp-3);
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.6875rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--orange-deep); border: var(--border-accent);
+  padding: 4px 10px; border-radius: var(--r-sm);
+}
+.gallery__note {
+  margin-top: var(--sp-6); font-size: 0.875rem; color: var(--slate); max-width: 60ch;
+}
+.section--mist .gallery__note { color: var(--ink); }

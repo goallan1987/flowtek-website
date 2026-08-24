@@ -7,6 +7,8 @@ import { business } from '../../data/business.js';
 import { reviews } from '../../data/reviews.js';
 import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/h-reviews.jpg';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photos } from '../../data/photos.js';
 ---
 <Base
   title="Reviews | Flowtek Services, Plumber Yeppoon & Rockhampton"
@@ -38,6 +40,13 @@ import heroArt from '../../assets/hero/h-reviews.jpg';
       </div>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.backflowTest, photos.drainageInstall, photos.conduitRoughIn]}
+    eyebrow="The work behind them"
+    heading="What those reviews are about"
+    intro="The customers wrote the words. These are photographs of the kind of work they were writing about."
+  />
 
   <section class="section section--mist">
     <div class="container container--narrow">

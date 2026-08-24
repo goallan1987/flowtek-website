@@ -8,6 +8,8 @@ import CtaBand from '../../components/CtaBand.astro';
 import { business, services } from '../../data/business.js';
 import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/h-services.jpg';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photos } from '../../data/photos.js';
 ---
 <Base
   title="Plumbing & Gas Services | Yeppoon & Rockhampton | Flowtek"
@@ -55,6 +57,14 @@ import heroArt from '../../assets/hero/h-services.jpg';
       </div>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.hotWaterInstalled, photos.drainageInstall, photos.conduitRoughIn, photos.commercialGas, photos.backflowTest, photos.serviceTrench]}
+    eyebrow="One photo per service"
+    heading="What each of the six actually looks like"
+    intro="Real photographs from Flowtek jobs, one for each thing we do."
+    mist={true}
+  />
 
   <Reviews seed="services" mist={false} />
   <CtaBand />

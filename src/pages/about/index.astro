@@ -11,6 +11,8 @@ import imgConduit from '../../assets/job-conduit-timber-frame.jpg';
 import imgHotWater from '../../assets/job-old-hot-water-unit.jpg';
 import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/h-about.jpg';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photos } from '../../data/photos.js';
 ---
 <Base
   title="About Flowtek Services | Yeppoon Plumber & Gas Fitter"
@@ -134,6 +136,14 @@ import heroArt from '../../assets/hero/h-about.jpg';
       </div>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.jasonHeadshot, photos.jasonDigging, photos.jasonLaughing, photos.vanSide, photos.backflowTest, photos.drainageInstall]}
+    eyebrow="Jason, and the van"
+    heading="The bloke who turns up"
+    intro="Real photographs, not a stock library. If we come to your place, this is who is at the door."
+    mist={true}
+  />
 
   <Reviews seed="about" tags={['flagship', 'repeat']} mist={false} />
   <CtaBand />

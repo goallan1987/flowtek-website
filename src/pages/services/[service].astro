@@ -19,6 +19,8 @@ import imgRegulator from '../../assets/project-2408.png';
 import imgGasTrench from '../../assets/project-2406.png';
 
 import ArtHero from '../../components/ArtHero.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photosForService } from '../../data/photos.js';
 import artHotWater from '../../assets/hero/h-hot-water.jpg';
 import artDrains from '../../assets/hero/h-blocked-drains.jpg';
 import artReno from '../../assets/hero/h-renovations.jpg';
@@ -148,6 +150,14 @@ const topSuburbs = byRank.slice(0, 12);
       </aside>
     </div>
   </section>
+
+  <PhotoGallery
+    items={photosForService(svc.slug, 3)}
+    eyebrow="Real jobs"
+    heading={`${svc.name} we have actually done`}
+    intro="Photographs from Flowtek jobs, not stock. What the work looks like when it is going properly."
+    mist={true}
+  />
 
   <!-- Suburb links. These are the pages that carry the local detail, so this is
        the internal link that actually helps a searcher, not a keyword dump. -->

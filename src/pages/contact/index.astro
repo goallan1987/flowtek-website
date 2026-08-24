@@ -6,6 +6,8 @@ import QuoteForm from '../../components/QuoteForm.astro';
 import { business, emergencySteps } from '../../data/business.js';
 import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/h-contact.jpg';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photos } from '../../data/photos.js';
 ---
 <Base
   title="Contact Flowtek Services | Yeppoon Plumber | 0448 726 474"
@@ -61,6 +63,13 @@ import heroArt from '../../assets/hero/h-contact.jpg';
       </div>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.vanSide, photos.vanBack, photos.jasonHeadshot]}
+    eyebrow="What turns up"
+    heading="The van, and the bloke driving it"
+    intro="If we are coming to you, this is what pulls into the driveway."
+  />
 
   <section class="section section--ink on-dark">
     <div class="container">

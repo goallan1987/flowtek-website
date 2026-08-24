@@ -40,6 +40,8 @@ const faq = [
     a: 'Flowtek is a licensed plumber and gas fitter. If you want the licence details for your own records, ask us on the phone and we will give them to you.',
   },
 ];
+import PhotoGallery from '../components/PhotoGallery.astro';
+import { photos } from '../data/photos.js';
 ---
 <Base
   title="Plumber Yeppoon & Rockhampton | Gas Fitter | Flowtek Services"
@@ -142,6 +144,13 @@ const faq = [
       </figure>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.backflowTest, photos.drainageInstall, photos.conduitRoughIn, photos.commercialGas, photos.hotWaterInstalled, photos.heritageSite]}
+    eyebrow="Real jobs, real photos"
+    heading="This is what the work actually looks like"
+    intro="Every photograph on this site is from a Flowtek job. None of it is stock, none of it is generated, and none of it is borrowed from another plumber."
+  />
 
   <!-- ================= AREAS ================= -->
   <section class="section section--mist" aria-labelledby="areas">

@@ -12,6 +12,8 @@ import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/h-areas.jpg';
 import { Image } from 'astro:assets';
 import vanCoast from '../../assets/hero/h-van-coast.jpg';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { photos } from '../../data/photos.js';
 ---
 <Base
   title="Areas We Serve | Plumber Yeppoon & Rockhampton | Flowtek"
@@ -88,6 +90,13 @@ import vanCoast from '../../assets/hero/h-van-coast.jpg';
       </ul>
     </div>
   </section>
+
+  <PhotoGallery
+    items={[photos.taranganbaDrainage, photos.drainageInstall, photos.heritageSite]}
+    eyebrow="Around the coast"
+    heading="Work we have done out here"
+    intro="Only the first of these carries a suburb, because it is the only one whose location we actually recorded. The rest say what they are and nothing more."
+  />
 
   <section class="section" id="not-listed" aria-labelledby="nl">
     <div class="container split">

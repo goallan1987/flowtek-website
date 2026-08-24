@@ -8,6 +8,8 @@ import ServiceCards from '../components/ServiceCards.astro';
 import Reviews from '../components/Reviews.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import CtaBand from '../components/CtaBand.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
+import { photos, photosForService } from '../data/photos.js';
 import { business, serviceBySlug } from '../data/business.js';
 import { suburbs, nearbyPages } from '../data/suburbs.js';
 
@@ -81,6 +83,23 @@ const heroAlt =
   'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, with his tools laid out on the slab';
 
 const lead = s.leadServices.map((slug: string) => serviceBySlug[slug]);
+
+/* Photographs chosen by this suburb's lead services, so neighbouring suburbs do
+   not show an identical set. Taranganba additionally gets the one photograph on
+   the site whose suburb is actually documented. */
+const galleryItems = (() => {
+  const seen = new Set<string>();
+  const out: any[] = [];
+  if (s.hasRealJob) { out.push(photos.taranganbaDrainage); seen.add(photos.taranganbaDrainage.file); }
+  for (const slug of s.leadServices) {
+    for (const ph of photosForService(slug, 3)) {
+      if (seen.has(ph.file)) continue;
+      seen.add(ph.file); out.push(ph);
+      if (out.length >= 3) return out;
+    }
+  }
+  return out;
+})();
 const neighbours = nearbyPages(s);
 const smsBody = encodeURIComponent(business.smsBody + s.name);
 
@@ -262,6 +281,14 @@ const description =
       <ServiceCards suburb={s.name} />
     </div>
   </section>
+
+  <PhotoGallery
+    items={galleryItems}
+    eyebrow="Real jobs, real photos"
+    heading={`The work ${s.name} rings us about`}
+    intro="Photographs from Flowtek jobs. Not stock, not generated, and captioned only with what is actually in the frame."
+    mist={true}
+  />
 
   <!-- ================= PROOF ================= -->
   <section class="section section--navy on-dark" aria-labelledby="proof-heading">

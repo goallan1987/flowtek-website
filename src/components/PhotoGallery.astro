@@ -1,0 +1,94 @@
+---
+/**
+ * A gallery of REAL Flowtek photographs.
+ *
+ * This is the proof half of the site. Every image is a genuine photograph and
+ * every caption describes only what is actually in the frame. No caption here
+ * may claim a suburb, a customer or a date that is not documented.
+ *
+ * SEO: each figure emits ImageObject structured data carrying its caption and a
+ * stable contentUrl, so the photographs are eligible in image search on their
+ * own rather than only as page decoration.
+ */
+import { Image } from 'astro:assets';
+import { business } from '../data/business.js';
+
+/* Eager glob so every real photograph is available by its path string. */
+const LIBRARY = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/**/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+const resolve = (file: string) => LIBRARY[`../assets/${file}`]?.default;
+
+interface Item {
+  key?: string;
+  file: string;
+  alt: string;
+  caption: string;
+  suburb?: string;
+}
+interface Props {
+  items: Item[];
+  heading?: string;
+  intro?: string;
+  eyebrow?: string;
+  mist?: boolean;
+  cols?: number;
+}
+const { items, heading, intro, eyebrow, mist = false, cols = 3 } = Astro.props;
+
+const resolved = items
+  .map((i) => ({ ...i, img: resolve(i.file) }))
+  .filter((i) => i.img);
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': resolved.map((i) => ({
+    '@type': 'ImageObject',
+    contentUrl: new URL(i.img!.src, business.site).href,
+    caption: i.caption,
+    description: i.alt,
+    creditText: business.name,
+    creator: { '@type': 'Organization', name: business.name },
+    copyrightNotice: business.name,
+  })),
+};
+---
+{resolved.length > 0 && (
+  <section class={mist ? 'section section--mist' : 'section'} aria-labelledby={heading ? 'gal-h' : undefined}>
+    <div class="container">
+      {heading && (
+        <div class="section-head">
+          {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+          <h2 id="gal-h">{heading}</h2>
+          {intro && <p>{intro}</p>}
+        </div>
+      )}
+
+      <div class={`gallery gallery--${cols}`}>
+        {resolved.map((i, n) => (
+          <figure class="gallery__fig">
+            <Image
+              src={i.img!}
+              alt={i.alt}
+              widths={[380, 560, 820]}
+              sizes={cols === 2 ? '(min-width: 900px) 46vw, 92vw' : '(min-width: 960px) 30vw, (min-width: 620px) 46vw, 92vw'}
+              quality={80}
+              loading={n === 0 ? 'eager' : 'lazy'}
+            />
+            <figcaption>
+              {i.caption}
+              {i.suburb && <span class="gallery__tag">{i.suburb}</span>}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <p class="gallery__note">
+        Real photographs from Flowtek jobs. Not stock, not generated, and not
+        borrowed from anyone else.
+      </p>
+    </div>
+  </section>
+)}
+<script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
