@@ -237,19 +237,25 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
    14px wordmark caps stay legible. */
 .header__logo img { width: 104px; height: 60px; object-fit: contain; }
 .nav { display: none; }
-@media (min-width: 1040px) {
-  .nav { display: flex; align-items: center; gap: var(--sp-1); }
+@media (min-width: 1180px) {
+  .nav { display: flex; align-items: center; gap: 2px; }
+  .nav__link { padding: 12px 10px; }
   .header__logo img { width: 121px; height: 70px; }
 }
-@media (min-width: 1240px) {
+@media (min-width: 1360px) {
   .header__logo img { width: 138px; height: 80px; }
-  .nav { gap: var(--sp-2); }
+  .nav { gap: var(--sp-1); }
+  .nav__link { padding: 12px 13px; }
 }
 .nav__link {
   font-family: var(--font-heading); font-weight: 700; font-size: 0.875rem;
   letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none;
   color: var(--ink); padding: 12px 13px; border-radius: var(--r-md);
   display: inline-flex; align-items: center; min-height: 48px;
+  /* Seven items now. A nav link that wraps to two lines makes the whole header
+     taller and pushes the page down, so they never wrap: the nav goes to the
+     menu button instead. */
+  white-space: nowrap;
 }
 .nav__link:hover { background: var(--mist); color: var(--navy); }
 .nav__link[aria-current='page'] { color: var(--navy); box-shadow: inset 0 -3px 0 var(--orange); }
@@ -262,7 +268,7 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .header__phone:hover { color: var(--navy); }
 @media (min-width: 720px) { .header__phone { display: inline-flex; } }
 .header__cta { display: none; }
-@media (min-width: 1040px) { .header__cta { display: inline-flex; } }
+@media (min-width: 1180px) { .header__cta { display: inline-flex; } }
 
 /* Mobile disclosure menu, no JavaScript framework */
 .menu-toggle {
@@ -272,7 +278,7 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
   font-family: var(--font-heading); font-weight: 700; font-size: 0.8125rem;
   text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); cursor: pointer;
 }
-@media (min-width: 1040px) { .menu-toggle { display: none; } }
+@media (min-width: 1180px) { .menu-toggle { display: none; } }
 .mobile-nav { display: none; border-top: var(--border-hairline); background: var(--white); }
 .mobile-nav[data-open='true'] { display: block; }
 .mobile-nav ul { list-style: none; }
@@ -305,8 +311,8 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .action-bar__call:hover { background: var(--orange-deep); color: var(--ink); }
 .action-bar__sms { background: var(--ink); color: var(--white); border-left: 1px solid rgba(255,255,255,0.18); }
 .action-bar__sms:hover { color: var(--orange); }
-@media (min-width: 1040px) { .action-bar { display: none; } }
-@media (max-width: 1039px) { body { padding-bottom: 60px; } }
+@media (min-width: 1180px) { .action-bar { display: none; } }
+@media (max-width: 1179px) { body { padding-bottom: 60px; } }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; background: var(--navy); color: var(--white); overflow: hidden; }
