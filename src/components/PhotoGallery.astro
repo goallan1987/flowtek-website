@@ -35,11 +35,15 @@ interface Props {
   mist?: boolean;
   cols?: number;
 }
-const { items, heading, intro, eyebrow, mist = false, cols = 3 } = Astro.props;
+const { items, heading, intro, eyebrow, mist = false, cols: colsProp } = Astro.props;
 
 const resolved = items
   .map((i) => ({ ...i, img: resolve(i.file) }))
   .filter((i) => i.img);
+
+/* Match the column count to what is actually there, so a two-photo gallery does
+   not sit in a three-column grid with a hole on the right. */
+const cols = colsProp ?? (resolved.length <= 2 ? 2 : 3);
 
 const jsonld = {
   '@context': 'https://schema.org',
