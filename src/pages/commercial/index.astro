@@ -1,0 +1,187 @@
+---
+/**
+ * COMMERCIAL.
+ *
+ * /OS/customers.md names business owners as segment 2 and says plainly that it
+ * is "the more valuable of the two commercially, because backflow and TMV
+ * testing is annual, legally required and recurring". The site had no page for
+ * them. This is it.
+ *
+ * Every photograph on this page is a real still from Flowtek's own footage of a
+ * commercial fitout. Nothing here names the building, the builder or the client,
+ * because none of that is confirmed and a job someone else owns is not ours to
+ * advertise. What the pictures show is the work, which is ours.
+ *
+ * Nothing on this page claims a response time, a client list, an accreditation
+ * or a project value. See hard rules 1 and 3 in /CLAUDE.md.
+ */
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import ArtHero from '../../components/ArtHero.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import Reviews from '../../components/Reviews.astro';
+import { business } from '../../data/business.js';
+import { photos } from '../../data/photos.js';
+import heroArt from '../../assets/hero/commercial-plumbing-gas-fitting-yeppoon-rockhampton.jpg';
+
+const work = [
+  {
+    h: 'Commercial fitout',
+    p: 'New build and refit, from the rough-in through to fit-off and handover. We work off the drawings, we work in with the other trades, and we turn up on the day we said we would, which on a programmed job is most of the value.',
+  },
+  {
+    h: 'Commercial kitchens',
+    p: 'Gas fitting for commercial cooking equipment, with the flexible connectors restrained the way they have to be so an appliance can be pulled out for cleaning without loading the connection. Gas is the licensed, higher risk end of the trade and it is our speciality.',
+  },
+  {
+    h: 'Services pipework',
+    p: 'Potable and non-potable water, gas, compressed air, vacuum and reverse osmosis water, run, labelled and tested. Every line identified, because the next person who opens that ceiling has to know what they are looking at.',
+  },
+  {
+    h: 'Backflow and TMV testing',
+    p: 'Annual testing of backflow prevention devices and thermostatic mixing valves, tested and repaired on the spot where we can, with the report to go with it. This one is a legal obligation with a date on it, not a maintenance nicety.',
+  },
+  {
+    h: 'Maintenance and repairs',
+    p: 'Routine plumbing maintenance across a site, and the repairs that come up in between. If it is water or gas, it is one trade and one call rather than two.',
+  },
+  {
+    h: 'Emergency response',
+    p: business.emergencyLine,
+  },
+];
+
+const why = [
+  {
+    n: '01',
+    h: 'Water and gas on the one licence',
+    p: 'A commercial kitchen with a gas cooktop and a hand basin is two trades for most people. It is one for us, which is one set of dates to coordinate instead of two.',
+  },
+  {
+    n: '02',
+    h: 'Site ready',
+    p: 'Hi-vis, hard hats, inductions, and the paperwork that goes with height work. We are not learning how a construction site runs on your job.',
+  },
+  {
+    n: '03',
+    h: 'The annual test does not get forgotten',
+    p: 'Backflow and TMV testing runs on a calendar. We would rather ring you before the date than explain a lapsed device afterwards.',
+  },
+];
+---
+<Base
+  title="Commercial Plumber Yeppoon & Rockhampton | Fitout & Gas | Flowtek"
+  description="Commercial plumbing and gas fitting in Yeppoon, Rockhampton and the Capricorn Coast. Fitout, commercial kitchens, services pipework, backflow and TMV testing."
+>
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Commercial' }]} />
+
+  <ArtHero
+    img={heroArt}
+    alt="Painted illustration of Jason Breingan of Flowtek Services in a yellow hi-vis shirt and white hard hat, working overhead on copper services pipework in a commercial building fitout"
+    eyebrow="For builders, business owners and site managers"
+    heading="Commercial plumbing and gas"
+    lede="Fitout, commercial kitchens, services pipework, and the annual testing that has a date on it. Licensed for water and for gas, so a job that needs both is one trade and one set of dates."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>What we get called onto</h2>
+        <p>
+          Six things. The first four are the ones that bring people to us, and the last
+          two are why they keep the number.
+        </p>
+      </div>
+      <div class="grid grid--3">
+        {work.map((w) => (
+          <article class="card card--plain">
+            <h3 style="font-size:1.25rem">{w.h}</h3>
+            <p style="margin-top:12px">{w.p}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <PhotoGallery
+    items={[photos.commercialJason, photos.commercialServices, photos.commercialTeam]}
+    eyebrow="On site"
+    heading="What a commercial job actually looks like"
+    intro="Real photographs from a Flowtek commercial fitout. Not stock, not generated. We have not named the building, because that is the client's to name, not ours."
+    mist={true}
+  />
+
+  <section class="section section--ink on-dark">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--on-dark">Three reasons</span>
+        <h2>Why a builder rings us twice</h2>
+      </div>
+      <ul class="steps">
+        {why.map((w) => (
+          <li>
+            <span class="steps__n">{w.n}</span>
+            <h3 style="font-size:1.25rem">{w.h}</h3>
+            <p style="color:rgba(255,255,255,.88)">{w.p}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <PhotoGallery
+    items={[photos.commercialCeiling, photos.commercialLift, photos.commercialSupervision]}
+    eyebrow="The parts nobody sees"
+    heading="Above the ceiling and behind the wall"
+    intro="Most of a commercial fitout disappears the day the ceiling goes in. That is exactly why it gets done properly first."
+  />
+
+  <section class="section section--mist">
+    <div class="container container--narrow">
+      <div class="callout" style="background:var(--white)">
+        <h2 style="font-size:1.25rem">Two things we will not put on this page</h2>
+        <p style="font-size:.9375rem">
+          <strong>A client list.</strong> We have done commercial work for other
+          businesses on this coast. Whether their name goes on our website is their
+          call, not ours, and we have not asked. Ask us on the phone and we will tell
+          you what we have done and who you can ring about it.
+        </p>
+        <p style="font-size:.9375rem;margin-top:12px">
+          <strong>A response time.</strong> Our emergency response runs during active
+          business hours. We are not going to print a number of hours on a web page and
+          then have you find out on the worst day of your year that we could not meet it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Reviews seed="commercial" mist={false} />
+
+  <section class="section section--mist" id="quote" aria-labelledby="quote-form-heading">
+    <div class="container split">
+      <QuoteForm
+        heading="Tell us about the job"
+        intro="Drawings, a scope, or just a description of the site and what it needs. If it is a programmed job, tell us the dates you are working to."
+      />
+      <div>
+        <h2 style="font-size:1.25rem">Straight to us</h2>
+        <ul class="factlist" style="margin-top:24px">
+          <li>
+            <span class="k">Phone</span>
+            <span class="v" style="font-size:1.375rem;font-family:var(--font-heading);font-weight:700">
+              <a href={business.phoneHref}>{business.phone}</a>
+            </span>
+          </li>
+          <li><span class="k">Trade</span><span class="v">{business.credential}</span></li>
+          <li><span class="k">Service area</span><span class="v">Yeppoon, Rockhampton, Taranganba and the Capricorn Coast</span></li>
+        </ul>
+        <p style="margin-top:24px" class="badge-credential">{business.credential}</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Got a commercial job coming up?" />
+</Base>

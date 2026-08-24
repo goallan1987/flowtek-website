@@ -21,6 +21,7 @@ const isCurrent = (href: string) =>
     <nav class="nav" aria-label="Main">
       <a class="nav__link" href="/" aria-current={isCurrent('/') ? 'page' : undefined}>Home</a>
       <a class="nav__link" href="/services/" aria-current={isCurrent('/services/') ? 'page' : undefined}>Services</a>
+      <a class="nav__link" href="/commercial/" aria-current={isCurrent('/commercial/') ? 'page' : undefined}>Commercial</a>
       <a class="nav__link" href="/areas-we-serve/" aria-current={isCurrent('/areas-we-serve/') || path.startsWith('/plumber-') ? 'page' : undefined}>Areas we serve</a>
       <a class="nav__link" href="/reviews/" aria-current={isCurrent('/reviews/') ? 'page' : undefined}>Reviews</a>
       <a class="nav__link" href="/about/" aria-current={isCurrent('/about/') ? 'page' : undefined}>About</a>
@@ -56,6 +57,7 @@ const isCurrent = (href: string) =>
         {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
       </ul>
       <ul>
+        <li><a href="/commercial/">Commercial</a></li>
         <li><a href="/areas-we-serve/">Areas we serve</a></li>
         <li><a href="/reviews/">Reviews</a></li>
         <li><a href="/projects/">Projects</a></li>

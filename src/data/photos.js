@@ -123,6 +123,113 @@ export const photos = {
     caption: 'We talk to you (and have a laugh). It is on the van for a reason.',
     services: [],
   },
+
+  /* ------------------------------------------------------------------
+     FROM JASON'S OWN JOB VIDEOS, supplied 25/08/2026.
+     Stills pulled from two Flowtek videos: a commercial building fitout and
+     a residential new build. Flowtek's own footage, so these are genuine
+     Flowtek job photographs, not stock and not generated.
+
+     NOTE ON THE UNIFORM: the commercial frames show a yellow hi vis long
+     sleeve shirt with a navy collar and a white hard hat. That is the correct
+     garment for a construction site and it is what Flowtek actually wears
+     there. /OS/brand/photography.md names only the charcoal polo, which is
+     the service uniform. Register row 16 needs to record both.
+
+     NOTE ON LOCATION: neither video records where it was shot, so no caption
+     and no filename here names a suburb.
+     ------------------------------------------------------------------ */
+  commercialJason: {
+    file: 'real/commercial-plumber-hi-vis-hard-hat-flowtek-services.jpg',
+    alt: 'Jason Breingan of Flowtek Services on a commercial building site in a yellow hi-vis long sleeve shirt with a navy collar and a white hard hat, looking up at services running through the ceiling',
+    caption:
+      'Commercial site, hard hat on. Different rules, different gear, same licence doing the work.',
+    services: ['gas-fitting', 'backflow-tmv-testing'],
+  },
+  commercialServices: {
+    file: 'real/commercial-copper-services-pipework-flowtek.jpg',
+    alt: 'Runs of copper and steel services pipework on a commercial ceiling, each line labelled with its own identification tape reading compressed air, vacuum and reverse osmosis water',
+    caption:
+      'Compressed air, vacuum, reverse osmosis water. On a commercial fitout every line is identified, because the next person to open that ceiling has to know what they are looking at.',
+    services: ['gas-fitting', 'backflow-tmv-testing'],
+  },
+  commercialTeam: {
+    file: 'real/licensed-plumbers-commercial-site-flowtek.jpg',
+    alt: 'Two Flowtek Services plumbers in yellow hi-vis shirts and hard hats on a commercial site, heads together over a detail, working it out between them',
+    caption:
+      'Two of us on a detail. Most of the hard part of a commercial job is worked out standing up, before anyone cuts anything.',
+    services: ['gas-fitting'],
+  },
+  commercialCeiling: {
+    file: 'real/commercial-plumbing-rough-in-ceiling-services.jpg',
+    alt: 'A Flowtek Services plumber in a yellow hi-vis shirt working overhead on services pipework in a suspended ceiling grid during a commercial fitout, bare plasterboard walls around him',
+    caption:
+      'Rough-in above the ceiling grid. All of this disappears behind a ceiling, which is exactly why it has to be right the first time.',
+    services: ['gas-fitting', 'renovations'],
+  },
+  commercialLift: {
+    file: 'real/commercial-ceiling-services-elevated-work-platform.jpg',
+    alt: 'A Flowtek Services plumber working from an elevated work platform on services pipework in a high commercial ceiling, steel ceiling grid and red fire services main above him',
+    caption:
+      'Up on a platform to reach the ceiling services. Height work has its own ticket and its own paperwork.',
+    services: ['gas-fitting'],
+  },
+  commercialSupervision: {
+    file: 'real/commercial-plumbing-site-supervision-flowtek.jpg',
+    alt: 'Jason Breingan of Flowtek Services standing in a commercial fitout in hi-vis and a white hard hat, phone in hand, exposed brick and stripped-back walls behind him',
+    caption:
+      'On site, on the phone. Running a commercial job is as much scheduling as it is plumbing.',
+    services: ['gas-fitting'],
+  },
+  wallChase: {
+    file: 'real/copper-pipework-wall-chase-commercial-fitout.jpg',
+    alt: 'A vertical chase cut into a plastered wall exposing a copper water line and its fixings, ready to be made good',
+    caption:
+      'A chase cut to get at a copper line. Cutting it is easy. Making the wall good afterwards is the part people remember.',
+    services: ['renovations', 'blocked-drains'],
+  },
+  compressionFitting: {
+    file: 'real/compression-fitting-plumber-hands-yeppoon.jpg',
+    alt: 'Close view of a plumber\'s hands tightening a brass compression fitting onto black poly pipe',
+    caption:
+      'A brass compression fitting going onto poly. Nipped up, not gorilla-tight, or you split the ferrule.',
+    services: ['blocked-drains', 'emergency-plumbing'],
+  },
+  polyCeiling: {
+    file: 'real/poly-pipe-installation-house-renovation-yeppoon.jpg',
+    alt: 'Jason Breingan of Flowtek Services in the charcoal Flowtek polo feeding black poly water pipe through the timber roof frame of a house under construction',
+    caption:
+      'Feeding poly through the roof frame. Easier now than it will ever be again, so it gets done properly while the ceiling is open.',
+    services: ['renovations', 'hot-water'],
+  },
+  bathroomRoughIn: {
+    file: 'real/bathroom-rough-in-copper-stub-outs-yeppoon.jpg',
+    alt: 'Copper stub-outs set out and fixed to a timber wall stud at a bathroom rough-in, sarking behind and the wall still open',
+    caption:
+      'Bathroom rough-in, stub-outs set out on the stud. Every tap and every outlet is decided at this stage, months before anyone sees a tile.',
+    services: ['renovations'],
+  },
+  timberFrameRoughIn: {
+    file: 'real/new-home-plumbing-rough-in-timber-frame-yeppoon.jpg',
+    alt: 'A Flowtek Services plumber walking through a house under construction, exposed pine timber frame and roof trusses, teal steel window frames and a raw concrete floor',
+    caption:
+      'A new build at frame stage. We come through before the sheeting goes on and after it comes off.',
+    services: ['renovations'],
+  },
+  vanJason: {
+    file: 'real/jason-breingan-flowtek-van-hot-water-yeppoon.jpg',
+    alt: 'Jason Breingan of Flowtek Services standing at the Flowtek van holding a hot water expansion control valve, the services list visible on the van window behind him',
+    caption:
+      'Jason at the van. The part in his hands is the one that usually fails long before the tank does.',
+    services: ['hot-water'],
+  },
+  flowtekUte: {
+    file: 'real/flowtek-services-plumbing-gas-ute-yeppoon.jpg',
+    alt: 'The white Flowtek Services tray-back ute signwritten with the Flowtek logo and Plumbing, Gas and Poly Welding, parked at a job site',
+    caption:
+      'The ute. It carries the gear the van cannot, and it goes where the van should not.',
+    services: ['emergency-plumbing'],
+  },
   jasonHeadshot: {
     file: 'real/jason-breingan-plumber-gas-fitter-yeppoon.jpg',
     alt: 'Jason Breingan, director and lead tradesperson at Flowtek Services, in the charcoal Flowtek polo with the orange collar',

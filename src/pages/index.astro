@@ -14,7 +14,7 @@ import ArtHero from '../components/ArtHero.astro';
 import heroArt from '../assets/hero/plumber-yeppoon-rockhampton-flowtek-services.jpg';
 import imgConduit from '../assets/bathroom-renovation-plumbing-rough-in-yeppoon.jpg';
 import imgJasonLaughing from '../assets/jason-breingan-flowtek-services-plumber-yeppoon.jpg';
-import imgCommercialGas from '../assets/commercial-kitchen-gas-fitting-rockhampton-yeppoon.png';
+import imgCommercialSite from '../assets/real/commercial-copper-services-pipework-flowtek.jpg';
 
 const top = byRank.slice(0, 9);
 
@@ -219,8 +219,8 @@ import { photos } from '../data/photos.js';
     <div class="container split split--reverse">
       <figure class="media-round">
         <Image
-          src={imgCommercialGas}
-          alt="Copper gas lines with braided flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel commercial kitchen"
+          src={imgCommercialSite}
+          alt="Runs of copper and steel services pipework on a commercial ceiling, each line labelled with its own identification tape reading compressed air, vacuum and reverse osmosis water"
           widths={[400, 560, 780]}
           sizes="(min-width: 880px) 560px, 92vw"
           quality={72}
@@ -243,10 +243,10 @@ import { photos } from '../data/photos.js';
           </p>
         </div>
         <div class="btn-row" style="margin-top:32px">
+          <a class="btn btn--primary" href="/commercial/">Commercial plumbing and gas</a>
           <a class="btn btn--ghost" href="/services/backflow-tmv-testing/">
             Backflow and TMV testing
           </a>
-          <a class="btn btn--ghost" href="/services/gas-fitting/">Commercial gas fitting</a>
         </div>
       </div>
     </div>
