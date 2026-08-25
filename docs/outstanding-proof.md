@@ -134,3 +134,42 @@ now limited by supply rather than by design:
 The last row is worth more than the other three together. **Photographing the street sign
 or a recognisable landmark on the way out of a job, with the date, costs nothing and turns
 a page that says "we work here" into one that shows it.**
+
+---
+
+## The suburb landmark map (25/08/2026)
+
+The 23 suburb images Jason supplied are screenshots of Google Images, TripAdvisor,
+Facebook and news sites, so they are other people's photographs and cannot go on the
+site. What they do is tell us **which landmark identifies each suburb**, and that is worth
+keeping, because it is what makes an honest illustrated suburb banner possible.
+
+| Suburb | The landmark locals would know |
+|---|---|
+| Emu Park | The Singing Ship |
+| Kinka Beach | The Big Whale |
+| Rockhampton | The Brahman bull at the Welcome to Rockhampton sign |
+| The Range | The war memorial and botanic gardens |
+| Yeppoon | The lagoon sculpture on the foreshore |
+| Frenchville | Frenchville Sports Club |
+| Nerimbera | Nerimbera Football Club |
+| Taranganba | The Capricorn Tavern |
+| Park Avenue | Park Avenue Hotel |
+| Allenstown | Allenstown Hotel |
+| Adelaide Park | St Brendan's College |
+| Berserker | Elizabeth Park |
+| Bungundarra | Cane country |
+| Byfield | Byfield rainforest and Waterpark Creek |
+| Cawarral | The rural fire brigade |
+| Mulambin | Causeway Lake |
+| Lammermoor | The beachfront path and palms |
+| Rosslyn | Rosslyn Bay from the air |
+| Tanby | Tanby Garden Centre and turf |
+| Bangalee | The beach and headland |
+| Wandal | The café on the corner |
+| Pacific Heights | Bushfire and regional coverage |
+| Cawarral | Fire brigade |
+
+An illustrated banner of Jason at one of these may say "we work here", which is true. It
+may never carry a caption asserting a job, a customer or a review at that spot. See
+`/OS/session-log/2026-08-20-website-rebuild.md`, Addendum 6.
