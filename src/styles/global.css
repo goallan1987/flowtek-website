@@ -674,12 +674,16 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .arthero__band img {
   display: block;
   width: 100%;
-  height: auto;          /* the whole picture, never cropped to fit a text block */
-  max-height: 62vh;
-  object-fit: cover;
-  object-position: 50% 42%;
+  height: auto;   /* the whole picture. No max-height, because a max-height with
+                     object-fit: cover is a crop, and a crop is what was taking
+                     the top of Jason's head off. */
 }
-@media (min-width: 900px) { .arthero__band img { max-height: 58vh; } }
+/* On a phone a 21:9 band is a sliver, so it crops there and only there, to a
+   shape that still reads as a picture. The anchor sits high because the figures
+   in these paintings stand in the upper two thirds. */
+@media (max-width: 700px) {
+  .arthero__band img { aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 38%; }
+}
 
 .arthero {
   position: relative;
@@ -1013,6 +1017,8 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 /* Suburb scene band. Wider than the areas band, because these paintings put
    Jason and the locals in the middle distance and a 32:9 crop would cut them
    out of their own picture. */
+/* Kept for any remaining in-page band. The suburb scene is the page hook now
+   and uses .arthero__band, which does not crop. */
 .bandart--suburb img { aspect-ratio: 16 / 9; }
 @media (min-width: 780px) { .bandart--suburb img { aspect-ratio: 21 / 9; } }
 
