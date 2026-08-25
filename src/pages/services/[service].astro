@@ -11,12 +11,6 @@ import { business, services } from '../../data/business.js';
 import { serviceContent } from '../../data/service-content.js';
 import { byRank } from '../../data/suburbs.js';
 
-import imgHotWater from '../../assets/electric-storage-hot-water-system-installation-yeppoon.jpg';
-import imgRiser from '../../assets/blocked-drain-pvc-riser-inspection-approved-yeppoon.png';
-import imgConduit from '../../assets/bathroom-renovation-plumbing-rough-in-yeppoon.jpg';
-import imgCommercialGas from '../../assets/commercial-kitchen-gas-fitting-rockhampton-yeppoon.png';
-import imgRegulator from '../../assets/gas-regulator-installation-test-points-yeppoon.png';
-import imgGasTrench from '../../assets/gas-line-service-trench-marker-tape-yeppoon.png';
 
 import ArtHero from '../../components/ArtHero.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
@@ -47,39 +41,24 @@ export function getStaticPaths() {
 const { svc } = Astro.props;
 const c = serviceContent[svc.slug as keyof typeof serviceContent];
 
-const media: Record<string, { img: any; alt: string; cap: string }> = {
-  'hot-water': {
-    img: imgHotWater,
-    alt: 'A mains pressure electric storage hot water unit installed against a brick wall, with new copper pipework, a tempering valve on the outlet and lagged flow and return lines running back into the house',
-    cap: 'A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.',
-  },
-  'blocked-drains': {
-    img: imgRiser,
-    alt: 'A capped PVC drainage riser standing in an open trench, carrying a green inspection sticker approving the pipework to be covered up',
-    cap: 'Drainage riser inspected and approved before backfill. The sticker is the sign-off.',
-  },
-  renovations: {
-    img: imgConduit,
-    alt: 'A Flowtek plumber in a charcoal polo with an orange collar, kneeling in a timber framed room and threading conduit through a wall frame, tools laid out on the slab',
-    cap: 'Rough-in on a timber frame. Get this right and the tiler never has to be called back.',
-  },
-  'gas-fitting': {
-    img: imgCommercialGas,
-    alt: 'Copper gas lines with braided flexible connectors and restraint chains running to commercial cooking appliances in a stainless steel commercial kitchen',
-    cap: 'Commercial kitchen gas fit-off, with the flexible connectors restrained the way they have to be.',
-  },
-  'backflow-tmv-testing': {
-    img: imgRegulator,
-    alt: 'A gas regulator mounted on an exterior wall with copper lines running to it and capped test points',
-    cap: 'Anything with a test point on it has a test interval attached to it.',
-  },
-  'emergency-plumbing': {
-    img: imgGasTrench,
-    alt: 'An open service trench across a lawn beside a retaining wall, with yellow warning marker tape laid along the bottom of the trench',
-    cap: 'Getting to a buried line is most of the job. Locating it first is what keeps the trench short.',
-  },
+/* One photograph per service for the split at the top of the page. Read from
+   the library rather than re-typed here: this map used to carry its own alt
+   text and captions, and they had already drifted from the library wording. */
+const HEADLINE_PHOTO: Record<string, string> = {
+  'hot-water': 'hotWaterInstalled',
+  'blocked-drains': 'taranganbaDrainage',
+  renovations: 'bathroomRoughIn',
+  'gas-fitting': 'commercialServices',
+  'backflow-tmv-testing': 'backflowTest',
+  'emergency-plumbing': 'jasonDigging',
 };
-const m = media[svc.slug];
+const HEADLINE_LIB = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/**/*.jpg', { eager: true });
+const mEntry = (photos as any)[HEADLINE_PHOTO[svc.slug]];
+const m = mEntry
+  ? { img: HEADLINE_LIB[`../../assets/${mEntry.file}`]?.default, alt: mEntry.alt, cap: mEntry.caption }
+  : null;
+
 const otherServices = services.filter((s) => s.slug !== svc.slug);
 
 /* An inline photograph inside the prose. It is the SECOND photo for this

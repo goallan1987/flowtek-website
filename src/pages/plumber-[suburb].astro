@@ -9,7 +9,7 @@ import Reviews from '../components/Reviews.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
-import { photos, photosForService, serviceCardPhoto } from '../data/photos.js';
+import { photos, photosForService } from '../data/photos.js';
 import { serviceArt } from '../data/service-art.js';
 import { suburbArt } from '../data/suburb-art.js';
 import { business, serviceBySlug } from '../data/business.js';
@@ -53,11 +53,10 @@ const sceneImg = SUBART[`../assets/suburb-art/${scene.file}`]?.default;
 /* The hero figure is a tall 3:4 frame, so it needs a photograph that survives a
    portrait crop with Jason still in it. The conduit shot cropped down to tools
    on a slab. This one is him, working, from his own job footage. */
-const heroPhoto = photos.polyCeiling;
+const heroPhoto = photos.timberFrameRoughIn;
 
-const cardFiles = new Set(
-  Object.values(serviceCardPhoto).map((k: any) => (photos as any)[k]?.file)
-);
+/* The service cards carry artwork now, so no photograph is spoken for by them. */
+const cardFiles = new Set<string>();
 
 const featurePhoto = (() => {
   if (s.hasRealJob) return photos.taranganbaDrainage;
@@ -68,7 +67,7 @@ const featurePhoto = (() => {
       return ph;
     }
   }
-  return photos.drainageRiser;
+  return photos.wallRoughIn;
 })();
 
 const lead = s.leadServices.map((slug: string) => serviceBySlug[slug]);
