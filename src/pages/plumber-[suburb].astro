@@ -10,6 +10,7 @@ import QuoteForm from '../components/QuoteForm.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
 import { photos, photosForService, serviceCardPhoto } from '../data/photos.js';
+import { serviceArt } from '../data/service-art.js';
 import { business, serviceBySlug } from '../data/business.js';
 import { suburbs, nearbyPages } from '../data/suburbs.js';
 
@@ -37,6 +38,8 @@ const { s } = Astro.props;
 const LIB = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/**/*.{jpg,jpeg,png}', { eager: true });
 const resolve = (file: string) => LIB[`../assets/${file}`]?.default;
+const ART = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/service-art/*.jpg', { eager: true });
 
 const heroPhoto = photos.conduitRoughIn;
 
@@ -68,21 +71,18 @@ const restSlugs = Object.keys(serviceBySlug).filter(
 /* Photograph for each lead service card. Chosen by SERVICE, never by suburb:
    the heading may say "in Taranganba", the picture never does. */
 const cardPic = (slug: string) => {
-  const e = (photos as any)[(serviceCardPhoto as any)[slug]];
-  const img = e && resolve(e.file);
+  const e = (serviceArt as any)[slug];
+  const img = e && ART[`../assets/service-art/${e.file}`]?.default;
   return img ? { img, alt: e.alt } : null;
 };
 
 /* Photographs chosen by this suburb's lead services, so neighbouring suburbs do
    not show an identical set. Taranganba additionally gets the one photograph on
    the site whose suburb is actually documented. */
-/* The nine service cards on this page already carry nine photographs. The
-   gallery below them must bring something new, so anything already on a card
-   is skipped. Falls back to the full pool if that would leave it empty. */
+/* The service cards on this page carry artwork now, so the gallery only has to
+   avoid the hero and the feature photograph above it. */
 const galleryItems = (() => {
-  const onCards = new Set(
-    Object.values(serviceCardPhoto).map((k: any) => (photos as any)[k]?.file)
-  );
+  const onCards = new Set<string>();
   const pick = (skipCards: boolean) => {
     const seen = new Set<string>();
     const out: any[] = [];

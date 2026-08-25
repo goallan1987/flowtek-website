@@ -29,7 +29,7 @@ import { role } from '../../data/careers.js';
         {role.process.map((p) => (
           <li>
             <span class="steps__n tnum" aria-hidden="true">{String(p.n).padStart(2, '0')}</span>
-            <h3>{p.k}</h3>
+            <h2 style="font-size:1.125rem">{p.k}</h2>
             <p>{p.v}</p>
           </li>
         ))}

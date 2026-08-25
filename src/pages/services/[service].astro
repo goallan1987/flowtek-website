@@ -21,7 +21,7 @@ import imgGasTrench from '../../assets/gas-line-service-trench-marker-tape-yeppo
 import ArtHero from '../../components/ArtHero.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import ServiceCards from '../../components/ServiceCards.astro';
-import { photos, serviceCardPhoto, serviceDetailPhoto, photosForService } from '../../data/photos.js';
+import { photos, serviceDetailPhoto, photosForService } from '../../data/photos.js';
 import artHotWater from '../../assets/hero/hot-water-system-installation-repairs-yeppoon-rockhampton.jpg';
 import artDrains from '../../assets/hero/blocked-drains-drain-cleaning-yeppoon-rockhampton.jpg';
 import artReno from '../../assets/hero/bathroom-kitchen-renovation-plumbing-yeppoon-rockhampton.jpg';
@@ -96,15 +96,9 @@ const detailEntry = (photos as any)[detailKey];
    two proof photos side by side beat one photo shown twice. */
 const allForService = photosForService(svc.slug, 4);
 
-/* The other five cards further down already show five photographs, and some of
-   those are tagged to this service too. Keep them out of the gallery so the
-   page never shows the same picture twice under two different headings. */
-const usedByCards = new Set(
-  otherServices.map((o: any) => (serviceCardPhoto as any)[o.slug])
-);
-const galleryPhotos = allForService.filter(
-  (x: any) => x.key !== detailKey && !usedByCards.has(x.key)
-);
+/* The other five cards now carry artwork, not photographs, so the only thing
+   the gallery has to avoid is the inline photograph directly above it. */
+const galleryPhotos = allForService.filter((x: any) => x.key !== detailKey);
 const useInline = galleryPhotos.length >= 2;
 
 const inlinePhoto = useInline && detailEntry

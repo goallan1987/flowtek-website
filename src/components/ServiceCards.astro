@@ -3,15 +3,16 @@
  * The six service cards. Used on the home page, the services page and all 27
  * suburb pages.
  *
- * Every card carries a REAL photograph of that service. The photograph is
- * chosen by service, never by suburb: on a Taranganba page the heading may say
- * "Hot water systems in Taranganba", but the picture and its alt text say only
- * what the picture actually shows. See src/data/photos.js.
+ * Every card carries purpose-built artwork of Jason with a customer, because a
+ * card has to sell the service, not prove it. The artwork is chosen by service,
+ * never by suburb: on a Taranganba page the heading may say "Hot water systems
+ * in Taranganba", but the picture and its alt text never mention a suburb.
+ * Proof stays photographic, in the galleries. See src/data/service-art.js.
  */
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import { services } from '../data/business.js';
-import { photos, serviceCardPhoto } from '../data/photos.js';
+import { serviceArt } from '../data/service-art.js';
 
 interface Props { suburb?: string; only?: string[] }
 const { suburb, only } = Astro.props;
@@ -27,13 +28,13 @@ const icons: Record<string, string> = {
 };
 
 const LIBRARY = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/**/*.{jpg,jpeg,png}',
+  '../assets/service-art/*.jpg',
   { eager: true }
 );
 const pic = (slug: string) => {
-  const entry = (photos as any)[(serviceCardPhoto as any)[slug]];
+  const entry = (serviceArt as any)[slug];
   if (!entry) return null;
-  const img = LIBRARY[`../assets/${entry.file}`]?.default;
+  const img = LIBRARY[`../assets/service-art/${entry.file}`]?.default;
   return img ? { img, alt: entry.alt } : null;
 };
 ---
