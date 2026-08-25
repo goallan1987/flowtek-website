@@ -91,7 +91,7 @@ export const role = {
       body:
         'A schedule that changes at six in the morning. Gear that gave up two jobs ago. A question about your pay that takes three weeks to come back, and comes back wrong. None of that is the work. All of it is the job.',
       answer:
-        'You get the week ahead in advance and a phone call the moment it changes. If you ask Jason a question you get an answer that day, and if the answer is no you get told it is no.',
+        'You get the week ahead in advance and a phone call the moment it changes. If you ask Jason a question, Jason is the one who answers it, and if the answer is no you get told it is no.',
     },
   ],
 
@@ -115,7 +115,10 @@ export const role = {
     },
     {
       k: 'Straight answers',
-      v: 'On pay, on hours, on what happens next. Same day, from Jason.',
+      /* Was "same day, from Jason". That is a response-time promise, and
+         register row 5 blocks any claim about how fast we come back to
+         anyone. Who answers is a fact. How fast is not, until row 5 closes. */
+      v: 'On pay, on hours, on what happens next. You ask Jason, and Jason is the one who answers.',
     },
     {
       k: 'Room to grow',

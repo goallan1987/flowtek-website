@@ -177,7 +177,9 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .section-head h2 + p, .section-head h1 + p { margin-top: var(--sp-4); }
 .section-head p { color: var(--slate); }
 .section--mist .section-head p,
-.section--mist p.muted { color: var(--ink); } /* Slate on Mist fails at 4.12:1 */
+.section--mist p.muted,
+.section--mist .hint,
+.section--mist .field .hint { color: var(--ink); } /* Slate on Mist fails at 4.12:1 */
 .section--navy .section-head p, .section--ink .section-head p { color: rgba(255,255,255,0.88); }
 .muted { color: var(--slate); }
 
@@ -831,10 +833,19 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
    ========================================================================== */
 
 /* ---------- Hero ---------- */
-.careers-hero__grid { display: grid; gap: clamp(32px, 5vw, 64px); align-items: center; }
-@media (min-width: 1000px) { .careers-hero__grid { grid-template-columns: 1.05fr 0.95fr; } }
-.careers-hero .hero__inner { padding-block: clamp(48px, 7vw, 88px); max-width: none; }
-@media (min-width: 1000px) { .careers-hero .hero__figure, .careers-hero__figure { padding-block: 0; } }
+/* NOTE: this hero deliberately does NOT reuse .hero__inner. That class is
+   itself a two column grid at 900px and up, so nesting it inside this grid
+   splits the headline and the lede into two columns. The shell is reused, the
+   inner grid is not. */
+.careers-hero__grid {
+  position: relative; z-index: 1;
+  display: grid; gap: clamp(32px, 5vw, 64px); align-items: center;
+  padding-block: clamp(44px, 6vw, 84px);
+}
+@media (min-width: 1000px) { .careers-hero__grid { grid-template-columns: 1.06fr 0.94fr; } }
+.careers-hero__text { min-width: 0; }
+.careers-hero__text h1 { color: var(--white); }
+.careers-hero__text .hero__lede { max-width: 46ch; }
 
 .careers-hero__pay {
   margin-top: var(--sp-6);
@@ -885,7 +896,7 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .answer { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); align-items: start; }
 .answer__n {
   font-family: var(--font-heading); font-weight: 700; font-size: 1.75rem;
-  line-height: 1; color: var(--orange); padding-top: 2px;
+  line-height: 1; color: var(--orange-deep); padding-top: 2px;
 }
 .answer h3 { font-size: 1.25rem; }
 .answer p { color: var(--slate); margin-top: var(--sp-3); }
@@ -928,7 +939,9 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
   display: block; margin-top: var(--sp-4); font-style: normal;
   font-size: 0.9375rem; color: rgba(255, 255, 255, 0.88);
 }
-.pull cite span { display: block; color: rgba(255, 255, 255, 0.62); font-size: 0.8125rem; margin-top: 4px; }
+/* 0.62 white over Navy measures about 4.6:1 at 13px, which is inside the
+   margin of error on a small size. 0.75 puts it comfortably clear. */
+.pull cite span { display: block; color: rgba(255, 255, 255, 0.75); font-size: 0.8125rem; margin-top: 4px; }
 .closer { margin-top: var(--sp-7); font-size: 1.0625rem; color: rgba(255, 255, 255, 0.9); }
 
 /* ---------- The work list ---------- */

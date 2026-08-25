@@ -1,0 +1,55 @@
+---
+/**
+ * Where an application lands after it sends.
+ *
+ * Separate from /thanks/, which is the quote form's page. An applicant needs
+ * different words: what happens next, in what order, and what not to expect.
+ * noindex, because it is a confirmation page and has no business in search.
+ */
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { business } from '../../data/business.js';
+import { role } from '../../data/careers.js';
+---
+<Base
+  title="Your application is in | Flowtek Services"
+  description="Your application for the plumbing job in Yeppoon has reached Flowtek Services."
+  noindex={true}
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <span class="eyebrow">4 steps from here</span>
+      <h1>Your application is in</h1>
+      <p class="lede" style="margin-top:24px;color:var(--slate)">
+        It has come through to Jason. He reads every one himself, so it will not sit in a
+        recruiter's queue.
+      </p>
+
+      <ol class="steps" style="margin-top:48px">
+        {role.process.map((p) => (
+          <li>
+            <span class="steps__n tnum" aria-hidden="true">{String(p.n).padStart(2, '0')}</span>
+            <h3>{p.k}</h3>
+            <p>{p.v}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div style="margin-top:48px;padding-top:32px;border-top:var(--border-hairline)">
+        <h2 style="font-size:1.25rem">If you thought of something after you sent it</h2>
+        <p style="margin-top:12px;color:var(--slate)">
+          Everyone does. Ring or email and add it. Nobody has ever been marked down for
+          following up.
+        </p>
+        <div class="btn-row" style="margin-top:24px">
+          <a class="btn btn--primary" href={business.phoneHref}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+          <a class="btn btn--ghost" href={`mailto:${role.email}?subject=${encodeURIComponent('My application, plumbing job in Yeppoon')}`}>
+            Email Jason
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
