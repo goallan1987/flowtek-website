@@ -11,6 +11,7 @@ import CtaBand from '../components/CtaBand.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
 import { photos, photosForService, serviceCardPhoto } from '../data/photos.js';
 import { serviceArt } from '../data/service-art.js';
+import { suburbArt } from '../data/suburb-art.js';
 import { business, serviceBySlug } from '../data/business.js';
 import { suburbs, nearbyPages } from '../data/suburbs.js';
 
@@ -40,6 +41,14 @@ const LIB = import.meta.glob<{ default: ImageMetadata }>(
 const resolve = (file: string) => LIB[`../assets/${file}`]?.default;
 const ART = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/service-art/*.jpg', { eager: true });
+const SUBART = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/suburb-art/*.jpg', { eager: true });
+
+/* The hero scene for this suburb. A named landmark only ever appears on its own
+   suburb's page; everywhere else gets a generic scene chosen by housing stock.
+   See src/data/suburb-art.js. */
+const scene = suburbArt(s.slug);
+const sceneImg = SUBART[`../assets/suburb-art/${scene.file}`]?.default;
 
 const heroPhoto = photos.conduitRoughIn;
 
@@ -132,7 +141,11 @@ const description =
     ]}
   />
 
-  <!-- ================= HERO ================= -->
+  <!-- ================= HERO =================
+       The scene band sits under the hero rather than inside it, because these
+       are wide 21:9 paintings and the hero figure is a tall 3:4 frame. Cropping
+       a landscape into a portrait slot is how the old cards ended up looking
+       chopped in. -->
   <section class="hero">
     <div class="container hero__inner">
       <div>
@@ -174,6 +187,19 @@ const description =
       </figure>
     </div>
   </section>
+
+  {sceneImg && (
+    <figure class="bandart bandart--suburb">
+      <Image
+        src={sceneImg}
+        alt={scene.alt}
+        widths={[900, 1400, 2000]}
+        sizes="100vw"
+        quality={80}
+        loading="lazy"
+      />
+    </figure>
+  )}
 
   <!-- ================= THE LOCAL SUBSTANCE ================= -->
   <section class="section" aria-labelledby="local-heading">

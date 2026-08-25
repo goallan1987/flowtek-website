@@ -1017,3 +1017,9 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .apply__form input:user-invalid,
 .apply__form select:user-invalid,
 .apply__form textarea:user-invalid { border-color: var(--orange-deep); }
+
+/* Suburb scene band. Wider than the areas band, because these paintings put
+   Jason and the locals in the middle distance and a 32:9 crop would cut them
+   out of their own picture. */
+.bandart--suburb img { aspect-ratio: 16 / 9; }
+@media (min-width: 780px) { .bandart--suburb img { aspect-ratio: 21 / 9; } }

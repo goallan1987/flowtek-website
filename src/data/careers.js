@@ -13,14 +13,14 @@
  *     file dated 28/12/2024. Source of: jason@flowtekservices.com.au.
  *
  * Both were written and published by Jason. Neither has been confirmed by him
- * for reuse here, so both are logged in /OS/decisions.md as rows 18 and 19 for
+ * for reuse here, so both are logged in /OS/decisions.md as rows 23 and 24 for
  * him to confirm or correct. Until those rows close, treat every figure on this
  * page as published-by-Jason-but-not-reconfirmed, which is exactly how it is
  * labelled in the source comments and in the register.
  *
  * WHAT IS DELIBERATELY ABSENT, per /CLAUDE.md hard rules 1 to 4:
  *   - No founding year. The SEEK ad says 2023. "Years in business" is a
- *     trust claim and it is not confirmed in /OS/company.md. Register row 18.
+ *     trust claim and it is not confirmed in /OS/company.md. Register row 24.
  *   - No licence number, no ABN, no insurance detail. Rows 1, 2 and 17.
  *   - No trading hours and no response-time promise. Row 5.
  *   - No street address. Row 3. The JobPosting schema carries locality,
@@ -43,11 +43,11 @@ export const role = {
   postedISO: '2026-08-25',
   postedAU: '25/08/2026',
   /* Ninety days out. Google delists a JobPosting once validThrough passes, so
-     this date is a maintenance obligation, not decoration. Register row 20. */
+     this date is a maintenance obligation, not decoration. Register row 27. */
   validThroughISO: '2026-11-25T23:59:59+10:00',
   validThroughAU: '25/11/2026',
 
-  /* Money. Source: Jason's SEEK listing, 19/08/2026. Register row 19.
+  /* Money. Source: Jason's SEEK listing, 19/08/2026. Register row 23.
      Wages are not a GST-bearing supply, so no GST line is stated. */
   payMin: 45,
   payMax: 50,
