@@ -5,7 +5,6 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import ArtHero from '../../components/ArtHero.astro';
-import PhotoGallery from '../../components/PhotoGallery.astro';
 import { business } from '../../data/business.js';
 import { photos } from '../../data/photos.js';
 import heroArt from '../../assets/hero/plumbing-gas-projects-yeppoon-capricorn-coast.jpg';
@@ -24,6 +23,8 @@ const gallery = [
   photos.commercialServices,
   photos.commercialCeiling,
   photos.timberFrameRoughIn,
+  photos.backflowTest,
+  photos.vanSide,
 ];
 ---
 <Base
@@ -112,13 +113,6 @@ const gallery = [
     </div>
   </section>
 
-  <PhotoGallery
-    items={[photos.heritageSite, photos.drainageInstall, photos.backflowTest, photos.hotWaterInstalled, photos.timberFrameRoughIn, photos.vanSide]}
-    eyebrow="From the ute"
-    heading="More jobs, and what is going on in each one"
-    intro="We have not recorded the street for every one of these, so we do not attach a suburb to a photograph just because it would read well."
-    mist={true}
-  />
 
   <CtaBand heading="Got something similar going on?" />
 </Base>

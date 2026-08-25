@@ -50,24 +50,18 @@ const SUBART = import.meta.glob<{ default: ImageMetadata }>(
 const scene = suburbArt(s.slug);
 const sceneImg = SUBART[`../assets/suburb-art/${scene.file}`]?.default;
 
-/* The hero figure is a tall 3:4 frame, so it needs a photograph that survives a
-   portrait crop with Jason still in it. The conduit shot cropped down to tools
-   on a slab. This one is him, working, from his own job footage. */
-const heroPhoto = photos.timberFrameRoughIn;
 
-/* The service cards carry artwork now, so no photograph is spoken for by them. */
-const cardFiles = new Set<string>();
 
+/* One real photograph further down the page, chosen by this suburb's lead
+   service so neighbouring suburbs do not show an identical one. Taranganba gets
+   the single photograph on this site whose location is actually documented. */
 const featurePhoto = (() => {
   if (s.hasRealJob) return photos.taranganbaDrainage;
   for (const slug of s.leadServices) {
-    for (const ph of photosForService(slug, 4)) {
-      if (ph.file === heroPhoto.file) continue;
-      if (cardFiles.has(ph.file)) continue;
-      return ph;
-    }
+    const found = photosForService(slug, 4);
+    if (found.length) return found[0];
   }
-  return photos.heritageSite;
+  return photos.drainageInstall;
 })();
 
 const lead = s.leadServices.map((slug: string) => serviceBySlug[slug]);
@@ -87,33 +81,6 @@ const cardPic = (slug: string) => {
   return img ? { img, alt: e.alt } : null;
 };
 
-/* Photographs chosen by this suburb's lead services, so neighbouring suburbs do
-   not show an identical set. Taranganba additionally gets the one photograph on
-   the site whose suburb is actually documented. */
-/* The service cards on this page carry artwork now, so the gallery only has to
-   avoid the hero and the feature photograph above it. */
-const galleryItems = (() => {
-  const onCards = new Set<string>();
-  const pick = (skipCards: boolean) => {
-    const seen = new Set<string>();
-    const out: any[] = [];
-    if (s.hasRealJob && featurePhoto.file !== photos.taranganbaDrainage.file) {
-      out.push(photos.taranganbaDrainage); seen.add(photos.taranganbaDrainage.file);
-    }
-    for (const slug of s.leadServices) {
-      for (const ph of photosForService(slug, 4)) {
-        if (seen.has(ph.file)) continue;
-        if (ph.file === heroPhoto.file || ph.file === featurePhoto.file) continue;
-        if (skipCards && onCards.has(ph.file)) continue;
-        seen.add(ph.file); out.push(ph);
-        if (out.length >= 3) return out;
-      }
-    }
-    return out;
-  };
-  const strict = pick(true);
-  return strict.length >= 2 ? strict : pick(false);
-})();
 const neighbours = nearbyPages(s);
 const smsBody = encodeURIComponent(business.smsBody + s.name);
 
