@@ -31,6 +31,28 @@ for (const s of suburbs) {
 }
 
 lines.push('');
+lines.push('# --- Careers. One canonical URL, a handful of aliases a human might type. ---');
+lines.push('# /careers/plumbing-jobs-yeppoon/ carries BOTH "plumbing jobs Yeppoon" and');
+lines.push('# "plumber jobs Yeppoon". A second page for the synonym would be a doorway.');
+lines.push('# Note the ORDER: the canonical path is never matched by these rules, so the');
+lines.push('# real page still wins. Do not add /careers/* here or it will shadow the page.');
+const careersAliases = [
+  '/careers',
+  '/careers/',
+  '/jobs',
+  '/jobs/',
+  '/plumber-jobs-yeppoon',
+  '/plumber-jobs-yeppoon/',
+  '/plumbing-jobs-yeppoon',
+  '/plumbing-jobs-yeppoon/',
+  '/work-with-us',
+  '/work-with-us/',
+  '/join-our-team',
+  '/join-our-team/',
+];
+for (const from of careersAliases) lines.push(`${from}  /careers/plumbing-jobs-yeppoon/  301!`);
+
+lines.push('');
 lines.push('# --- Old WordPress URLs, so nothing currently linked or ranking 404s ---');
 const legacy = [
   ['/about-us/*', '/about/'],
@@ -52,4 +74,4 @@ for (const [from, to] of legacy) lines.push(`${from}  ${to}  301!`);
 
 mkdirSync(new URL('../public/', import.meta.url), { recursive: true });
 writeFileSync(new URL('../public/_redirects', import.meta.url), lines.join('\n') + '\n');
-console.log(`_redirects written: ${suburbs.length * 2 + legacy.length} rules`);
+console.log(`_redirects written: ${suburbs.length * 2 + careersAliases.length + legacy.length} rules`);

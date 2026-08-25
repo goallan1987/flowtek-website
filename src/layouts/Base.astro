@@ -66,6 +66,11 @@ const canonical = new URL(path, business.site).href;
     <meta name="twitter:card" content="summary" />
 
     <Schema page={page} url={path} serviceSlug={serviceSlug} suburbSlug={suburbSlug} faq={faq} />
+
+    {/* Page-specific head content. Used by the careers page for its JobPosting
+        markup, which Schema.astro deliberately knows nothing about: that
+        component owns the sitewide business graph, not one vacancy. */}
+    <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

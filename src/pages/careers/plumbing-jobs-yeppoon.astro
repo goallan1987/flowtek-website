@@ -1,0 +1,444 @@
+---
+/**
+ * THE CAREERS PAGE. One vacancy, one URL.
+ *
+ * SLUG. /careers/plumbing-jobs-yeppoon/ is canonical. Both target phrases,
+ * "plumbing jobs Yeppoon" and "plumber jobs Yeppoon", live on this one page.
+ * Shipping two near-identical pages for two synonyms is the doorway pattern
+ * Google's spam policy is written to catch, and it would split the signal.
+ * /plumber-jobs-yeppoon/, /careers/, /jobs/ and /work-with-us/ all 301 here.
+ * See scripts/gen-redirects.mjs.
+ *
+ * STRUCTURE. Problem first, then the answer, then the qualification, then the
+ * form. The ads open on the problem and stop there. This page is where the
+ * answer lives. If you change one, change the other. The ad copy of record is
+ * /OS/campaigns/2026-08-hiring-meta.md.
+ *
+ * ANSWER ENGINES. Every H2 in the questions block is shaped the way a person
+ * actually types it, and every answer opens with a complete sentence naming
+ * Flowtek and Yeppoon, so the chunk still makes sense when it is lifted away
+ * from this page. The summary table near the top exists for the same reason.
+ *
+ * GOOGLE JOBS. The JobPosting markup is correct and complete, and Australia is
+ * not currently in Google's published region list for the job search
+ * experience, so the blue-box carousel will not render for an Australian
+ * searcher. The markup ships anyway: it costs nothing, answer engines parse it,
+ * and it is live the day the region list changes. Do not promise Jason a
+ * Google Jobs listing.
+ *
+ * validThrough is 25/11/2026. Google delists the posting the day after that.
+ * Re-date it or take the page down. /OS/decisions.md register row 20.
+ */
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import ApplicationForm from '../../components/ApplicationForm.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { business, services } from '../../data/business.js';
+import { role, roleFaq } from '../../data/careers.js';
+import { photos } from '../../data/photos.js';
+import heroPhoto from '../../assets/real/jason-breingan-flowtek-ute-yeppoon-plumber.jpg';
+
+const site = business.site;
+const canonical = `${site}/careers/plumbing-jobs-yeppoon/`;
+
+/* Google requires title, description, datePosted, hiringOrganization and a
+   jobLocation carrying addressCountry. Everything else below is on Google's
+   recommended list. streetAddress is absent because it is not confirmed:
+   register row 3. */
+const jobPosting = {
+  '@context': 'https://schema.org',
+  '@type': 'JobPosting',
+  '@id': `${canonical}#jobposting`,
+  title: role.title,
+  description: [
+    `<p>Flowtek Services is hiring one full-time plumber and gas fitter, based in ${role.base}, Queensland, working across ${role.areaLabel}. This is a local role. There is no fly-in fly-out roster and no camp.</p>`,
+    '<h3>What you would be doing</h3><ul>',
+    role.duties.map((d) => `<li>${d}</li>`).join(''),
+    '</ul><h3>What you need</h3><ul>',
+    role.requirements.map((r) => `<li>${r}</li>`).join(''),
+    '</ul><h3>Useful, and not required</h3><ul>',
+    role.niceToHave.map((r) => `<li>${r}</li>`).join(''),
+    '</ul><h3>What is on offer</h3><ul>',
+    role.offers.map((o) => `<li>${o.k}. ${o.v}</li>`).join(''),
+    `<li>${role.payLabel}, ${role.payBasis.toLowerCase()}</li>`,
+    `<li>${role.signOnLabel}. ${role.signOnTerms}</li>`,
+    '</ul>',
+  ].join(''),
+  datePosted: role.postedISO,
+  validThrough: role.validThroughISO,
+  employmentType: role.employmentType,
+  hiringOrganization: {
+    '@type': 'Organization',
+    '@id': `${site}/#business`,
+    name: business.name,
+    sameAs: site,
+    logo: new URL('/img/flowtek-services-logo.png', site).href,
+  },
+  jobLocation: {
+    '@type': 'Place',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: business.suburb,
+      addressRegion: business.regionCode,
+      postalCode: business.postcode,
+      addressCountry: business.country,
+    },
+  },
+  applicantLocationRequirements: {
+    '@type': 'Country',
+    name: 'Australia',
+  },
+  baseSalary: {
+    '@type': 'MonetaryAmount',
+    currency: 'AUD',
+    value: {
+      '@type': 'QuantitativeValue',
+      minValue: role.payMin,
+      maxValue: role.payMax,
+      unitText: role.payUnit,
+    },
+  },
+  totalJobOpenings: role.vacancies,
+  identifier: {
+    '@type': 'PropertyValue',
+    name: business.name,
+    value: role.id,
+  },
+  /* The whole application completes on this URL. No third party, no login. */
+  directApply: true,
+  industry: 'Plumbing and gas fitting',
+  occupationalCategory: '33-1011.00 Plumbers, Pipefitters and Steamfitters',
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Plumbing jobs in Yeppoon', item: canonical },
+  ],
+};
+
+const summary = [
+  ['Role', 'Plumber and gas fitter'],
+  ['Openings', 'One'],
+  ['Type', role.employmentLabel],
+  ['Based', `${role.base}, Queensland`],
+  ['Work area', role.areaLabel],
+  ['Pay', `${role.payLabel}, on experience`],
+  ['Sign-on bonus', role.signOnLabel],
+  ['Roster', 'Local. Home every night. No fly-in fly-out.'],
+  ['Posted', role.postedAU],
+  ['Closes', `${role.validThroughAU}, or when it is filled`],
+];
+---
+<Base
+  title="Plumbing Jobs in Yeppoon | Careers at Flowtek Services"
+  description="Flowtek Services is hiring a full-time plumber and gas fitter in Yeppoon, QLD. $45 to $50 an hour, home every night. See the role and how to apply."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jobPosting)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+  </Fragment>
+
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Plumbing jobs in Yeppoon' }]} />
+
+  <!-- ============ HERO ============ -->
+  <section class="hero careers-hero">
+    <div class="container">
+      <div class="careers-hero__grid">
+        <div class="hero__inner">
+          <span class="eyebrow eyebrow--on-dark">1 role. Yeppoon QLD 4703.</span>
+          <h1>Plumbing jobs in Yeppoon, Queensland</h1>
+          <p class="lede hero__lede">
+            We are hiring one plumber and gas fitter. Full time, based in Yeppoon, working
+            across Rockhampton and the Capricorn Coast. You finish the day here and you go
+            home to your own house.
+          </p>
+          <p class="careers-hero__pay">
+            <span class="tnum">{role.payLabel}</span>
+            <span>plus a {role.signOnLabel}</span>
+          </p>
+          <div class="btn-row hero__actions">
+            <a class="btn btn--primary" href="#apply">Apply for the job</a>
+            <a class="btn btn--ghost-light" href="#the-job">Read it first</a>
+          </div>
+          <p class="careers-hero__note">
+            Plumber jobs in Yeppoon do not come up often. This is one of them.
+          </p>
+        </div>
+
+        <figure class="careers-hero__figure">
+          <Image
+            src={heroPhoto}
+            alt="Jason Breingan of Flowtek Services standing with his arms folded in front of the white Flowtek work ute in Yeppoon, wearing the charcoal polo with the orange collar, ladders on the rack behind him"
+            widths={[520, 760, 1040]}
+            sizes="(min-width: 1000px) 520px, 92vw"
+            quality={74}
+            loading="eager"
+            fetchpriority="high"
+          />
+          <figcaption>Jason Breingan, director and lead tradesperson. He reads every application himself.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUMMARY TABLE ============ -->
+  <section class="section section--tight">
+    <div class="container container--narrow">
+      <h2 class="sr-only" id="at-a-glance">The role at a glance</h2>
+      <div class="tablewrap">
+        <table class="rtable" aria-labelledby="at-a-glance">
+          <tbody>
+            {summary.map(([k, v]) => (
+              <tr><th scope="row">{k}</th><td>{v}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="hint" style="margin-top:16px">
+        Pay and the sign-on bonus are the figures Flowtek advertised for this role on
+        19/08/2026. Jason confirms them in writing before you accept anything.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ THE PROBLEM ============ -->
+  <section class="section section--ink on-dark">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--on-dark">3 reasons, in the order we hear them</span>
+        <h2>Why good plumbers leave a good wage</h2>
+        <p>
+          We have had this conversation with enough tradespeople to know how it goes. It is
+          almost never the money.
+        </p>
+      </div>
+
+      <div class="grid grid--3 problems">
+        {role.problems.map((p, i) => (
+          <article class="problem">
+            <span class="numeral" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{p.heading}</h3>
+            <p>{p.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE ANSWER ============ -->
+  <section class="section" id="the-job">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Same 3, answered in order</span>
+        <h2>What this job does about it</h2>
+      </div>
+
+      <ol class="answers">
+        {role.problems.map((p, i) => (
+          <li class="answer">
+            <span class="answer__n tnum" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{p.heading}</h3>
+              <p>{p.answer}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="offers">
+        {role.offers.map((o) => (
+          <div class="offer">
+            <h4>{o.k}</h4>
+            <p>{o.v}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE WORK ============ -->
+  <section class="section section--mist">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">6 services, 1 ute</span>
+        <h2>The work is not the same thing twice</h2>
+        <p>
+          Six lines of work go through this business. A plumber here touches all of them,
+          not one of them. That is the difference between the trade widening and the trade
+          narrowing.
+        </p>
+      </div>
+      <div class="grid grid--3">
+        {services.map((s) => (
+          <article class="card card--flat">
+            <h3 style="font-size:1.125rem">{s.name}</h3>
+            <p>{s.short}. {s.items.slice(0, 3).join(', ')}.</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="duties">
+        <h3>What lands on the job card</h3>
+        <ul class="ticks">
+          {role.duties.map((d) => (
+            <li><Icon name="tick" size={18} />{d}</li>
+          ))}
+        </ul>
+        <p class="hint" style="margin-top:16px">
+          Straight from the listing Flowtek advertised for this role on 19/08/2026.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <PhotoGallery
+    items={[
+      photos.jasonHeadshot,
+      photos.drainageInstall,
+      photos.commercialGas,
+      photos.backflowTest,
+      photos.conduitRoughIn,
+      photos.heritageSite,
+    ]}
+    eyebrow="6 real jobs, 6 different days"
+    heading="This is the actual work"
+    intro="Real photographs off real Flowtek jobs. Not a stock library, and not somebody else's site."
+  />
+
+  <!-- ============ THE QUALIFICATION ============ -->
+  <section class="section section--navy on-dark">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <span class="eyebrow eyebrow--on-dark">Read before applying</span>
+        <h2>This is not the job for everyone</h2>
+        <p>
+          Two minutes here saves us both a phone call. We would rather lose you now than
+          in week three.
+        </p>
+      </div>
+
+      <ul class="standards">
+        {role.standards.map((s) => (
+          <li><Icon name="tick" size={20} />{s}</li>
+        ))}
+      </ul>
+
+      <blockquote class="pull">
+        <p>
+          Sure, we're professionals who do a bang-up job, turn up on time and communicate
+          effectively, but we also like to bring a human touch to every project.
+        </p>
+        <cite>
+          Jason Breingan, director and {business.credential.toLowerCase()}, Flowtek Services.
+          <span>His own words, published on flowtekservices.com.au.</span>
+        </cite>
+      </blockquote>
+
+      <p class="closer">
+        If you read that list and thought that is how I already work, then the form is worth
+        twenty minutes of your evening. If you read it and thought that is a bit much, we
+        have just saved you the twenty minutes.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ WHAT YOU NEED ============ -->
+  <section class="section">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Non-negotiable</span>
+        <h2>What you need</h2>
+        <ul class="ticks" style="margin-top:24px">
+          {role.requirements.map((r) => (
+            <li><Icon name="tick" size={18} />{r}</li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <span class="eyebrow">Useful, not required</span>
+        <h2>What helps</h2>
+        <ul class="ticks" style="margin-top:24px">
+          {role.niceToHave.map((r) => (
+            <li><Icon name="tick" size={18} />{r}</li>
+          ))}
+        </ul>
+        <p class="hint" style="margin-top:20px">
+          Missing one of these has never stopped a good application. Say what you hold and
+          what you do not.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section section--mist">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">4 steps, no recruiter</span>
+        <h2>What happens after you hit send</h2>
+      </div>
+      <ol class="steps">
+        {role.process.map((p) => (
+          <li>
+            <span class="steps__n tnum" aria-hidden="true">{String(p.n).padStart(2, '0')}</span>
+            <h3>{p.k}</h3>
+            <p>{p.v}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ QUESTIONS. Answer engines lift these. ============ -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <span class="eyebrow">{roleFaq.length} questions we get asked</span>
+        <h2>Questions about plumber jobs in Yeppoon</h2>
+      </div>
+      <div class="qa">
+        {roleFaq.map((f) => (
+          <article class="qa__item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE FORM ============ -->
+  <section class="section section--mist" id="apply">
+    <div class="container container--narrow">
+      <ApplicationForm />
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <section class="section section--navy on-dark">
+    <div class="container container--narrow" style="text-align:left">
+      <h2>Rather just ring?</h2>
+      <p style="margin-top:16px;color:rgba(255,255,255,.9);max-width:56ch">
+        Ring Jason and ask him whatever you like about the job. If he is under a house he
+        will not pick up, so leave a message and say it is about the job.
+      </p>
+      <div class="btn-row" style="margin-top:32px">
+        <a class="btn btn--primary" href={business.phoneHref}>
+          <Icon name="phone" size={18} />Call {business.phone}
+        </a>
+        <a class="btn btn--ghost-light" href={`mailto:${role.email}?subject=${encodeURIComponent('Plumbing job in Yeppoon')}`}>
+          Email Jason
+        </a>
+      </div>
+      <p style="margin-top:28px;font-size:.9375rem;color:rgba(255,255,255,.75)">
+        Posted {role.postedAU}. Flowtek Services, {business.credential}, based in
+        {' '}{business.suburb}, {business.regionCode}. {business.areaLine}.
+      </p>
+    </div>
+  </section>
+</Base>

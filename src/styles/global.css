@@ -668,13 +668,23 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .arthero__media { position: absolute; inset: 0; z-index: 0; }
 .arthero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
 /* Scrim. Heavier on the reading side, lighter over the artwork, so the picture
-   is still legible as a picture. */
+   is still legible as a picture.
+
+   These stops are measured, not guessed. The 97th percentile of the brightest
+   pixels under the headline is composited with the scrim at its lightest point
+   inside the text band, and checked against white. The worst of the fifteen
+   heroes lands at 4.68:1, above the 4.5:1 needed for body text.
+
+   Lightened on 25/08/2026 when the artwork was regenerated. The new paintings
+   carry far more detail than the flat ones they replaced, and at the old 0.94
+   the left two thirds of every hero was a navy rectangle. If a future hero is
+   brighter than these, re-run the check before lightening this further. */
 .arthero::after {
   content: '';
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(30,47,102,0.94) 0%, rgba(30,47,102,0.86) 34%, rgba(30,47,102,0.48) 64%, rgba(30,47,102,0.30) 100%),
-    linear-gradient(180deg, rgba(33,33,33,0.28), rgba(33,33,33,0.10));
+    linear-gradient(90deg, rgba(30,47,102,0.90) 0%, rgba(30,47,102,0.80) 34%, rgba(30,47,102,0.42) 64%, rgba(30,47,102,0.22) 100%),
+    linear-gradient(180deg, rgba(33,33,33,0.24), rgba(33,33,33,0.08));
 }
 @media (max-width: 780px) {
   /* On a phone the text needs the whole width, so the scrim goes flat. */
@@ -812,3 +822,185 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
   margin-top: var(--sp-3);
   font-size: 0.875rem; line-height: 1.55; color: var(--slate);
 }
+
+/* ==========================================================================
+   CAREERS. /careers/plumbing-jobs-yeppoon/
+   Built on the same tokens as everything else. No new colour, no new radius,
+   no new shadow. The only genuinely new object is the application form, and
+   it is long because the length is the filter.
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+.careers-hero__grid { display: grid; gap: clamp(32px, 5vw, 64px); align-items: center; }
+@media (min-width: 1000px) { .careers-hero__grid { grid-template-columns: 1.05fr 0.95fr; } }
+.careers-hero .hero__inner { padding-block: clamp(48px, 7vw, 88px); max-width: none; }
+@media (min-width: 1000px) { .careers-hero .hero__figure, .careers-hero__figure { padding-block: 0; } }
+
+.careers-hero__pay {
+  margin-top: var(--sp-6);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-3);
+}
+.careers-hero__pay .tnum {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.125rem);
+  line-height: 1; color: var(--white);
+  border-bottom: 3px solid var(--orange); padding-bottom: 6px;
+}
+.careers-hero__pay span + span { color: rgba(255, 255, 255, 0.85); font-size: 1rem; }
+.careers-hero__note {
+  margin-top: var(--sp-5); font-size: 0.9375rem; color: rgba(255, 255, 255, 0.72);
+}
+.careers-hero__figure { margin: 0; }
+.careers-hero__figure img {
+  width: 100%; border-radius: var(--r-lg); box-shadow: var(--shadow-raised);
+  aspect-ratio: 4 / 3; object-fit: cover;
+}
+.careers-hero__figure figcaption {
+  margin-top: var(--sp-3); font-size: 0.875rem; color: rgba(255, 255, 255, 0.78);
+  max-width: 44ch;
+}
+
+/* ---------- The glance table. Answer engines lift this whole block. ---------- */
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rtable { width: 100%; border-collapse: collapse; text-align: left; }
+.rtable th, .rtable td { padding: 14px 0; border-bottom: var(--border-hairline); vertical-align: top; }
+.rtable th {
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.8125rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate);
+  width: 38%; padding-right: var(--sp-5); white-space: nowrap;
+}
+.rtable td { font-size: 1.0625rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.rtable tr:last-child th, .rtable tr:last-child td { border-bottom: 0; }
+@media (max-width: 520px) { .rtable th { width: 44%; white-space: normal; } }
+
+/* ---------- The three problems ---------- */
+.problems { margin-top: var(--sp-6); }
+.problem h3 {
+  font-size: 1.25rem; margin-top: var(--sp-2); color: var(--white);
+}
+.problem p { color: rgba(255, 255, 255, 0.82); margin-top: var(--sp-3); font-size: 0.9375rem; }
+
+/* ---------- The three answers ---------- */
+.answers { list-style: none; display: grid; gap: var(--sp-6); margin-bottom: var(--sp-8); }
+.answer { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); align-items: start; }
+.answer__n {
+  font-family: var(--font-heading); font-weight: 700; font-size: 1.75rem;
+  line-height: 1; color: var(--orange); padding-top: 2px;
+}
+.answer h3 { font-size: 1.25rem; }
+.answer p { color: var(--slate); margin-top: var(--sp-3); }
+
+/* ---------- What is on offer ---------- */
+.offers { display: grid; gap: 0; border-top: var(--border-hairline); }
+@media (min-width: 720px) { .offers { grid-template-columns: 1fr 1fr; column-gap: var(--sp-7); } }
+.offer { padding-block: var(--sp-5); border-bottom: var(--border-hairline); }
+.offer h4 { color: var(--navy); text-transform: none; font-size: 1.0625rem; letter-spacing: -0.01em; }
+.offer p { color: var(--slate); margin-top: var(--sp-2); font-size: 0.9375rem; }
+
+/* ---------- Tick lists ---------- */
+.ticks { list-style: none; display: grid; gap: var(--sp-3); }
+.ticks li {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3);
+  align-items: start; font-size: 1rem;
+}
+.ticks svg { flex: none; margin-top: 3px; color: var(--orange-deep); }
+
+/* ---------- The standards. This is the qualifying block. ---------- */
+.standards { list-style: none; display: grid; gap: var(--sp-4); margin-top: var(--sp-2); }
+.standards li {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4);
+  align-items: start; font-size: 1.0625rem; line-height: 1.55;
+  padding-bottom: var(--sp-4); border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+.standards li:last-child { border-bottom: 0; }
+.standards svg { flex: none; margin-top: 4px; color: var(--orange); }
+
+.pull {
+  margin: var(--sp-7) 0 0; padding: var(--sp-6) 0 0;
+  border-top: 3px solid var(--orange);
+}
+.pull p {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(1.2rem, 1rem + 0.9vw, 1.5rem); line-height: 1.32;
+  color: var(--white); letter-spacing: -0.015em;
+}
+.pull cite {
+  display: block; margin-top: var(--sp-4); font-style: normal;
+  font-size: 0.9375rem; color: rgba(255, 255, 255, 0.88);
+}
+.pull cite span { display: block; color: rgba(255, 255, 255, 0.62); font-size: 0.8125rem; margin-top: 4px; }
+.closer { margin-top: var(--sp-7); font-size: 1.0625rem; color: rgba(255, 255, 255, 0.9); }
+
+/* ---------- The work list ---------- */
+.duties { margin-top: var(--sp-8); padding-top: var(--sp-7); border-top: var(--border-hairline); }
+.duties h3 { font-size: 1.25rem; margin-bottom: var(--sp-5); }
+@media (min-width: 720px) { .duties .ticks { grid-template-columns: 1fr 1fr; column-gap: var(--sp-6); } }
+
+/* ---------- Questions. Plain headings, not an accordion: an answer engine
+     cannot read what a details element keeps closed, and neither can a person
+     skimming on a phone. ---------- */
+.qa { display: grid; gap: var(--sp-6); }
+.qa__item { padding-bottom: var(--sp-6); border-bottom: var(--border-hairline); }
+.qa__item:last-child { border-bottom: 0; padding-bottom: 0; }
+.qa__item h3 { font-size: 1.1875rem; }
+.qa__item p { margin-top: var(--sp-3); color: var(--slate); }
+
+/* ==========================================================================
+   THE APPLICATION FORM
+   ========================================================================== */
+.apply__form { gap: 0; }
+.apply__set {
+  border: 0; border-top: var(--border-hairline);
+  margin: 0; padding: var(--sp-7) 0 var(--sp-6);
+  display: grid; gap: var(--sp-5);
+}
+.apply__set:first-of-type { border-top: 0; padding-top: 0; }
+.apply__set--key { background: var(--white); border-radius: var(--r-md); padding: var(--sp-6); border-top: 0; }
+.apply__set--key legend { padding-inline: 0; }
+
+.apply__set legend {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1.125rem; letter-spacing: -0.01em; color: var(--ink);
+  display: flex; align-items: center; gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+.apply__n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--navy); color: var(--white);
+  font-size: 0.875rem; font-variant-numeric: tabular-nums; flex: none;
+}
+.apply__label {
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.9375rem; color: var(--ink);
+}
+.apply__row { display: grid; gap: var(--sp-5); }
+@media (min-width: 620px) { .apply__row { grid-template-columns: 1fr 1fr; } }
+
+/* Checkbox and radio rows. 48px minimum target on every one of them. */
+.checks { display: grid; gap: var(--sp-2); }
+@media (min-width: 620px) { .checks--wide { grid-template-columns: 1fr 1fr; column-gap: var(--sp-5); } }
+.check {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3);
+  align-items: start; min-height: 48px; padding-block: 12px;
+  font-size: 0.9375rem; cursor: pointer;
+}
+.check input { width: 22px; height: 22px; margin: 0; accent-color: var(--navy); flex: none; }
+.check span { padding-top: 1px; }
+.check--consent {
+  border: var(--border-hairline); border-radius: var(--r-md);
+  padding: var(--sp-4); background: var(--white);
+}
+
+.apply__submit { padding-top: var(--sp-7); border-top: var(--border-hairline); }
+.apply__err {
+  margin-top: var(--sp-4); padding: var(--sp-4);
+  border: 2px solid var(--orange-deep); border-radius: var(--r-md);
+  background: var(--white); color: var(--ink); font-size: 0.9375rem;
+}
+.apply__err[hidden] { display: none; }
+
+/* An invalid field only shows red after the person has tried to submit,
+   never while they are still typing into it for the first time. */
+.apply__form input:user-invalid,
+.apply__form select:user-invalid,
+.apply__form textarea:user-invalid { border-color: var(--orange-deep); }

@@ -56,6 +56,24 @@
 /plumbing-allenstown/*  /plumber-allenstown/  301!
 /plumbing-allenstown    /plumber-allenstown/  301!
 
+# --- Careers. One canonical URL, a handful of aliases a human might type. ---
+# /careers/plumbing-jobs-yeppoon/ carries BOTH "plumbing jobs Yeppoon" and
+# "plumber jobs Yeppoon". A second page for the synonym would be a doorway.
+# Note the ORDER: the canonical path is never matched by these rules, so the
+# real page still wins. Do not add /careers/* here or it will shadow the page.
+/careers  /careers/plumbing-jobs-yeppoon/  301!
+/careers/  /careers/plumbing-jobs-yeppoon/  301!
+/jobs  /careers/plumbing-jobs-yeppoon/  301!
+/jobs/  /careers/plumbing-jobs-yeppoon/  301!
+/plumber-jobs-yeppoon  /careers/plumbing-jobs-yeppoon/  301!
+/plumber-jobs-yeppoon/  /careers/plumbing-jobs-yeppoon/  301!
+/plumbing-jobs-yeppoon  /careers/plumbing-jobs-yeppoon/  301!
+/plumbing-jobs-yeppoon/  /careers/plumbing-jobs-yeppoon/  301!
+/work-with-us  /careers/plumbing-jobs-yeppoon/  301!
+/work-with-us/  /careers/plumbing-jobs-yeppoon/  301!
+/join-our-team  /careers/plumbing-jobs-yeppoon/  301!
+/join-our-team/  /careers/plumbing-jobs-yeppoon/  301!
+
 # --- Old WordPress URLs, so nothing currently linked or ranking 404s ---
 /about-us/*  /about/  301!
 /about/*  /about/  301!

@@ -1,0 +1,401 @@
+---
+/**
+ * The application form.
+ *
+ * IT IS LONG ON PURPOSE. This role gets one hire, and the four written
+ * questions near the bottom are the filter. Somebody who will not spend twenty
+ * minutes on an application will not spend twenty minutes tidying up a laundry
+ * either. The form says so on its face rather than pretending to be quick.
+ *
+ * WHERE IT SENDS
+ * 1. Supabase, table public.job_applications, inserted with the publishable
+ *    key. Row level security allows insert and nothing else, so the key cannot
+ *    read anybody's application back out.
+ * 2. If that call fails for any reason, the same submission goes to Netlify
+ *    Forms instead. Losing an applicant because a database had a bad minute is
+ *    not an acceptable failure mode, so there are two independent paths.
+ * 3. If both fail the person is shown the phone number and the email address.
+ *    Never a dead end.
+ *
+ * CREDENTIALS
+ * No key is written in this file or anywhere in the repository. Both values
+ * come from Netlify environment variables, PUBLIC_SUPABASE_URL and
+ * PUBLIC_SUPABASE_ANON_KEY, and are inlined at build time because a static
+ * page has to carry them to work. See /OS/credentials-map.md and /CLAUDE.md
+ * hard rule 9.
+ */
+import { role, workTypeOptions, roleOptions, heardAboutOptions } from '../data/careers.js';
+import { business } from '../data/business.js';
+
+const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL ?? '';
+const SUPABASE_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY ?? '';
+---
+
+<div class="apply">
+  <div class="section-head" style="margin-bottom:32px">
+    <span class="eyebrow">7 sections. 4 written answers.</span>
+    <h2 id="apply-heading">Apply for the job</h2>
+    <p>
+      Give this twenty minutes and a cup of tea. The last four questions are the ones
+      Jason actually reads, and a one-line answer to any of them is an answer.
+    </p>
+  </div>
+
+  {/* data-netlify registers the form at build time so the fallback path exists.
+      The honeypot is hidden from people and from screen readers. A bot fills it
+      in, and the submission is dropped. */}
+  <form
+    class="form apply__form"
+    id="job-application"
+    name="job-application"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/thanks-application/"
+    aria-labelledby="apply-heading"
+    novalidate
+  >
+    <input type="hidden" name="form-name" value="job-application" />
+    <p class="hp" aria-hidden="true">
+      <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    {/* Provenance. Filled by script from the URL so we can tell which ad worked. */}
+    <input type="hidden" name="utm_source" /><input type="hidden" name="utm_medium" />
+    <input type="hidden" name="utm_campaign" /><input type="hidden" name="utm_content" />
+    <input type="hidden" name="fbclid" /><input type="hidden" name="page_path" />
+
+    <!-- 1 -->
+    <fieldset class="apply__set">
+      <legend><span class="apply__n">1</span> Who you are</legend>
+      <div class="apply__row">
+        <div class="field">
+          <label for="a-first">First name <span class="req" aria-hidden="true">*</span></label>
+          <input id="a-first" name="first_name" type="text" autocomplete="given-name" required maxlength="60" />
+        </div>
+        <div class="field">
+          <label for="a-last">Last name <span class="req" aria-hidden="true">*</span></label>
+          <input id="a-last" name="last_name" type="text" autocomplete="family-name" required maxlength="60" />
+        </div>
+      </div>
+      <div class="apply__row">
+        <div class="field">
+          <label for="a-phone">Phone <span class="req" aria-hidden="true">*</span></label>
+          <input id="a-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+                 aria-describedby="a-phone-hint" />
+          <span class="hint" id="a-phone-hint">Jason rings before he emails.</span>
+        </div>
+        <div class="field">
+          <label for="a-email">Email <span class="req" aria-hidden="true">*</span></label>
+          <input id="a-email" name="email" type="email" autocomplete="email" required maxlength="254" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="a-suburb">Which suburb do you live in? <span class="req" aria-hidden="true">*</span></label>
+        <input id="a-suburb" name="suburb" type="text" autocomplete="address-level2" required maxlength="80"
+               aria-describedby="a-suburb-hint" />
+        <span class="hint" id="a-suburb-hint">
+          Tell us straight if you are not on the coast yet. People move here for this, and we would
+          rather know now than find out in week three.
+        </span>
+      </div>
+    </fieldset>
+
+    <!-- 2 -->
+    <fieldset class="apply__set">
+      <legend><span class="apply__n">2</span> What you are applying for</legend>
+      <div class="field">
+        <label for="a-role">The role <span class="req" aria-hidden="true">*</span></label>
+        <select id="a-role" name="applying_for" required>
+          <option value="">Choose one</option>
+          {roleOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+        </select>
+      </div>
+      <div class="apply__row">
+        <div class="field">
+          <label for="a-years">Years in the trade</label>
+          <input id="a-years" name="years_experience" type="number" min="0" max="60" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="a-start">Earliest you could start</label>
+          <input id="a-start" name="earliest_start" type="date" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="a-notice">Notice period</label>
+        <input id="a-notice" name="notice_period" type="text" maxlength="120"
+               placeholder="Two weeks, four weeks, available now" />
+      </div>
+    </fieldset>
+
+    <!-- 3 -->
+    <fieldset class="apply__set">
+      <legend><span class="apply__n">3</span> Tickets and licences</legend>
+      <p class="hint" style="margin:-8px 0 4px">
+        Type what you actually hold. If something has lapsed, say lapsed. Nobody has ever
+        been knocked back here for saying so, and it always comes out anyway.
+      </p>
+      <div class="apply__row">
+        <div class="field">
+          <label for="a-plumb">Queensland plumbing licence</label>
+          <input id="a-plumb" name="qld_plumbing_licence" type="text" maxlength="120"
+                 placeholder="Class, or not yet" />
+        </div>
+        <div class="field">
+          <label for="a-gas">Gas work licence</label>
+          <input id="a-gas" name="gas_work_licence" type="text" maxlength="120"
+                 placeholder="Class, or none" />
+        </div>
+      </div>
+      <div class="checks" role="group" aria-label="Tickets you hold">
+        <label class="check"><input type="checkbox" name="drivers_licence" value="true" /><span>Driver’s licence</span></label>
+        <label class="check"><input type="checkbox" name="white_card" value="true" /><span>White card</span></label>
+        <label class="check"><input type="checkbox" name="backflow_accredited" value="true" /><span>Backflow and TMV accredited</span></label>
+      </div>
+    </fieldset>
+
+    <!-- 4 -->
+    <fieldset class="apply__set">
+      <legend><span class="apply__n">4</span> The work you have done</legend>
+      <div class="field">
+        <span class="apply__label" id="a-work-label">Tick everything you have done for real money</span>
+        <div class="checks checks--wide" role="group" aria-labelledby="a-work-label">
+          {workTypeOptions.map((w) => (
+            <label class="check"><input type="checkbox" name="work_types" value={w} /><span>{w}</span></label>
+          ))}
+        </div>
+      </div>
+      <div class="field">
+        <label for="a-now">Where are you working now?</label>
+        <input id="a-now" name="currently_working" type="text" maxlength="200"
+               placeholder="Company, or between jobs" />
+      </div>
+      <div class="field">
+        <span class="apply__label" id="a-away-label">Are you working away at the moment?</span>
+        <div class="checks" role="radiogroup" aria-labelledby="a-away-label">
+          <label class="check"><input type="radio" name="works_away" value="yes" /><span>Yes, fly-in or drive-in</span></label>
+          <label class="check"><input type="radio" name="works_away" value="no" /><span>No, I am local</span></label>
+          <label class="check"><input type="radio" name="works_away" value="na" /><span>Neither</span></label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 5 -->
+    <fieldset class="apply__set apply__set--key">
+      <legend><span class="apply__n">5</span> The four questions</legend>
+      <p class="hint" style="margin:-8px 0 8px">
+        This is the part that decides it. Write it the way you would say it. Spelling is
+        not the test.
+      </p>
+
+      <div class="field">
+        <label for="a-why">Why do you want to work locally?</label>
+        <textarea id="a-why" name="why_local" rows="4" maxlength="2000"></textarea>
+      </div>
+      <div class="field">
+        <label for="a-proud">What is the job you are proudest of, and what made it hard?</label>
+        <textarea id="a-proud" name="proudest_job" rows="5" maxlength="2000"></textarea>
+      </div>
+      <div class="field">
+        <label for="a-hard">Tell us about a day that went wrong. What did you do about it?</label>
+        <textarea id="a-hard" name="hard_day" rows="5" maxlength="2000"
+                  aria-describedby="a-hard-hint"></textarea>
+        <span class="hint" id="a-hard-hint">
+          Everyone has one. The answer we are looking for is what happened next.
+        </span>
+      </div>
+      <div class="field">
+        <label for="a-cust">Describe a time a customer was upset and you fixed it.</label>
+        <textarea id="a-cust" name="customer_moment" rows="5" maxlength="2000"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- 6 -->
+    <fieldset class="apply__set">
+      <legend><span class="apply__n">6</span> How you found us</legend>
+      <div class="apply__row">
+        <div class="field">
+          <label for="a-heard">Where did you see this?</label>
+          <select id="a-heard" name="heard_about">
+            <option value="">Choose one</option>
+            {heardAboutOptions.map((h) => <option value={h}>{h}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="a-ref">Who sent you?</label>
+          <input id="a-ref" name="referred_by" type="text" maxlength="120"
+                 placeholder="Name, if someone did" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 7 -->
+    <fieldset class="apply__set">
+      <legend><span class="apply__n">7</span> Before you send it</legend>
+      <label class="check check--consent">
+        <input type="checkbox" name="consent" value="true" required />
+        <span>
+          Everything above is true, and Flowtek Services can hold it and contact me about
+          this job. <span class="req" aria-hidden="true">*</span>
+        </span>
+      </label>
+    </fieldset>
+
+    <div class="apply__submit">
+      <button type="submit" class="btn btn--primary btn--block" id="apply-submit">Send my application</button>
+      <p class="hint" style="text-align:center;margin-top:12px">
+        Jason reads it himself. Not a recruiter, not an inbox rule.
+      </p>
+      <p class="apply__err" id="apply-error" role="alert" hidden>
+        That did not go through. Ring <a href={business.phoneHref}>{business.phone}</a> or email
+        <a href={`mailto:${role.email}`}>{role.email}</a> and we will sort it out.
+      </p>
+    </div>
+  </form>
+</div>
+
+<script is:inline define:vars={{ SUPABASE_URL, SUPABASE_KEY }}>
+  (function () {
+    var form = document.getElementById('job-application');
+    if (!form) return;
+    var btn = document.getElementById('apply-submit');
+    var err = document.getElementById('apply-error');
+    var DONE = '/thanks-application/';
+
+    /* Carry the ad's own parameters into the row, so a hire can be traced back
+       to the ad that produced it. Read once, on load. */
+    var qs = new URLSearchParams(location.search);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'fbclid'].forEach(function (k) {
+      var el = form.querySelector('[name="' + k + '"]');
+      if (el) el.value = qs.get(k) || '';
+    });
+    var pp = form.querySelector('[name="page_path"]');
+    if (pp) pp.value = location.pathname;
+
+    function val(name) {
+      var el = form.querySelector('[name="' + name + '"]');
+      var v = el && el.value ? el.value.trim() : '';
+      return v === '' ? null : v;
+    }
+    function checked(name) {
+      var el = form.querySelector('[name="' + name + '"]');
+      return !!(el && el.checked);
+    }
+    function many(name) {
+      return Array.prototype.slice
+        .call(form.querySelectorAll('[name="' + name + '"]:checked'))
+        .map(function (el) { return el.value; });
+    }
+    function radio(name) {
+      var el = form.querySelector('[name="' + name + '"]:checked');
+      if (!el) return null;
+      if (el.value === 'yes') return true;
+      if (el.value === 'no') return false;
+      return null;
+    }
+    function num(name) {
+      var v = val(name);
+      if (v === null) return null;
+      var n = parseInt(v, 10);
+      return isNaN(n) ? null : n;
+    }
+
+    function row() {
+      return {
+        first_name: val('first_name'),
+        last_name: val('last_name'),
+        email: val('email'),
+        phone: val('phone'),
+        suburb: val('suburb'),
+        applying_for: val('applying_for'),
+        qld_plumbing_licence: val('qld_plumbing_licence'),
+        gas_work_licence: val('gas_work_licence'),
+        backflow_accredited: checked('backflow_accredited'),
+        years_experience: num('years_experience'),
+        drivers_licence: checked('drivers_licence'),
+        white_card: checked('white_card'),
+        work_types: many('work_types'),
+        currently_working: val('currently_working'),
+        works_away: radio('works_away'),
+        notice_period: val('notice_period'),
+        earliest_start: val('earliest_start'),
+        why_local: val('why_local'),
+        proudest_job: val('proudest_job'),
+        hard_day: val('hard_day'),
+        customer_moment: val('customer_moment'),
+        heard_about: val('heard_about'),
+        referred_by: val('referred_by'),
+        consent: checked('consent'),
+        status: 'new',
+        utm_source: val('utm_source'),
+        utm_medium: val('utm_medium'),
+        utm_campaign: val('utm_campaign'),
+        utm_content: val('utm_content'),
+        fbclid: val('fbclid'),
+        page_path: val('page_path'),
+        user_agent: navigator.userAgent.slice(0, 500),
+      };
+    }
+
+    /* Path two. Netlify Forms accepts a urlencoded POST carrying form-name. */
+    function toNetlify() {
+      var data = new FormData(form);
+      var body = new URLSearchParams();
+      data.forEach(function (v, k) { body.append(k, v); });
+      return fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      }).then(function (r) {
+        if (!r.ok) throw new Error('netlify ' + r.status);
+      });
+    }
+
+    /* Path one. Supabase. */
+    function toSupabase() {
+      if (!SUPABASE_URL || !SUPABASE_KEY) return Promise.reject(new Error('not configured'));
+      return fetch(SUPABASE_URL + '/rest/v1/job_applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_KEY,
+          Authorization: 'Bearer ' + SUPABASE_KEY,
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify(row()),
+      }).then(function (r) {
+        if (!r.ok) throw new Error('supabase ' + r.status);
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      /* The honeypot. A person never sees this field, so anything in it is a bot. */
+      var hp = form.querySelector('[name="bot-field"]');
+      if (hp && hp.value) { e.preventDefault(); location.href = DONE; return; }
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        e.preventDefault();
+        return;
+      }
+      e.preventDefault();
+      err.hidden = true;
+      btn.disabled = true;
+      btn.textContent = 'Sending';
+
+      toSupabase()
+        /* Belt and braces. Netlify gets a copy either way, so Jason gets an
+           email notification the moment it lands and never has to remember to
+           open a dashboard. A duplicate is a nuisance. A lost applicant is not. */
+        .then(function () { return toNetlify().catch(function () {}); })
+        .catch(function () { return toNetlify(); })
+        .then(function () { location.href = DONE; })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Send my application';
+          err.hidden = false;
+          err.scrollIntoView({ block: 'center' });
+        });
+    });
+  })();
+</script>
