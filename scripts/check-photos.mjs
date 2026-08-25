@@ -50,6 +50,7 @@ for (const [key, p] of Object.entries(photos)) {
   }
   if (!p.alt || p.alt.length < 40) problems.push(`${key}: alt text too thin to be useful`);
   if (!p.caption) problems.push(`${key}: no caption`);
+  if (!p.subject) problems.push(`${key}: no subject, so a gallery cannot tell it apart from a near-identical shot`);
 }
 
 if (problems.length) {

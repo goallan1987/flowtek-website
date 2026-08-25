@@ -31,6 +31,11 @@
  *
  * `alt` is written for a screen reader first and a search engine second.
  * `suburb` is only ever set where the location is actually documented.
+ *
+ * `subject` groups photographs that show the same KIND of thing. Two shots of
+ * the same open bathroom wall are different files with different alt text, so
+ * no text check catches them, but stacked in one gallery they look like a
+ * mistake. A gallery never shows two photographs with the same subject.
  */
 
 export const photos = {
@@ -40,6 +45,7 @@ export const photos = {
     alt: 'A mains pressure electric storage hot water unit installed against a brick wall with new copper pipework, a tempering valve on the outlet and lagged flow and return lines',
     caption:
       'A mains pressure electric storage unit in and connected, tempering valve on the outlet. On this coast the fittings and the valve usually go well before the tank does.',
+    subject: 'hot-water-unit',
     services: ['hot-water'],
   },
   ceilingFitting: {
@@ -47,6 +53,7 @@ export const photos = {
     alt: 'A brass compression fitting being made up on a water line running through the timber roof frame of a house under construction',
     caption:
       'A joint made up in the roof space. Every one of these is a joint that has to still be dry in twenty years.',
+    subject: 'pipe-joint',
     services: ['hot-water', 'renovations'],
   },
 
@@ -56,6 +63,7 @@ export const photos = {
     alt: 'A Flowtek Services plumber in a hi-vis Flowtek shirt laying PVC drainage pipe into a gravel-bedded trench, with a laser level, spirit level and reciprocating saw beside him',
     caption:
       'New drainage laid on a gravel bed, set to grade with a laser level. Fall is the whole job, and it is the part you cannot fix later.',
+    subject: 'drainage-trench',
     services: ['blocked-drains', 'renovations'],
   },
   taranganbaDrainage: {
@@ -63,6 +71,7 @@ export const photos = {
     alt: 'A gravel drainage path running beside a red brick building at Taranganba, with a black drainage pit set into the gravel and an open trench cut along the fence line',
     caption:
       'Taranganba. Drainage pits placed to catch surface water and take it away from the building, on a site where the ground fell back towards the wall.',
+    subject: 'drainage-trench',
     services: ['blocked-drains', 'emergency-plumbing'],
     suburb: 'Taranganba',
   },
@@ -71,6 +80,7 @@ export const photos = {
     alt: "Close view of a plumber's hands tightening a brass compression fitting onto black poly pipe",
     caption:
       'A brass compression fitting going onto poly. Nipped up, not gorilla-tight, or you split the ferrule.',
+    subject: 'pipe-joint',
     services: ['blocked-drains', 'emergency-plumbing'],
   },
   polyFitting: {
@@ -78,6 +88,7 @@ export const photos = {
     alt: 'A plumber threading black poly pipe into a brass fitting, hands close in frame against a plasterboard wall',
     caption:
       'Poly into brass. Push it home properly or it will find you again in a year.',
+    subject: 'pipe-joint',
     services: ['blocked-drains', 'emergency-plumbing'],
   },
 
@@ -87,6 +98,7 @@ export const photos = {
     alt: 'A large two-storey heritage Queenslander under restoration behind site fencing, with a Flowtek Services Plumbing and Gas banner on the hoarding',
     caption:
       'A heritage Queenslander mid-restoration, our banner on the hoarding. Old houses like this are the ones where the plumbing is a genuine puzzle.',
+    subject: 'building',
     services: ['renovations'],
   },
   bathroomRoughIn: {
@@ -94,6 +106,7 @@ export const photos = {
     alt: 'Copper stub-outs set out and fixed to a timber wall stud at a bathroom rough-in, sarking behind and the wall still open',
     caption:
       'Bathroom rough-in, stub-outs set out on the stud. Every tap and every outlet is decided at this stage, months before anyone sees a tile.',
+    subject: 'wall-rough-in',
     services: ['renovations'],
   },
   wallRoughIn: {
@@ -101,6 +114,7 @@ export const photos = {
     alt: 'Pipework being set out and fixed to a timber stud in an open bathroom wall, insulation sarking behind and the outlets capped ready for fit-off',
     caption:
       'Set out and fixed off before the sheeting goes on. Get this wrong and the tiler pays for it, then you do.',
+    subject: 'wall-rough-in',
     services: ['renovations'],
   },
   timberFrameRoughIn: {
@@ -108,6 +122,7 @@ export const photos = {
     alt: 'A Flowtek Services plumber walking through a house under construction, exposed pine timber frame and roof trusses, teal steel window frames and a raw concrete floor',
     caption:
       'A new build at frame stage. We come through before the sheeting goes on and after it comes off.',
+    subject: 'building-frame',
     services: ['renovations'],
   },
   wallChase: {
@@ -115,6 +130,7 @@ export const photos = {
     alt: 'A vertical chase cut into a plastered wall exposing a copper water line and its fixings, ready to be made good',
     caption:
       'A chase cut to get at a copper line. Cutting it is easy. Making the wall good afterwards is the part people remember.',
+    subject: 'wall-rough-in',
     services: ['renovations', 'blocked-drains'],
   },
 
@@ -127,6 +143,7 @@ export const photos = {
     alt: 'Runs of copper and steel services pipework on a commercial ceiling, each line labelled with its own identification tape reading compressed air, vacuum and reverse osmosis water',
     caption:
       'Compressed air, vacuum, reverse osmosis water. On a commercial fitout every line is identified, because the next person to open that ceiling has to know what they are looking at.',
+    subject: 'ceiling-services',
     services: ['gas-fitting', 'backflow-tmv-testing'],
   },
   commercialCeiling: {
@@ -134,6 +151,7 @@ export const photos = {
     alt: 'Copper and steel services pipework and a red fire services main running through a suspended ceiling grid on a commercial fitout, a plumber working below',
     caption:
       'Rough-in above the ceiling grid. All of this disappears behind a ceiling, which is exactly why it has to be right the first time.',
+    subject: 'ceiling-services',
     services: ['gas-fitting', 'renovations'],
   },
   commercialLift: {
@@ -141,6 +159,7 @@ export const photos = {
     alt: 'A Flowtek Services plumber in a yellow hi-vis shirt working from an elevated work platform on services pipework in a high commercial ceiling',
     caption:
       'Up on a platform to reach the ceiling services. Height work has its own ticket and its own paperwork.',
+    subject: 'working-at-height',
     services: ['gas-fitting'],
   },
   commercialTeam: {
@@ -148,6 +167,7 @@ export const photos = {
     alt: 'Two Flowtek Services plumbers in yellow hi-vis shirts on a commercial site, heads together over a detail, working it out between them',
     caption:
       'Two of us on a detail. Most of the hard part of a commercial job is worked out standing up, before anyone cuts anything.',
+    subject: 'people',
     services: ['gas-fitting'],
   },
   brassValve: {
@@ -155,6 +175,7 @@ export const photos = {
     alt: 'A brass isolation valve made up in a run of copper services pipework fixed to a steel ceiling grid, the line labelled with identification tape',
     caption:
       'An isolation valve on a services run. Put them where somebody can actually reach them, not where they were easiest to fit.',
+    subject: 'valve',
     services: ['gas-fitting', 'backflow-tmv-testing'],
   },
   potableValve: {
@@ -162,6 +183,7 @@ export const photos = {
     alt: 'Copper potable water pipework being made up under a green identification label reading potable water, a press tool clamped onto the fitting',
     caption:
       'Potable water, labelled as such. Drinking water and everything else stay apart, and the label is how the next trade knows which is which.',
+    subject: 'valve',
     services: ['backflow-tmv-testing', 'gas-fitting'],
   },
   backflowTest: {
@@ -169,6 +191,7 @@ export const photos = {
     alt: 'Jason Breingan of Flowtek Services testing a backflow prevention device on a brick wall, a differential pressure gauge and red, blue and yellow test hoses connected to the device',
     caption:
       'A backflow device under test. The gauge reads the pressure differential across the valve, and that reading is what goes on the report.',
+    subject: 'valve',
     services: ['backflow-tmv-testing'],
   },
 
@@ -177,6 +200,7 @@ export const photos = {
     file: 'real/flowtek-services-plumbing-gas-van-yeppoon.jpg',
     alt: 'The Flowtek Services van photographed from the side, showing the wordmark, the list of services on the window and the ladder on the roof rack',
     caption: 'The van, and everything on it. If it is parked out the front, the job is on.',
+    subject: 'vehicle',
     services: ['emergency-plumbing'],
   },
   vanBack: {
@@ -184,6 +208,7 @@ export const photos = {
     alt: 'The rear of the Flowtek Services van showing the logo, the services listed, the phone number and the website address',
     caption:
       'Six services on the back door. Commercial and residential, water and gas, all from the one trade.',
+    subject: 'vehicle',
     services: ['emergency-plumbing'],
   },
   flowtekUte: {
@@ -191,24 +216,28 @@ export const photos = {
     alt: 'The white Flowtek Services tray-back ute signwritten with the Flowtek logo and Plumbing, Gas and Poly Welding, parked at a job site',
     caption:
       'The ute. It carries the gear the van cannot, and it goes where the van should not.',
+    subject: 'vehicle',
     services: ['emergency-plumbing'],
   },
   jasonDigging: {
     file: 'real/water-leak-detection-trench-plumber-yeppoon.jpg',
     alt: 'Jason Breingan of Flowtek Services standing in a suburban front yard beside a freshly dug trench with a shovel, in hard Central Queensland sun',
     caption: 'Jason, mid-dig. Most water leaks end with somebody in a hole in the front yard.',
+    subject: 'people',
     services: ['emergency-plumbing'],
   },
   jasonLaughing: {
     file: 'real/jason-breingan-flowtek-services-plumber-yeppoon.jpg',
     alt: 'Jason Breingan of Flowtek Services leaning on a shovel beside an open trench on a suburban verge with palms and a Queenslander house behind him',
     caption: 'We talk to you (and have a laugh). It is on the van for a reason.',
+    subject: 'people',
     services: [],
   },
   jasonHeadshot: {
     file: 'real/jason-breingan-plumber-gas-fitter-yeppoon.jpg',
     alt: 'Jason Breingan, director and lead tradesperson at Flowtek Services, in the charcoal Flowtek polo with the orange collar',
     caption: 'Jason Breingan. He answers the phone, and he does the work.',
+    subject: 'portrait',
     services: [],
     portrait: true,
   },

@@ -37,9 +37,21 @@ interface Props {
 }
 const { items, heading, intro, eyebrow, mist = false, cols: colsProp } = Astro.props;
 
+/* Never show two photographs of the same kind of thing side by side. Two shots
+   of the same open bathroom wall are different files with different alt text,
+   so no text check catches them, but stacked in one gallery they read as a
+   mistake. See the `subject` field in src/data/photos.js. */
+const seenSubject = new Set<string>();
 const resolved = items
   .map((i) => ({ ...i, img: resolve(i.file) }))
-  .filter((i) => i.img);
+  .filter((i) => i.img)
+  .filter((i) => {
+    const sub = (i as any).subject;
+    if (!sub) return true;
+    if (seenSubject.has(sub)) return false;
+    seenSubject.add(sub);
+    return true;
+  });
 
 /* Match the column count to what is actually there, so a two-photo gallery does
    not sit in a three-column grid with a hole on the right. */
