@@ -660,40 +660,32 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
    to be in that corner of the artwork. Measured: white on the scrimmed navy
    holds well past 4.5:1 at every breakpoint.
    ========================================================================== */
+/* ---------- Art hero: the image leads, the words follow ------------------
+   The illustration is a full-bleed band with nothing over it. The headline
+   block sits underneath on flat navy, so contrast is a fixed 11.9:1 and does
+   not depend on what the picture is doing. The scrim this replaced ate most of
+   the artwork and still cropped heads off. --------------------------------- */
+.arthero__band {
+  display: block;
+  width: 100%;
+  background: var(--mist);
+  line-height: 0;
+}
+.arthero__band img {
+  display: block;
+  width: 100%;
+  height: auto;          /* the whole picture, never cropped to fit a text block */
+  max-height: 62vh;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+@media (min-width: 900px) { .arthero__band img { max-height: 58vh; } }
+
 .arthero {
   position: relative;
   background: var(--navy);
   color: var(--white);
   isolation: isolate;
-  overflow: hidden;
-}
-.arthero__media { position: absolute; inset: 0; z-index: 0; }
-.arthero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
-/* Scrim. Heavier on the reading side, lighter over the artwork, so the picture
-   is still legible as a picture.
-
-   These stops are measured, not guessed. The 97th percentile of the brightest
-   pixels under the headline is composited with the scrim at its lightest point
-   inside the text band, and checked against white. The worst of the fifteen
-   heroes lands at 4.68:1, above the 4.5:1 needed for body text.
-
-   Lightened on 25/08/2026 when the artwork was regenerated. The new paintings
-   carry far more detail than the flat ones they replaced, and at the old 0.94
-   the left two thirds of every hero was a navy rectangle. If a future hero is
-   brighter than these, re-run the check before lightening this further. */
-.arthero::after {
-  content: '';
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(30,47,102,0.90) 0%, rgba(30,47,102,0.80) 34%, rgba(30,47,102,0.42) 64%, rgba(30,47,102,0.22) 100%),
-    linear-gradient(180deg, rgba(33,33,33,0.24), rgba(33,33,33,0.08));
-}
-@media (max-width: 780px) {
-  /* On a phone the text needs the whole width, so the scrim goes flat. */
-  .arthero::after {
-    background: linear-gradient(180deg, rgba(30,47,102,0.80) 0%, rgba(30,47,102,0.92) 62%, rgba(30,47,102,0.96) 100%);
-  }
-  .arthero__media img { object-position: 68% 42%; }
 }
 .arthero__inner { position: relative; z-index: 2; padding-block: clamp(44px, 5.5vw, 84px); }
 /* The column is wide enough for three buttons in a row; the prose inside it is
@@ -1023,3 +1015,8 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
    out of their own picture. */
 .bandart--suburb img { aspect-ratio: 16 / 9; }
 @media (min-width: 780px) { .bandart--suburb img { aspect-ratio: 21 / 9; } }
+
+/* Hero with no figure beside it. Used where a full-bleed image already leads
+   the page, so the words get the whole width to themselves. */
+.hero--nofig .hero__inner { grid-template-columns: 1fr; }
+.hero--nofig .lede, .hero--nofig .hero__lede { max-width: 54ch; }

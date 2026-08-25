@@ -10,8 +10,17 @@
  * Photographic proof lives in the page body. See /OS/brand/photography.md and
  * docs/outstanding-proof.md.
  *
- * The illustration sits behind the text with a navy scrim over it, so the
- * headline contrast is carried by the scrim rather than by luck.
+ * THE IMAGE LEADS. The illustration is a full-bleed band across the top of the
+ * page with nothing over it, and the headline sits in its own block underneath.
+ *
+ * It used to be the other way round: the artwork sat behind the text under a
+ * navy scrim. That cost twice. The scrim ate most of the picture, and the crop
+ * needed to fill a text block routinely cut the subject's head off. A hook you
+ * have covered up is not a hook.
+ *
+ * Nothing is laid over the artwork now, so there is no contrast problem to
+ * solve and no scrim to tune. The headline is white on navy, which is a fixed
+ * 11.9:1 whatever the picture happens to be doing.
  */
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
@@ -43,19 +52,19 @@ const {
 
 const smsBody = encodeURIComponent(business.smsBody + smsSuburb);
 ---
-<section class="arthero">
-  <div class="arthero__media">
-    <Image
-      src={img}
-      alt={alt}
-      widths={[900, 1400, 2000]}
-      sizes="100vw"
-      quality={78}
-      loading="eager"
-      fetchpriority="high"
-    />
-  </div>
+<figure class="arthero__band">
+  <Image
+    src={img}
+    alt={alt}
+    widths={[900, 1400, 2000]}
+    sizes="100vw"
+    quality={80}
+    loading="eager"
+    fetchpriority="high"
+  />
+</figure>
 
+<section class="arthero">
   <div class="container arthero__inner">
     <div class="arthero__text">
       {eyebrow && <p class="hero__area">{eyebrow}</p>}

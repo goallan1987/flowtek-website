@@ -67,7 +67,7 @@ const featurePhoto = (() => {
       return ph;
     }
   }
-  return photos.wallRoughIn;
+  return photos.heritageSite;
 })();
 
 const lead = s.leadServices.map((slug: string) => serviceBySlug[slug]);
@@ -143,12 +143,26 @@ const description =
     ]}
   />
 
-  <!-- ================= HERO =================
-       The scene band sits under the hero rather than inside it, because these
-       are wide 21:9 paintings and the hero figure is a tall 3:4 frame. Cropping
-       a landscape into a portrait slot is how the old cards ended up looking
-       chopped in. -->
-  <section class="hero">
+  <!-- ================= THE HOOK =================
+       The scene leads the page, full bleed and uncropped. It used to sit below
+       a hero that put a photograph in a tall 3:4 slot beside the text, which
+       cropped the subject's head off on every suburb page. The picture comes
+       first now and the words follow it. -->
+  {sceneImg && (
+    <figure class="arthero__band">
+      <Image
+        src={sceneImg}
+        alt={scene.alt}
+        widths={[900, 1400, 2000]}
+        sizes="100vw"
+        quality={80}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
+  )}
+
+  <section class="hero hero--nofig">
     <div class="container hero__inner">
       <div>
         <p class="hero__area">
@@ -176,32 +190,9 @@ const description =
         <Promises />
       </div>
 
-      <figure class="hero__figure">
-        <Image
-          src={resolve(heroPhoto.file)}
-          alt={heroPhoto.alt}
-          widths={[420, 640, 900]}
-          sizes="(min-width: 900px) 460px, 92vw"
-          quality={72}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </figure>
     </div>
   </section>
 
-  {sceneImg && (
-    <figure class="bandart bandart--suburb">
-      <Image
-        src={sceneImg}
-        alt={scene.alt}
-        widths={[900, 1400, 2000]}
-        sizes="100vw"
-        quality={80}
-        loading="lazy"
-      />
-    </figure>
-  )}
 
   <!-- ================= THE LOCAL SUBSTANCE ================= -->
   <section class="section" aria-labelledby="local-heading">
@@ -331,13 +322,6 @@ const description =
     </div>
   </section>
 
-  <PhotoGallery
-    items={galleryItems}
-    eyebrow="Real jobs, real photos"
-    heading={`The work ${s.name} rings us about`}
-    intro="Photographs from Flowtek jobs. Not stock, not generated, and captioned only with what is actually in the frame."
-    mist={true}
-  />
 
   <!-- ================= PROOF ================= -->
   <section class="section section--navy on-dark" aria-labelledby="proof-heading">

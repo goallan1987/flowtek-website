@@ -20,7 +20,16 @@
  *   already small and no amount of cropping fixes that.
  * - Five video stills of somebody mid-sentence. A person talking with their
  *   mouth open is never a good photograph, however real the job behind them is.
- * There is a build gate in scripts/check-photos.mjs so neither can come back.
+ * - Eight extreme close-ups of a hand on a fitting. Individually they were fine
+ *   photographs of a fitting. In a gallery they read as ambiguous crops of
+ *   nothing in particular, because a viewer who is not a plumber cannot tell a
+ *   compression fitting from a valve from a stub-out at that magnification.
+ *
+ * THE BAR A PHOTOGRAPH HAS TO CLEAR NOW: a stranger glancing at it for one
+ * second can tell what they are looking at. If it needs the caption to make
+ * sense, it is not carrying its weight.
+ *
+ * There is a build gate in scripts/check-photos.mjs for the measurable half.
  *
  * THE DIVISION OF LABOUR ON THIS SITE
  * - Illustrations SELL. They are the heroes and the service cards.
@@ -48,14 +57,6 @@ export const photos = {
     subject: 'hot-water-unit',
     services: ['hot-water'],
   },
-  ceilingFitting: {
-    file: 'real/water-pipe-ceiling-fitting-renovation-yeppoon.jpg',
-    alt: 'A brass compression fitting being made up on a water line running through the timber roof frame of a house under construction',
-    caption:
-      'A joint made up in the roof space. Every one of these is a joint that has to still be dry in twenty years.',
-    subject: 'pipe-joint',
-    services: ['hot-water', 'renovations'],
-  },
 
   /* ---------------- Drains and drainage ---------------- */
   drainageInstall: {
@@ -75,22 +76,6 @@ export const photos = {
     services: ['blocked-drains', 'emergency-plumbing'],
     suburb: 'Taranganba',
   },
-  compressionFitting: {
-    file: 'real/compression-fitting-plumber-hands-yeppoon.jpg',
-    alt: "Close view of a plumber's hands tightening a brass compression fitting onto black poly pipe",
-    caption:
-      'A brass compression fitting going onto poly. Nipped up, not gorilla-tight, or you split the ferrule.',
-    subject: 'pipe-joint',
-    services: ['blocked-drains', 'emergency-plumbing'],
-  },
-  polyFitting: {
-    file: 'real/poly-pipe-compression-fitting-plumber-hands.jpg',
-    alt: 'A plumber threading black poly pipe into a brass fitting, hands close in frame against a plasterboard wall',
-    caption:
-      'Poly into brass. Push it home properly or it will find you again in a year.',
-    subject: 'pipe-joint',
-    services: ['blocked-drains', 'emergency-plumbing'],
-  },
 
   /* ---------------- Renovations ---------------- */
   heritageSite: {
@@ -101,22 +86,6 @@ export const photos = {
     subject: 'building',
     services: ['renovations'],
   },
-  bathroomRoughIn: {
-    file: 'real/bathroom-rough-in-copper-stub-outs-yeppoon.jpg',
-    alt: 'Copper stub-outs set out and fixed to a timber wall stud at a bathroom rough-in, sarking behind and the wall still open',
-    caption:
-      'Bathroom rough-in, stub-outs set out on the stud. Every tap and every outlet is decided at this stage, months before anyone sees a tile.',
-    subject: 'wall-rough-in',
-    services: ['renovations'],
-  },
-  wallRoughIn: {
-    file: 'real/bathroom-wall-rough-in-pipe-bender-yeppoon.jpg',
-    alt: 'Pipework being set out and fixed to a timber stud in an open bathroom wall, insulation sarking behind and the outlets capped ready for fit-off',
-    caption:
-      'Set out and fixed off before the sheeting goes on. Get this wrong and the tiler pays for it, then you do.',
-    subject: 'wall-rough-in',
-    services: ['renovations'],
-  },
   timberFrameRoughIn: {
     file: 'real/new-home-plumbing-rough-in-timber-frame-yeppoon.jpg',
     alt: 'A Flowtek Services plumber walking through a house under construction, exposed pine timber frame and roof trusses, teal steel window frames and a raw concrete floor',
@@ -124,14 +93,6 @@ export const photos = {
       'A new build at frame stage. We come through before the sheeting goes on and after it comes off.',
     subject: 'building-frame',
     services: ['renovations'],
-  },
-  wallChase: {
-    file: 'real/copper-pipework-wall-chase-commercial-fitout.jpg',
-    alt: 'A vertical chase cut into a plastered wall exposing a copper water line and its fixings, ready to be made good',
-    caption:
-      'A chase cut to get at a copper line. Cutting it is easy. Making the wall good afterwards is the part people remember.',
-    subject: 'wall-rough-in',
-    services: ['renovations', 'blocked-drains'],
   },
 
   /* ---------------- Commercial, gas and services ----------------
@@ -169,22 +130,6 @@ export const photos = {
       'Two of us on a detail. Most of the hard part of a commercial job is worked out standing up, before anyone cuts anything.',
     subject: 'people',
     services: ['gas-fitting'],
-  },
-  brassValve: {
-    file: 'real/commercial-copper-pipework-brass-valve-flowtek.jpg',
-    alt: 'A brass isolation valve made up in a run of copper services pipework fixed to a steel ceiling grid, the line labelled with identification tape',
-    caption:
-      'An isolation valve on a services run. Put them where somebody can actually reach them, not where they were easiest to fit.',
-    subject: 'valve',
-    services: ['gas-fitting', 'backflow-tmv-testing'],
-  },
-  potableValve: {
-    file: 'real/potable-water-services-isolation-valve-flowtek.jpg',
-    alt: 'Copper potable water pipework being made up under a green identification label reading potable water, a press tool clamped onto the fitting',
-    caption:
-      'Potable water, labelled as such. Drinking water and everything else stay apart, and the label is how the next trade knows which is which.',
-    subject: 'valve',
-    services: ['backflow-tmv-testing', 'gas-fitting'],
   },
   backflowTest: {
     file: 'real/backflow-prevention-device-testing-flowtek-yeppoon.jpg',
@@ -248,11 +193,11 @@ export const photos = {
  * services page and the inline photograph inside a service page's long read.
  */
 export const serviceDetailPhoto = {
-  'hot-water': 'ceilingFitting',
+  'hot-water': 'hotWaterInstalled',
   'blocked-drains': 'drainageInstall',
   renovations: 'heritageSite',
   'gas-fitting': 'commercialTeam',
-  'backflow-tmv-testing': 'potableValve',
+  'backflow-tmv-testing': 'commercialServices',
   'emergency-plumbing': 'vanSide',
 };
 
