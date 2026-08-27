@@ -232,6 +232,10 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .header__bar {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--sp-4); min-height: 76px;
+  /* The bar must never wrap. A nav that drops to a second row makes the sticky
+     header taller and shoves the whole page down on every scroll. If space ever
+     does run out the nav shrinks instead, and the links stay on one line. */
+  flex-wrap: nowrap;
 }
 .header__logo { display: flex; align-items: center; flex: none; padding-block: var(--sp-2); }
 /* The master artwork is 151 x 87. Never scaled above native, per logo-rules.md
@@ -239,29 +243,44 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
    14px wordmark caps stay legible. */
 .header__logo img { width: 104px; height: 60px; object-fit: contain; }
 .nav { display: none; }
+/* Eight items now, and eight will not fit at 1180 on the comfortable spacing
+   the seven had. Rather than push the whole nav behind the menu button until
+   1280, which would cost every 13 inch laptop its navigation, the compact tier
+   buys the room back: tighter padding, tighter tracking and a slightly smaller
+   logo. The comfortable spacing returns at 1360 where there is room for it. */
 @media (min-width: 1180px) {
-  .nav { display: flex; align-items: center; gap: 2px; }
-  .nav__link { padding: 12px 10px; }
+  .nav { display: flex; align-items: center; gap: 0; flex-wrap: nowrap; }
+  .nav__link { padding: 12px 6px; letter-spacing: 0.02em; }
+  .header__logo img { width: 110px; height: 63px; }
+  .header__bar { gap: var(--sp-2); }
+}
+@media (min-width: 1300px) {
+  .nav { gap: 2px; }
+  .nav__link { padding: 12px 10px; letter-spacing: 0.03em; }
   .header__logo img { width: 121px; height: 70px; }
 }
-@media (min-width: 1360px) {
+@media (min-width: 1440px) {
   .header__logo img { width: 138px; height: 80px; }
   .nav { gap: var(--sp-1); }
-  .nav__link { padding: 12px 13px; }
+  .nav__link { padding: 12px 13px; letter-spacing: 0.04em; }
 }
 .nav__link {
   font-family: var(--font-heading); font-weight: 700; font-size: 0.875rem;
   letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none;
   color: var(--ink); padding: 12px 13px; border-radius: var(--r-md);
   display: inline-flex; align-items: center; min-height: 48px;
-  /* Seven items now. A nav link that wraps to two lines makes the whole header
+  /* Eight items. A nav link that wraps to two lines makes the whole header
      taller and pushes the page down, so they never wrap: the nav goes to the
      menu button instead. */
   white-space: nowrap;
 }
 .nav__link:hover { background: var(--mist); color: var(--navy); }
 .nav__link[aria-current='page'] { color: var(--navy); box-shadow: inset 0 -3px 0 var(--orange); }
-.header__actions { display: flex; align-items: center; gap: var(--sp-3); }
+/* The actions never wrap or shrink. Tightening the bar for the eighth nav item
+   squeezed these and broke the phone number across two lines, which is worse
+   than anything it bought. They hold their width; the nav yields first. */
+.header__actions { display: flex; align-items: center; gap: var(--sp-3); flex: none; }
+.header__phone, .header__cta { white-space: nowrap; flex: none; }
 .header__phone {
   display: none; font-family: var(--font-heading); font-weight: 700;
   font-size: 1.0625rem; color: var(--ink); text-decoration: none;
