@@ -337,7 +337,8 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
   border-bottom: 0;
   color: var(--orange-deep);
 }
-.mobile-nav__join a::after { content: ' \2192'; }
+.mobile-nav__join a { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.mobile-nav__join a::after { content: '\2192'; font-size: 1.1em; line-height: 1; }
 .mobile-nav__join a:hover { color: var(--navy); }
 
 /* ---------- Sticky action bar. The primary action, always on a phone. ---------- */
