@@ -295,6 +295,51 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 .mobile-nav__sub a { padding-left: var(--sp-5); font-size: 0.9375rem; text-transform: none; letter-spacing: 0; color: var(--slate); }
 .mobile-nav__sub a:hover { color: var(--navy); }
 
+/* The panel scrolls and clears the fixed action bar, so a long menu on a short
+   phone can always be scrolled to the end. Projects and the careers link used
+   to sit underneath the bar with no way to reach them. */
+.mobile-nav[data-open='true'] {
+  max-height: calc(100dvh - 96px - 60px - env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: var(--sp-4);
+}
+
+/* Services group. Native <details>, closed by default. */
+.mobile-nav__group summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  list-style: none; cursor: pointer;
+  padding: var(--sp-4) 0; min-height: 44px;
+  border-bottom: var(--border-hairline);
+  font-family: var(--font-heading); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.mobile-nav__group summary::-webkit-details-marker { display: none; }
+.mobile-nav__group summary:hover { color: var(--navy); }
+.mobile-nav__group summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+/* Chevron drawn in CSS so it needs no icon and rotates with the state. */
+.mobile-nav__chev {
+  width: 10px; height: 10px; flex: none;
+  border-right: 2px solid var(--orange-deep);
+  border-bottom: 2px solid var(--orange-deep);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 0.18s ease;
+}
+.mobile-nav__group[open] .mobile-nav__chev { transform: rotate(-135deg) translate(-2px, -2px); }
+@media (prefers-reduced-motion: reduce) { .mobile-nav__chev { transition: none; } }
+
+/* Join the team. A different job from the rest of the menu, so it looks it. */
+.mobile-nav__join { margin-top: var(--sp-4); }
+.mobile-nav__join a {
+  border-bottom: 0;
+  color: var(--orange-deep);
+}
+.mobile-nav__join a::after { content: ' \2192'; }
+.mobile-nav__join a:hover { color: var(--navy); }
+
 /* ---------- Sticky action bar. The primary action, always on a phone. ---------- */
 .action-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 120;

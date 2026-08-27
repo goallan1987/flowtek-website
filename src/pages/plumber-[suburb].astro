@@ -12,7 +12,7 @@ import PhotoGallery from '../components/PhotoGallery.astro';
 import { photos, photosForService } from '../data/photos.js';
 import { serviceArt } from '../data/service-art.js';
 import { suburbArt } from '../data/suburb-art.js';
-import { business, serviceBySlug } from '../data/business.js';
+import { business, smsText, serviceBySlug } from '../data/business.js';
 import { suburbs, nearbyPages } from '../data/suburbs.js';
 
 
@@ -82,7 +82,7 @@ const cardPic = (slug: string) => {
 };
 
 const neighbours = nearbyPages(s);
-const smsBody = encodeURIComponent(business.smsBody + s.name);
+const smsBody = encodeURIComponent(smsText(s.name));
 
 /* Title kept under 60 characters and description under 160, so neither gets
    truncated in the result. Both carry "plumber {suburb}" and "plumbing", which

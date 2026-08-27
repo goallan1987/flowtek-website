@@ -25,7 +25,7 @@ export const business = {
   phone: '0448 726 474',
   phoneHref: 'tel:+61448726474',
   smsHref: 'sms:+61448726474',
-  smsBody: 'Hi Flowtek, I need a plumber. My suburb is ',
+  smsBody: 'Hi Jason, I need a plumber for ',
   email: null,                // TBC, register row 3
   street: null,               // TBC, register row 3
   suburb: 'Yeppoon',
@@ -52,6 +52,23 @@ export const business = {
     'We talk to you (and have a laugh).',
   ],
 };
+
+/**
+ * The text that prefills a text message.
+ *
+ * The template ends on "for", so it only reads as a sentence when a suburb is
+ * appended. The footer and the contact page have no suburb to append, and
+ * "I need a plumber for " left dangling in somebody's message app is worse than
+ * no prefill at all. So those get a complete sentence instead.
+ *
+ * It says Jason rather than Flowtek deliberately. He answers the phone, the
+ * about page says so, and a text that opens with a name is the same promise as
+ * "we talk to you" on the van.
+ */
+export function smsText(suburb) {
+  const name = (suburb ?? '').trim();
+  return name ? `${business.smsBody}${name}` : 'Hi Jason, I need a plumber.';
+}
 
 export const services = [
   {

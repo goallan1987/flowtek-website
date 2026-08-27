@@ -1,10 +1,10 @@
 ---
 import Icon from './Icon.astro';
-import { business } from '../data/business.js';
+import { business, smsText } from '../data/business.js';
 
 interface Props { suburb?: string }
 const { suburb } = Astro.props;
-const body = encodeURIComponent(business.smsBody + (suburb ?? ''));
+const body = encodeURIComponent(smsText(suburb));
 ---
 {/* Fixed on phones only. The call button is the primary action and it never
     scrolls away. 60px tall, well over the 44px minimum tap target. */}

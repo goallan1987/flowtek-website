@@ -25,7 +25,7 @@
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import Promises from './Promises.astro';
-import { business } from '../data/business.js';
+import { business, smsText } from '../data/business.js';
 
 interface Props {
   img: ImageMetadata;
@@ -50,7 +50,7 @@ const {
   h1 = true,
 } = Astro.props;
 
-const smsBody = encodeURIComponent(business.smsBody + smsSuburb);
+const smsBody = encodeURIComponent(smsText(smsSuburb));
 ---
 <figure class="arthero__band">
   <Image

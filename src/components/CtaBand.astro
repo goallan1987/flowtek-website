@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { business } from '../data/business.js';
+import { business, smsText } from '../data/business.js';
 
 interface Props { heading?: string; body?: string; suburb?: string }
 const {
@@ -8,7 +8,7 @@ const {
   body = business.emergencyLine,
   suburb = '',
 } = Astro.props;
-const smsBody = encodeURIComponent(business.smsBody + suburb);
+const smsBody = encodeURIComponent(smsText(suburb));
 ---
 <section class="cta-band on-dark">
   <div class="container cta-band__inner">

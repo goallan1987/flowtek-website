@@ -47,15 +47,33 @@ const isCurrent = (href: string) =>
     </div>
   </div>
 
+  <!-- Mobile navigation.
+
+       Services is a <details> and it starts CLOSED. Open, the six service links
+       pushed everything below them past the bottom of the screen and behind the
+       fixed action bar, so Projects and the careers link were unreachable. It is
+       a native <details> rather than a scripted accordion so it still opens with
+       no JavaScript and announces its own state to a screen reader.
+
+       The panel scrolls too, and clears the action bar, so a long menu on a
+       short phone can always be got to the end of. -->
   <div class="mobile-nav" id="mobile-nav" data-open="false">
     <div class="container">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/services/">Services</a></li>
       </ul>
-      <ul class="mobile-nav__sub">
-        {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
-      </ul>
+
+      <details class="mobile-nav__group">
+        <summary>
+          <span>Services</span>
+          <span class="mobile-nav__chev" aria-hidden="true"></span>
+        </summary>
+        <ul class="mobile-nav__sub">
+          <li><a href="/services/">All six services</a></li>
+          {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
+        </ul>
+      </details>
+
       <ul>
         <li><a href="/commercial/">Commercial</a></li>
         <li><a href="/areas-we-serve/">Areas we serve</a></li>
@@ -63,7 +81,10 @@ const isCurrent = (href: string) =>
         <li><a href="/projects/">Projects</a></li>
         <li><a href="/about/">About us</a></li>
         <li><a href="/contact/">Contact us</a></li>
-        <li><a href="/careers/plumbing-jobs-yeppoon/">Plumbing jobs</a></li>
+      </ul>
+
+      <ul class="mobile-nav__join">
+        <li><a href="/careers/plumbing-jobs-yeppoon/">Join the team</a></li>
       </ul>
     </div>
   </div>

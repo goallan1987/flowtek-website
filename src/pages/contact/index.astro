@@ -4,7 +4,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Icon from '../../components/Icon.astro';
 import QuoteForm from '../../components/QuoteForm.astro';
 import ServiceCards from '../../components/ServiceCards.astro';
-import { business, emergencySteps } from '../../data/business.js';
+import { business, smsText, emergencySteps } from '../../data/business.js';
 import ArtHero from '../../components/ArtHero.astro';
 import heroArt from '../../assets/hero/contact-flowtek-services-plumber-yeppoon.jpg';
 import PhotoGallery from '../../components/PhotoGallery.astro';
@@ -43,7 +43,7 @@ import { photos } from '../../data/photos.js';
           <li>
             <span class="k">Text message</span>
             <span class="v">
-              <a href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}>
+              <a href={`${business.smsHref}?&body=${encodeURIComponent(smsText())}`}>
                 Text us your suburb and the problem
               </a>
             </span>

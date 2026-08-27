@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { business, services } from '../data/business.js';
+import { business, smsText, services } from '../data/business.js';
 import { byRank } from '../data/suburbs.js';
 
 const topSuburbs = byRank.slice(0, 10);
@@ -24,7 +24,7 @@ const year = 2026;
         </a>
       </p>
       <p style="font-size:.875rem;margin-top:8px">
-        <a href={`${business.smsHref}?&body=${encodeURIComponent(business.smsBody)}`}>Send us a text instead</a>
+        <a href={`${business.smsHref}?&body=${encodeURIComponent(smsText())}`}>Send us a text instead</a>
       </p>
     </div>
 
