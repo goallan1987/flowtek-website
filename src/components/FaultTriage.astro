@@ -1,0 +1,90 @@
+---
+/**
+ * WHICH ONE IS YOURS?
+ *
+ * Sorts the visitor into a lane in about three seconds and gives each lane a
+ * DIFFERENT action, because the three of them do not want the same thing.
+ *
+ * The emergency lane gets a phone number and nothing else, because somebody
+ * standing in water is not going to fill in a form. The considered buyer gets
+ * the text-a-photo route, because they are comparing and not panicking. The
+ * compliance lane gets the form, because a body corporate manager wants a
+ * written trail.
+ *
+ * No response time is promised in any lane. The emergency line is quoted from
+ * business.js verbatim, with the business hours qualifier attached, which is
+ * voice.md rule 6 and CLAUDE.md hard rule 3.
+ */
+import Icon from './Icon.astro';
+import { business, smsText } from '../data/business.js';
+
+interface Props { suburb?: string; loc?: string; formHref?: string }
+const { suburb = '', loc = 'after-fault', formHref = '#quote' } = Astro.props;
+const smsBody = encodeURIComponent(smsText(suburb));
+const where = suburb ? ` in ${suburb}` : '';
+
+const lanes = [
+  {
+    icon: 'clock',
+    tag: 'Happening now',
+    h: 'Water is going somewhere it should not',
+    p: 'Burst pipe, a leak you cannot stop, or you can smell gas. Turn the water off at the meter if you can, then ring.',
+    cta: 'Call now',
+    href: business.phoneHref,
+    kind: 'call' as const,
+    primary: true,
+  },
+  {
+    icon: 'drop',
+    tag: 'Not urgent',
+    h: 'Something has stopped working properly',
+    p: 'No hot water, a drain that is slow, a tap that will not stop. It can wait a day, but it is not going to fix itself.',
+    cta: 'Text a photo',
+    href: `${business.smsHref}?&body=${smsBody}`,
+    kind: 'sms' as const,
+    primary: false,
+  },
+  {
+    icon: 'shield',
+    tag: 'Planned work',
+    h: 'A renovation, a test, or a job you are getting quoted',
+    p: 'Bathroom or kitchen, a gas appliance going in, or a backflow or TMV test that is due. Send the details and we will come and look.',
+    cta: 'Send the details',
+    href: formHref,
+    kind: 'form' as const,
+    primary: false,
+  },
+];
+---
+<section class="section" aria-labelledby="triage">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Start here</span>
+      <h2 id="triage">Which one is yours{where}?</h2>
+    </div>
+
+    <div class="grid grid--3">
+      {lanes.map((l) => (
+        <article class:list={['card', 'triage', l.primary && 'triage--now']}>
+          <span class="triage__tag">
+            <Icon name={l.icon} size={16} />{l.tag}
+          </span>
+          <h3>{l.h}</h3>
+          <p>{l.p}</p>
+          <a
+            class:list={['btn', l.primary ? 'btn--primary' : 'btn--ghost', 'triage__cta']}
+            href={l.href}
+            data-cta={l.kind}
+            data-cta-loc={loc}
+          >
+            {l.kind === 'call' && <Icon name="phone" size={18} />}
+            {l.kind === 'sms' && <Icon name="message" size={18} />}
+            {l.cta}
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <p class="triage__hours">{business.emergencyLine}</p>
+  </div>
+</section>

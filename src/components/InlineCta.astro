@@ -1,0 +1,63 @@
+---
+/**
+ * MID-PAGE INTERRUPTION.
+ *
+ * The suburb page had one stretch of 10,530px, thirteen phone screens, with no
+ * conversion surface in it except the 60px sticky bar. This sits at the point
+ * where the reader's objection has just been answered, which is where a person
+ * is most likely to act and least likely to be asked to.
+ *
+ * The review beside it comes from the short, house-style-clean pool. A review is
+ * NEVER shortened to fit, so if nothing fits, no quote renders.
+ */
+import Icon from './Icon.astro';
+import { business, smsText } from '../data/business.js';
+import { pickReviews } from '../data/reviews.js';
+
+interface Props {
+  heading: string;
+  body?: string;
+  suburb?: string;
+  loc?: string;
+  quoteSeed?: string;
+  quoteTags?: string[];
+}
+const {
+  heading,
+  body,
+  suburb = '',
+  loc = 'after-services',
+  quoteSeed = 'inline',
+  quoteTags = [],
+} = Astro.props;
+
+const smsBody = encodeURIComponent(smsText(suburb));
+/* Short enough to read at a glance without being cut. Nothing is ever trimmed
+   to make it fit: it either fits whole or it does not appear. */
+const quote = pickReviews(quoteSeed, 6, quoteTags).find((r) => r.text.length <= 150) ?? null;
+---
+<section class="section section--ink on-dark inlinecta" aria-labelledby={`ic-${quoteSeed}`}>
+  <div class="container">
+    <div class="inlinecta__grid">
+      <div>
+        <h2 id={`ic-${quoteSeed}`}>{heading}</h2>
+        {body && <p class="inlinecta__body">{body}</p>}
+        <div class="btn-row" style="margin-top:24px">
+          <a class="btn btn--primary" href={business.phoneHref} data-cta="call" data-cta-loc={loc}>
+            <Icon name="phone" size={18} />Call {business.phone}
+          </a>
+          <a class="btn btn--ghost-light" href={`${business.smsHref}?&body=${smsBody}`} data-cta="sms" data-cta-loc={loc}>
+            <Icon name="message" size={18} />Text a photo
+          </a>
+        </div>
+      </div>
+
+      {quote && (
+        <figure class="inlinecta__quote">
+          <blockquote><p>{quote.text}</p></blockquote>
+          <figcaption>{quote.name}<span>Google review, {quote.date}</span></figcaption>
+        </figure>
+      )}
+    </div>
+  </div>
+</section>

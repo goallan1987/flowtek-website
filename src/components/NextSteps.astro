@@ -1,0 +1,61 @@
+---
+/**
+ * WHAT HAPPENS WHEN YOU RING.
+ *
+ * The risk reversal, and the single biggest anxiety reducer available to this
+ * business. Nobody had written it. A visitor deciding whether to ring a trade
+ * they have never met is not asking "are you excellent", they are asking "what
+ * am I letting myself in for".
+ *
+ * Every step is a BEHAVIOUR A CUSTOMER COULD CHECK THE NEXT DAY, which is
+ * voice.md rule 2. Nothing here is a promise about quality, a response time or
+ * a guarantee, because none of those are confirmed.
+ *
+ * Step 3 is the ONLY price-adjacent sentence allowed on a page. Said once it is
+ * honest. Said three times it is a man rehearsing a defence.
+ */
+import Icon from './Icon.astro';
+import { business, smsText } from '../data/business.js';
+
+interface Props { suburb?: string; loc?: string; heading?: string }
+const { suburb = '', loc = 'after-access', heading = 'What happens when you ring' } = Astro.props;
+const smsBody = encodeURIComponent(smsText(suburb));
+
+/* answeredByJason is deliberately absent. business.js records that Jason
+   answers the phone as a COMMENT, not as a confirmed fact, and "you get Jason"
+   is a claim about staffing we cannot stand behind. Register row 12. */
+const steps = [
+  { n: '01', k: 'You ring or you text', v: 'Tell us the suburb and what is happening. A photo of the unit or the leak tells us more than a paragraph does.' },
+  { n: '02', k: 'We work out what it needs', v: 'Sometimes that is a question or two on the phone. Sometimes it is obvious from the photo.' },
+  { n: '03', k: 'We come and look', v: 'Nobody prices a job properly down a phone line, so we come and look before anyone talks about money.' },
+  { n: '04', k: 'You get told what it involves', v: 'What the job is, what it takes and what happens if you leave it. Then it is your call.' },
+];
+---
+<section class="section section--mist" aria-labelledby="next-steps">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">No mystery</span>
+      <h2 id="next-steps">{heading}</h2>
+      <p>Four things, in order. You could check every one of them the next day.</p>
+    </div>
+
+    <ol class="nextsteps">
+      {steps.map((s) => (
+        <li>
+          <span class="nextsteps__n tnum" aria-hidden="true">{s.n}</span>
+          <h3>{s.k}</h3>
+          <p>{s.v}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="btn-row" style="margin-top:32px">
+      <a class="btn btn--primary" href={business.phoneHref} data-cta="call" data-cta-loc={loc}>
+        <Icon name="phone" size={18} />Call {business.phone}
+      </a>
+      <a class="btn btn--ghost" href={`${business.smsHref}?&body=${smsBody}`} data-cta="sms" data-cta-loc={loc}>
+        <Icon name="message" size={18} />Text a photo
+      </a>
+    </div>
+  </div>
+</section>

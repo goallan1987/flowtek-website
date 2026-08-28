@@ -208,12 +208,32 @@ export const reviews = [
 
 export const reviewById = Object.fromEntries(reviews.map((r) => [r.id, r]));
 
+/**
+ * Six of the twenty-six reviews contain an emoji or a long dash, both of which
+ * CLAUDE.md bans and neither of which may be removed from a customer's words.
+ *
+ * THE RESOLUTION IS SELECTION, NOT ALTERATION.
+ * A review is evidence. Editing it to suit a house style rule would be editing
+ * a testimonial, which is a far worse fault than a stray character. So nothing
+ * is ever rewritten. Instead the curated three-up slots on service and suburb
+ * pages PREFER the clean twenty, and fall back to the rest only if there are
+ * not enough, so those pages stay typographically clean.
+ *
+ * /reviews/ is deliberately exempt and shows all twenty-six. That page's whole
+ * promise is "copied exactly, nothing shortened, tidied or corrected", and
+ * quietly dropping six would make the sentence beside them untrue.
+ */
+const HOUSE_STYLE_CLEAN = (r) =>
+  !/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(r.text) && !r.text.includes('\u2014');
+
 /** Deterministic per-page selection so no two pages carry the same three. */
 export function pickReviews(seed, count = 3, preferTags = []) {
+  const clean = reviews.filter(HOUSE_STYLE_CLEAN);
+  const base = clean.length >= count ? clean : reviews;
   const preferred = preferTags.length
-    ? reviews.filter((r) => r.tags.some((t) => preferTags.includes(t)))
+    ? base.filter((r) => r.tags.some((t) => preferTags.includes(t)))
     : [];
-  const rest = reviews.filter((r) => !preferred.includes(r));
+  const rest = base.filter((r) => !preferred.includes(r));
   const pool = [...preferred, ...rest];
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;

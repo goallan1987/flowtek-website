@@ -1,0 +1,40 @@
+---
+/**
+ * FOUR CHECKABLE STATEMENTS, directly under the hero.
+ *
+ * Every one is a fact from business.js or a behaviour a customer could verify
+ * the next day. There is deliberately no fifth: no review count, no star
+ * rating, no years in business, no jobs completed. None of those are confirmed
+ * and CLAUDE.md hard rule 1 forbids inventing them.
+ *
+ * Line two is the distance line where a suburb is known, because "3 km from our
+ * base" is a real fact that answers "are you actually near me".
+ */
+import Icon from './Icon.astro';
+import { business } from '../data/business.js';
+
+interface Props { suburb?: string; km?: number | null; base?: boolean }
+const { suburb = '', km = null, base = false } = Astro.props;
+
+const distance = base
+  ? `${suburb} is where we work from`
+  : km
+    ? `${km} km from our Yeppoon base`
+    : 'Based in Yeppoon, on the road most days';
+
+const items = [
+  { icon: 'shield', t: business.credential },
+  { icon: 'pin', t: distance },
+  { icon: 'wrench', t: 'Water and gas from the one trade' },
+  { icon: 'tick', t: 'We clean up before we leave' },
+];
+---
+<section class="truststrip" aria-label="What you can count on">
+  <div class="container">
+    <ul>
+      {items.map((i) => (
+        <li><Icon name={i.icon} size={17} /><span>{i.t}</span></li>
+      ))}
+    </ul>
+  </div>
+</section>

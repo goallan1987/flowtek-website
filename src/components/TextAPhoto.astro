@@ -1,0 +1,44 @@
+---
+/**
+ * NOT SURE WHAT YOU ARE LOOKING AT?
+ *
+ * A photograph of a leaking unit tells a plumber the make, the age, the type of
+ * connection and often the actual fault. It is the single most useful thing a
+ * customer can send and almost no trade site asks for it.
+ *
+ * This also converts the reader who will not ring. Plenty of people will send a
+ * picture at nine at night who would never make a phone call.
+ */
+import Icon from './Icon.astro';
+import { business, smsText } from '../data/business.js';
+
+interface Props { suburb?: string; loc?: string }
+const { suburb = '', loc = 'after-access' } = Astro.props;
+const smsBody = encodeURIComponent(smsText(suburb));
+---
+<section class="section" aria-labelledby="text-photo">
+  <div class="container container--narrow">
+    <div class="photobid">
+      <div>
+        <span class="eyebrow">Quicker than explaining it</span>
+        <h2 id="text-photo">Not sure what you're looking at?</h2>
+        <p>
+          Take a photo of it and text that instead. The plate on a hot water unit, the
+          fitting that is dripping, the wet patch in the yard. It tells us the make, the
+          age and usually the fault, which saves you describing it and saves us guessing.
+        </p>
+        <p class="photobid__note">
+          Texts get read between jobs. If it's an emergency, ring instead.
+        </p>
+        <div class="btn-row" style="margin-top:24px">
+          <a class="btn btn--primary" href={`${business.smsHref}?&body=${smsBody}`} data-cta="sms" data-cta-loc={loc}>
+            <Icon name="message" size={18} />Text a photo
+          </a>
+          <a class="btn btn--ghost" href={business.phoneHref} data-cta="call" data-cta-loc={loc}>
+            <Icon name="phone" size={18} />Call instead
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

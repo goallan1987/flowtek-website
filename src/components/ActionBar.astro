@@ -6,15 +6,28 @@ interface Props { suburb?: string }
 const { suburb } = Astro.props;
 const body = encodeURIComponent(smsText(suburb));
 ---
-{/* Fixed on phones only. The call button is the primary action and it never
-    scrolls away. 60px tall, well over the 44px minimum tap target. */}
-<div class="action-bar">
-  <a class="action-bar__call" href={business.phoneHref}>
+{/* Fixed on phones only. The call is the primary action and it never scrolls
+    away. 60px tall, well over the 44px minimum tap target.
+
+    The call side is weighted 1.7fr against 1fr, because the two are not equal
+    in value and were previously given near-equal width.
+
+    "Text a photo" replaces "Text us". It is the same tap, but it tells the
+    reader what to send, and a photo of a leaking unit is the single most useful
+    thing a customer can give a plumber. */}
+<nav class="action-bar" aria-label="Call or text Flowtek">
+  <a class="action-bar__call" href={business.phoneHref} data-cta="call" data-cta-loc="sticky-bar">
     <Icon name="phone" size={20} />
-    <span>Call {business.phone}</span>
+    <span class="action-bar__full">Call {business.phone}</span>
+    <span class="action-bar__short">Call us</span>
   </a>
-  <a class="action-bar__sms" href={`${business.smsHref}?&body=${body}`}>
+  <a
+    class="action-bar__sms"
+    href={`${business.smsHref}?&body=${body}`}
+    data-cta="sms"
+    data-cta-loc="sticky-bar"
+  >
     <Icon name="message" size={20} />
-    <span>Text us</span>
+    <span>Text a photo</span>
   </a>
-</div>
+</nav>

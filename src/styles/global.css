@@ -363,7 +363,9 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 /* ---------- Sticky action bar. The primary action, always on a phone. ---------- */
 .action-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 120;
-  display: grid; grid-template-columns: 1.4fr 1fr;
+  /* Weighted toward the call, because the two actions are not equal in value
+     and used to be given near-equal width. */
+  display: grid; grid-template-columns: 1.7fr 1fr;
   background: var(--ink);
   padding-bottom: env(safe-area-inset-bottom);
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.28);
@@ -376,7 +378,22 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
 }
 .action-bar__call { background: var(--orange); color: var(--ink); }
 .action-bar__call:hover { background: var(--orange-deep); color: var(--ink); }
-.action-bar__sms { background: var(--ink); color: var(--white); border-left: 1px solid rgba(255,255,255,0.18); }
+.action-bar__sms {
+  background: var(--ink); color: var(--white);
+  /* 0.18 alpha on --ink is invisible. The divider is the only thing telling a
+     thumb where one target ends and the next begins. */
+  border-left: 1px solid rgba(255, 255, 255, 0.32);
+}
+/* Visible press feedback. A tel: link gives no loading state, so without this
+   a slow handoff to the dialler reads as a dead button and gets tapped twice. */
+.action-bar a:active { filter: brightness(0.88); }
+/* The full number wraps below about 360px and takes the bar to 75px against a
+   60px body reserve, which puts the footer under it. */
+.action-bar__short { display: none; }
+@media (max-width: 359px) {
+  .action-bar__full { display: none; }
+  .action-bar__short { display: inline; }
+}
 .action-bar__sms:hover { color: var(--orange); }
 @media (min-width: 1180px) { .action-bar { display: none; } }
 @media (max-width: 1179px) { body { padding-bottom: 60px; } }
@@ -1091,3 +1108,127 @@ strong, b { font-weight: 400; font-family: var(--font-heading); font-weight: 700
    the page, so the words get the whole width to themselves. */
 .hero--nofig .hero__inner { grid-template-columns: 1fr; }
 .hero--nofig .lede, .hero--nofig .hero__lede { max-width: 54ch; }
+
+/* ==========================================================================
+   CONVERSION LAYER
+   Added 28/08/2026 after the expert panel review. Every rule below exists to
+   remove a measured obstacle between a visitor and a phone call.
+   ========================================================================== */
+
+:root { --bar-h: 60px; }
+
+/* The sticky bar is 60px PLUS the home indicator. A flat 60px reserve left the
+   last 34px of the footer under the bar on every iPhone with a home indicator. */
+@media (max-width: 1179px) {
+  body { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom)); }
+}
+
+/* Every in-page anchor parked its heading under the 77px sticky header. */
+main [id] { scroll-margin-top: 92px; }
+
+/* ON A PHONE THE WORDS GO FIRST.
+   The template renders the illustration band before the hero, because the brief
+   was to lead with a visual hook. That is right on a desktop, where both fit.
+   On a phone the band eats the fold and pushes the Call button down behind the
+   fixed action bar, so the one thing the page exists to do is the one thing you
+   cannot see. Order is flipped below 900px only: the desktop design is
+   unchanged, the phone gets the headline and the button first and the picture
+   immediately after. */
+@media (max-width: 899px) {
+  main { display: flex; flex-direction: column; }
+  main > .crumbs { order: 0; }
+  main > .hero, main > .arthero { order: 1; }
+  main > .arthero__band { order: 2; }
+  main > .truststrip { order: 3; }
+  main > * { order: 4; }
+}
+
+/* Never sit the bar over the Send button with the keyboard up. */
+body:has(.form :is(input, select, textarea):focus) .action-bar { display: none; }
+
+/* On a phone the contact details stack above the form fields, so somebody who
+   would rather ring than type finds the number before they start typing. */
+@media (max-width: 879px) { #quote .split > :last-child { order: -1; } }
+
+@media (max-width: 700px) { .field textarea { min-height: 96px; } }
+
+/* The careers form marks a bad field. The form that earns the money did not. */
+.form input:user-invalid,
+.form textarea:user-invalid { border-color: var(--orange-deep); }
+
+/* ---------- Trust strip ------------------------------------------------- */
+.truststrip { background: var(--mist); border-bottom: var(--border-hairline); }
+.truststrip ul {
+  list-style: none; display: grid; gap: var(--sp-3);
+  padding-block: var(--sp-4);
+}
+.truststrip li {
+  display: flex; align-items: center; gap: var(--sp-3);
+  font-size: 0.9375rem; color: var(--ink);
+}
+.truststrip svg { color: var(--orange-deep); flex: none; }
+@media (min-width: 620px) { .truststrip ul { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1060px) { .truststrip ul { grid-template-columns: repeat(4, 1fr); } }
+
+/* ---------- Fault triage ------------------------------------------------ */
+.triage { gap: 0; }
+.triage__tag {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--slate); margin-bottom: var(--sp-3);
+}
+.triage--now { border-top-color: var(--orange-deep); }
+.triage--now .triage__tag { color: var(--orange-deep); }
+.triage h3 { font-size: 1.0625rem; }
+.triage__cta { margin-top: auto; align-self: flex-start; }
+.triage__hours {
+  margin-top: var(--sp-5); font-size: 0.875rem; color: var(--slate);
+  max-width: 60ch;
+}
+
+/* ---------- What happens when you ring ---------------------------------- */
+.nextsteps { list-style: none; display: grid; gap: var(--sp-5); counter-reset: none; }
+@media (min-width: 720px) { .nextsteps { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .nextsteps { grid-template-columns: repeat(4, 1fr); } }
+.nextsteps li {
+  border-top: 3px solid var(--orange); padding-top: var(--sp-4);
+  background: var(--white); padding-inline: var(--sp-4); padding-bottom: var(--sp-4);
+  border-radius: var(--r-md); box-shadow: var(--shadow-soft);
+}
+.nextsteps__n {
+  font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem;
+  color: var(--orange-deep); line-height: 1;
+}
+.nextsteps h3 { font-size: 1rem; margin: var(--sp-3) 0 var(--sp-2); }
+.nextsteps p { font-size: 0.9375rem; color: var(--slate); }
+
+/* ---------- Text a photo ------------------------------------------------ */
+.photobid {
+  background: var(--mist); border-radius: var(--r-lg);
+  border-top: 5px solid var(--orange);
+  padding: var(--sp-6) var(--sp-5);
+}
+.photobid h2 { font-size: 1.5rem; margin-top: var(--sp-2); }
+.photobid p { margin-top: var(--sp-3); color: var(--slate); }
+.photobid__note { font-size: 0.875rem; }
+
+/* ---------- Inline CTA -------------------------------------------------- */
+.inlinecta__grid { display: grid; gap: var(--sp-6); align-items: center; }
+@media (min-width: 900px) { .inlinecta__grid { grid-template-columns: 1.15fr 1fr; gap: var(--sp-7); } }
+.inlinecta h2 { color: var(--white); font-size: clamp(1.6rem, 1.1rem + 1.7vw, 2.2rem); }
+.inlinecta__body { color: rgba(255, 255, 255, 0.9); margin-top: var(--sp-3); max-width: 46ch; }
+.inlinecta__quote {
+  border-left: 3px solid var(--orange);
+  padding-left: var(--sp-5);
+}
+.inlinecta__quote p { color: rgba(255, 255, 255, 0.94); font-size: 1.0625rem; line-height: 1.6; }
+.inlinecta__quote figcaption {
+  margin-top: var(--sp-3);
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.875rem;
+  color: var(--white);
+}
+.inlinecta__quote figcaption span {
+  display: block; font-weight: 400; font-family: var(--font-body);
+  font-size: 0.8125rem; color: rgba(255, 255, 255, 0.72); margin-top: 2px;
+}

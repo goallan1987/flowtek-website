@@ -9,6 +9,11 @@ import Reviews from '../components/Reviews.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import FaultTriage from '../components/FaultTriage.astro';
+import NextSteps from '../components/NextSteps.astro';
+import TextAPhoto from '../components/TextAPhoto.astro';
+import InlineCta from '../components/InlineCta.astro';
 import { photos, photosForService } from '../data/photos.js';
 import { serviceArt } from '../data/service-art.js';
 import { suburbArt } from '../data/suburb-art.js';
@@ -162,83 +167,14 @@ const description =
 
 
   <!-- ================= THE LOCAL SUBSTANCE ================= -->
-  <section class="section" aria-labelledby="local-heading">
-    <div class="container split">
-      <div>
-        <span class="eyebrow">{s.council} &middot; {s.postcode}</span>
-        <h2 id="local-heading">What we know about the pipes in {s.name}</h2>
-        <div class="prose" style="margin-top:24px">
-          <p>{s.local}</p>
-        </div>
+  <TrustStrip suburb={s.name} km={s.km} base={s.base} />
 
-        <div class="callout" style="margin-top:32px">
-          <h3 style="font-size:1.125rem">{s.fault.title}</h3>
-          <p>{s.fault.body}</p>
-        </div>
-      </div>
+  <FaultTriage suburb={s.name} loc="after-fault" />
 
-      <div>
-        <figure class="media-round">
-          <Image
-            src={resolve(featurePhoto.file)}
-            alt={featurePhoto.alt}
-            widths={[400, 560, 780]}
-            sizes="(min-width: 880px) 560px, 92vw"
-            quality={72}
-            loading="lazy"
-          />
-          <figcaption
-            style="padding:16px 20px;background:var(--mist);font-size:.875rem;line-height:1.5;color:var(--ink)"
-          >
-            {featurePhoto.caption}
-            {!s.hasRealJob && (
-              <span style="display:block;margin-top:8px;color:var(--slate)">
-                A Flowtek job. We have not recorded which street it was on, so we
-                are not going to claim it was this one.
-              </span>
-            )}
-          </figcaption>
-        </figure>
 
-        {/* "From our base" is filtered out here: the distance numeral in the
-            access section states it, and stating it twice on one page is noise. */}
-        <ul class="factlist" style="margin-top:32px">
-          {s.facts.filter(([k]: [string, string]) => k !== 'From our base').map(([k, v]: [string, string]) => (
-            <li><span class="k">{k}</span><span class="v">{v}</span></li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </section>
 
   <!-- ================= ACCESS ================= -->
-  <section class="section section--tight section--mist" aria-labelledby="access-heading">
-    <div class="container">
-      <div class="split">
-        <div>
-          {/* The signature move. The number that decides whether someone rings,
-              set as a composition element rather than buried in a sentence. */}
-          <div class={s.base ? 'distance distance--base' : 'distance'}>
-            <span class="distance__fig">
-              {s.base ? 'Base' : s.km}{!s.base && <span class="distance__unit">km</span>}
-            </span>
-            <span class="distance__meta">
-              {s.base ? 'Yeppoon is where we work from' : `by road from our Yeppoon base`}
-            </span>
-          </div>
-          <h2 id="access-heading" style="margin-top:32px">Access and parking in {s.name}</h2>
-        </div>
-        <div>
-          <p style="color:var(--ink)">{s.access}</p>
-          <p style="margin-top:16px;color:var(--ink)">
-            <strong>That figure is a distance, not a promise about the clock.</strong>
-            {' '}{business.emergencyLine} Ring us and we will tell you what we can
-            actually do and when.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+
 
   <!-- ================= SERVICES ================= -->
   <section class="section" aria-labelledby="svc-heading">
@@ -291,6 +227,15 @@ const description =
 
 
   <!-- ================= PROOF ================= -->
+  <InlineCta
+    heading={`Want someone to come and look at it in ${s.name}?`}
+    body="Ring and tell us what is going on, or send a photo. We will tell you what the job actually involves before anyone talks about money."
+    suburb={s.name}
+    loc="after-services"
+    quoteSeed={s.slug}
+    quoteTags={s.reviewTags}
+  />
+
   <section class="section section--navy on-dark" aria-labelledby="proof-heading">
     <div class="container split">
       <div>
@@ -350,6 +295,10 @@ const description =
   </section>
 
   <!-- ================= FORM ================= -->
+  <NextSteps suburb={s.name} loc="after-access" />
+
+  <TextAPhoto suburb={s.name} loc="after-access" />
+
   <section class="section section--mist" id="quote" aria-labelledby="quote-form-heading">
     <div class="container split">
       <div>
@@ -385,6 +334,84 @@ const description =
     </div>
   </section>
 
+  <section class="section" aria-labelledby="local-heading">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">{s.council} &middot; {s.postcode}</span>
+        <h2 id="local-heading">What we know about the pipes in {s.name}</h2>
+        <div class="prose" style="margin-top:24px">
+          <p>{s.local}</p>
+        </div>
+
+        <div class="callout" style="margin-top:32px">
+          <h3 style="font-size:1.125rem">{s.fault.title}</h3>
+          <p>{s.fault.body}</p>
+        </div>
+      </div>
+
+      <div>
+        <figure class="media-round">
+          <Image
+            src={resolve(featurePhoto.file)}
+            alt={featurePhoto.alt}
+            widths={[400, 560, 780]}
+            sizes="(min-width: 880px) 560px, 92vw"
+            quality={72}
+            loading="lazy"
+          />
+          <figcaption
+            style="padding:16px 20px;background:var(--mist);font-size:.875rem;line-height:1.5;color:var(--ink)"
+          >
+            {featurePhoto.caption}
+            {!s.hasRealJob && (
+              <span style="display:block;margin-top:8px;color:var(--slate)">
+                A Flowtek job. We have not recorded which street it was on, so we
+                are not going to claim it was this one.
+              </span>
+            )}
+          </figcaption>
+        </figure>
+
+        {/* "From our base" is filtered out here: the distance numeral in the
+            access section states it, and stating it twice on one page is noise. */}
+        <ul class="factlist" style="margin-top:32px">
+          {s.facts.filter(([k]: [string, string]) => k !== 'From our base').map(([k, v]: [string, string]) => (
+            <li><span class="k">{k}</span><span class="v">{v}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight section--mist" aria-labelledby="access-heading">
+    <div class="container">
+      <div class="split">
+        <div>
+          {/* The signature move. The number that decides whether someone rings,
+              set as a composition element rather than buried in a sentence. */}
+          <div class={s.base ? 'distance distance--base' : 'distance'}>
+            <span class="distance__fig">
+              {s.base ? 'Base' : s.km}{!s.base && <span class="distance__unit">km</span>}
+            </span>
+            <span class="distance__meta">
+              {s.base ? 'Yeppoon is where we work from' : `by road from our Yeppoon base`}
+            </span>
+          </div>
+          <h2 id="access-heading" style="margin-top:32px">Access and parking in {s.name}</h2>
+        </div>
+        <div>
+          <p style="color:var(--ink)">{s.access}</p>
+          <p style="margin-top:16px;color:var(--ink)">
+            <strong>That figure is a distance, not a promise about the clock.</strong>
+            {' '}{business.emergencyLine} Ring us and we will tell you what we can
+            actually do and when.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ================= NEARBY ================= -->
   {neighbours.length > 0 && (
     <section class="section section--tight" aria-labelledby="near-heading">
@@ -415,7 +442,7 @@ const description =
   )}
 
   <CtaBand
-    heading={`Need a plumber in ${s.name} today?`}
+    heading={`Get a plumber to ${s.name}`}
     suburb={s.name}
   />
 </Base>
