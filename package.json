@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "prebuild": "node scripts/gen-redirects.mjs && node scripts/check-photos.mjs",
-    "check:photos": "node scripts/check-photos.mjs"
+    "check:photos": "node scripts/check-photos.mjs",
+    "qa": "node scripts/qa.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
