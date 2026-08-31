@@ -75,17 +75,171 @@
 /join-our-team/  /careers/plumbing-jobs-yeppoon/  301!
 
 # --- Old WordPress URLs, so nothing currently linked or ranking 404s ---
+#
+# EVERY PATH BELOW WAS RECOVERED FROM THE INTERNET ARCHIVE ON 31/08/2026.
+# None of it is guessed, and nothing should be added here that has not been
+# confirmed against the archive or against a real inbound link.
+#
+# The first version of this list was written from memory and left off the
+# /services/ and /project/ prefixes the old site actually used. The result:
+# three of the six service pages and the one project write-up returned a hard
+# 404 after cutover while still sitting in the search index, and those three
+# service phrases dropped out of the results entirely. Audited 31/08/2026.
+#
+# ORDER MATTERS. Netlify takes the first match, so specific paths come before
+# the catch-alls underneath them.
+#
+# Each entry emits THREE rules: /path, /path/ and /path/*. That is deliberate.
+# Relying on a single /path/* rule to also catch the bare /path/ leaves the
+# behaviour up to how the host expands a splat, and a specific rule that fails
+# to match silently falls through to the catch-all below it, which is how
+# /project/storm-water-solutions-in-taranganba/ would have landed on /projects/
+# instead of the Taranganba page. Writing all three forms removes the guess.
+/services/hot-water-installation-and-maintenance  /services/hot-water/  301!
+/services/hot-water-installation-and-maintenance/  /services/hot-water/  301!
+/services/hot-water-installation-and-maintenance/*  /services/hot-water/  301!
+/services/blocked-drains-and-maintenance  /services/blocked-drains/  301!
+/services/blocked-drains-and-maintenance/  /services/blocked-drains/  301!
+/services/blocked-drains-and-maintenance/*  /services/blocked-drains/  301!
+/services/gas-installation  /services/gas-fitting/  301!
+/services/gas-installation/  /services/gas-fitting/  301!
+/services/gas-installation/*  /services/gas-fitting/  301!
+/hot-water-installation-and-maintenance  /services/hot-water/  301!
+/hot-water-installation-and-maintenance/  /services/hot-water/  301!
+/hot-water-installation-and-maintenance/*  /services/hot-water/  301!
+/blocked-drains-and-maintenance  /services/blocked-drains/  301!
+/blocked-drains-and-maintenance/  /services/blocked-drains/  301!
+/blocked-drains-and-maintenance/*  /services/blocked-drains/  301!
+/gas-installation  /services/gas-fitting/  301!
+/gas-installation/  /services/gas-fitting/  301!
+/gas-installation/*  /services/gas-fitting/  301!
+/renovations  /services/renovations/  301!
+/renovations/  /services/renovations/  301!
+/renovations/*  /services/renovations/  301!
+/emergency-plumbing  /services/emergency-plumbing/  301!
+/emergency-plumbing/  /services/emergency-plumbing/  301!
+/emergency-plumbing/*  /services/emergency-plumbing/  301!
+/backflow-tmv-testing  /services/backflow-tmv-testing/  301!
+/backflow-tmv-testing/  /services/backflow-tmv-testing/  301!
+/backflow-tmv-testing/*  /services/backflow-tmv-testing/  301!
+/faq/can-you-handle-commercial-plumbing-and-gas-fitting  /commercial/  301!
+/faq/can-you-handle-commercial-plumbing-and-gas-fitting/  /commercial/  301!
+/faq/can-you-handle-commercial-plumbing-and-gas-fitting/*  /commercial/  301!
+/faq/do-you-do-bathroom-renovations  /services/renovations/  301!
+/faq/do-you-do-bathroom-renovations/  /services/renovations/  301!
+/faq/do-you-do-bathroom-renovations/*  /services/renovations/  301!
+/faq/do-you-do-kitchen-renovations  /services/renovations/  301!
+/faq/do-you-do-kitchen-renovations/  /services/renovations/  301!
+/faq/do-you-do-kitchen-renovations/*  /services/renovations/  301!
+/faq/do-you-offer-emergency-plumbing-services  /services/emergency-plumbing/  301!
+/faq/do-you-offer-emergency-plumbing-services/  /services/emergency-plumbing/  301!
+/faq/do-you-offer-emergency-plumbing-services/*  /services/emergency-plumbing/  301!
+/faq/how-do-heat-pump-hot-water-heaters-work  /services/hot-water/  301!
+/faq/how-do-heat-pump-hot-water-heaters-work/  /services/hot-water/  301!
+/faq/how-do-heat-pump-hot-water-heaters-work/*  /services/hot-water/  301!
+/faq/how-do-solar-hot-water-heaters-work  /services/hot-water/  301!
+/faq/how-do-solar-hot-water-heaters-work/  /services/hot-water/  301!
+/faq/how-do-solar-hot-water-heaters-work/*  /services/hot-water/  301!
+/faq/i-have-a-blocked-drain-how-can-i-fix-it  /services/blocked-drains/  301!
+/faq/i-have-a-blocked-drain-how-can-i-fix-it/  /services/blocked-drains/  301!
+/faq/i-have-a-blocked-drain-how-can-i-fix-it/*  /services/blocked-drains/  301!
+/faq/i-think-i-have-a-gas-leak-what-should-i-do  /services/emergency-plumbing/  301!
+/faq/i-think-i-have-a-gas-leak-what-should-i-do/  /services/emergency-plumbing/  301!
+/faq/i-think-i-have-a-gas-leak-what-should-i-do/*  /services/emergency-plumbing/  301!
+/faq/ive-got-a-burst-pipe-and-water-is-going-everywhere-what-can-i-do  /services/emergency-plumbing/  301!
+/faq/ive-got-a-burst-pipe-and-water-is-going-everywhere-what-can-i-do/  /services/emergency-plumbing/  301!
+/faq/ive-got-a-burst-pipe-and-water-is-going-everywhere-what-can-i-do/*  /services/emergency-plumbing/  301!
+/faq/ive-just-jumped-in-the-shower-and-its-freezing-it-wont-warm-up-what-should-i-do  /services/hot-water/  301!
+/faq/ive-just-jumped-in-the-shower-and-its-freezing-it-wont-warm-up-what-should-i-do/  /services/hot-water/  301!
+/faq/ive-just-jumped-in-the-shower-and-its-freezing-it-wont-warm-up-what-should-i-do/*  /services/hot-water/  301!
+/faq/what-are-the-benefits-of-installing-an-instantaneous-hot-water-system-over-a-traditional-tank-system  /services/hot-water/  301!
+/faq/what-are-the-benefits-of-installing-an-instantaneous-hot-water-system-over-a-traditional-tank-system/  /services/hot-water/  301!
+/faq/what-are-the-benefits-of-installing-an-instantaneous-hot-water-system-over-a-traditional-tank-system/*  /services/hot-water/  301!
+/faq/what-areas-do-you-cover  /areas-we-serve/  301!
+/faq/what-areas-do-you-cover/  /areas-we-serve/  301!
+/faq/what-areas-do-you-cover/*  /areas-we-serve/  301!
+/faq/what-makes-flowtek-different-from-other-plumbers  /about/  301!
+/faq/what-makes-flowtek-different-from-other-plumbers/  /about/  301!
+/faq/what-makes-flowtek-different-from-other-plumbers/*  /about/  301!
+/faq/whats-a-backflow-valve-and-why-is-it-important  /services/backflow-tmv-testing/  301!
+/faq/whats-a-backflow-valve-and-why-is-it-important/  /services/backflow-tmv-testing/  301!
+/faq/whats-a-backflow-valve-and-why-is-it-important/*  /services/backflow-tmv-testing/  301!
+/faq/whats-a-tmv-and-why-is-it-important  /services/backflow-tmv-testing/  301!
+/faq/whats-a-tmv-and-why-is-it-important/  /services/backflow-tmv-testing/  301!
+/faq/whats-a-tmv-and-why-is-it-important/*  /services/backflow-tmv-testing/  301!
+/faq  /services/  301!
+/faq/  /services/  301!
+/faq/*  /services/  301!
+/project/storm-water-solutions-in-taranganba  /plumber-taranganba/  301!
+/project/storm-water-solutions-in-taranganba/  /plumber-taranganba/  301!
+/project/storm-water-solutions-in-taranganba/*  /plumber-taranganba/  301!
+/storm-water-solutions-in-taranganba  /plumber-taranganba/  301!
+/storm-water-solutions-in-taranganba/  /plumber-taranganba/  301!
+/storm-water-solutions-in-taranganba/*  /plumber-taranganba/  301!
+/project  /projects/  301!
+/project/  /projects/  301!
+/project/*  /projects/  301!
+/tag/taranganba  /plumber-taranganba/  301!
+/tag/taranganba/  /plumber-taranganba/  301!
+/tag/taranganba/*  /plumber-taranganba/  301!
+/tag  /projects/  301!
+/tag/  /projects/  301!
+/tag/*  /projects/  301!
+/category/storm-water-solutions  /projects/  301!
+/category/storm-water-solutions/  /projects/  301!
+/category/storm-water-solutions/*  /projects/  301!
+/category  /  301!
+/category/  /  301!
+/category/*  /  301!
+/5-plumbing-emergencies-that-can-really-put-a-damper-on-your-day-off-in-rockhampton  /services/emergency-plumbing/  301!
+/5-plumbing-emergencies-that-can-really-put-a-damper-on-your-day-off-in-rockhampton/  /services/emergency-plumbing/  301!
+/5-plumbing-emergencies-that-can-really-put-a-damper-on-your-day-off-in-rockhampton/*  /services/emergency-plumbing/  301!
+/prevent-bursts-smart-flexi-hose-maintenance-for-long-term-savings  /services/emergency-plumbing/  301!
+/prevent-bursts-smart-flexi-hose-maintenance-for-long-term-savings/  /services/emergency-plumbing/  301!
+/prevent-bursts-smart-flexi-hose-maintenance-for-long-term-savings/*  /services/emergency-plumbing/  301!
+/five-plumbing-upgrades-that-can-make-your-rockhampton-business-more-profitable  /commercial/  301!
+/five-plumbing-upgrades-that-can-make-your-rockhampton-business-more-profitable/  /commercial/  301!
+/five-plumbing-upgrades-that-can-make-your-rockhampton-business-more-profitable/*  /commercial/  301!
+/five-plumbing-upgrades-that-your-yeppoon-home-will-thank-you-for  /plumber-yeppoon/  301!
+/five-plumbing-upgrades-that-your-yeppoon-home-will-thank-you-for/  /plumber-yeppoon/  301!
+/five-plumbing-upgrades-that-your-yeppoon-home-will-thank-you-for/*  /plumber-yeppoon/  301!
+/plumbing-tasks-you-shouldnt-put-off-otherwise-your-rockhampton-home-could-pay-the-price  /plumber-rockhampton/  301!
+/plumbing-tasks-you-shouldnt-put-off-otherwise-your-rockhampton-home-could-pay-the-price/  /plumber-rockhampton/  301!
+/plumbing-tasks-you-shouldnt-put-off-otherwise-your-rockhampton-home-could-pay-the-price/*  /plumber-rockhampton/  301!
+/renovating-in-yeppoon-four-top-tips-to-ensure-your-new-plumbing-is-flawless  /services/renovations/  301!
+/renovating-in-yeppoon-four-top-tips-to-ensure-your-new-plumbing-is-flawless/  /services/renovations/  301!
+/renovating-in-yeppoon-four-top-tips-to-ensure-your-new-plumbing-is-flawless/*  /services/renovations/  301!
+/testimonials  /reviews/  301!
+/testimonials/  /reviews/  301!
+/testimonials/*  /reviews/  301!
+/about-us  /about/  301!
+/about-us/  /about/  301!
 /about-us/*  /about/  301!
 /about/*  /about/  301!
+/locations  /areas-we-serve/  301!
+/locations/  /areas-we-serve/  301!
 /locations/*  /areas-we-serve/  301!
+/contact-us  /contact/  301!
+/contact-us/  /contact/  301!
 /contact-us/*  /contact/  301!
-/renovations/*  /services/renovations/  301!
-/hot-water-installation-and-maintenance/*  /services/hot-water/  301!
-/emergency-plumbing/*  /services/emergency-plumbing/  301!
-/blocked-drains-and-maintenance/*  /services/blocked-drains/  301!
-/backflow-tmv-testing/*  /services/backflow-tmv-testing/  301!
-/gas-installation/*  /services/gas-fitting/  301!
-/storm-water-solutions-in-taranganba/*  /plumber-taranganba/  301!
+/coming-soon  /  301!
+/coming-soon/  /  301!
+/coming-soon/*  /  301!
+/blog  /  301!
+/blog/  /  301!
 /blog/*  /  301!
+/author  /about/  301!
+/author/  /about/  301!
+/author/*  /about/  301!
+/wp-admin  /  301!
+/wp-admin/  /  301!
 /wp-admin/*  /  301!
 /wp-login.php  /  301!
+/xmlrpc.php  /  301!
+/feed  /  301!
+/feed/  /  301!
+/feed/*  /  301!
+/comments/feed  /  301!
+/comments/feed/  /  301!
+/comments/feed/*  /  301!
+/wp-sitemap.xml  /sitemap-index.xml  301!

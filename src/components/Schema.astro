@@ -9,9 +9,17 @@
  * - openingHours: unknown. /OS/decisions.md register row 5.
  * - priceRange: unknown. Register rows 6 and 8.
  * - streetAddress and email: unknown. Register row 3.
- * - sameAs: no social accounts exist. Register row 3.
  * - vatID / taxID: no ABN supplied. Register row 1.
  * Add each one only when its register row closes.
+ *
+ * sameAs IS now emitted, from business.sameAs, and it is the one absence that
+ * turned out to cost something. The 31/08/2026 audit found AI assistants
+ * resolving Flowtek from third party directories and repeating their facts,
+ * including a 24 hour availability claim Flowtek must not make. The list is
+ * still short: the Google Business Profile URL is missing (register row 3) and
+ * Facebook is unresolved between four identities. See business.js for both.
+ * It renders only when the list is non-empty, so it disappears cleanly rather
+ * than emitting an empty array.
  */
 import { business, services } from '../data/business.js';
 import { suburbs } from '../data/suburbs.js';
@@ -78,6 +86,7 @@ const organisation = {
     addressCountry: business.country,
   },
   geo: { '@type': 'GeoCoordinates', latitude: business.lat, longitude: business.lng },
+  ...(business.sameAs?.length ? { sameAs: business.sameAs } : {}),
   areaServed,
   knowsLanguage: 'en-AU',
   currenciesAccepted: 'AUD',

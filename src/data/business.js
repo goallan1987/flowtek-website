@@ -45,6 +45,41 @@ export const business = {
     'Our local emergency team is ready to respond promptly during all active business hours.',
   hours: null,                // TBC, register row 5. Nothing rendered until closed.
 
+  /**
+   * Profiles that are provably the same business, for schema.org sameAs.
+   *
+   * This is an entity signal, not a link list. It tells a search engine and an
+   * AI assistant that this website, that directory listing and that Google
+   * profile are one business. The 31/08/2026 audit found the cost of not having
+   * it: with nothing tying the site to its own profiles, assistants resolved
+   * Flowtek from directory listings instead and repeated their facts, including
+   * a 24 hour availability claim Flowtek has never made and must not make.
+   *
+   * ONLY add a URL that has been opened and confirmed to be Flowtek. A wrong
+   * URL here is worse than an empty list, because it merges Flowtek's identity
+   * with somebody else's.
+   */
+  sameAs: [
+    // Verified 31/08/2026: correct name, Yeppoon 4703, links back to this site.
+    'https://www.localsearch.com.au/profile/flowtek-services/cltqwrrjb000s08jweg5d4cb0',
+  ],
+
+  /**
+   * Two more belong in sameAs above and both are worth more than the one that
+   * is there. Neither can be added yet. Register row 3.
+   *
+   * 1. The Google Business Profile URL. This is the single highest value entry
+   *    for local search and for AI assistants, and nobody in this operating
+   *    system has it.
+   *
+   * 2. Facebook. Deliberately NOT added. Ad account 322558511826041 promotes
+   *    two Pages, "Flowtek Services CQ" (505732789294330) and "Flowtek
+   *    Services" (1953410668287405), and two further profile IDs surface in
+   *    search results. Four identities, and guessing between them would make
+   *    entity resolution worse rather than better. Jason has to say which Page
+   *    is the real, current one.
+   */
+
   // The three promises, verbatim from the live site.
   promises: [
     'We turn up on time.',

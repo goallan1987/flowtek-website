@@ -54,24 +54,113 @@ for (const from of careersAliases) lines.push(`${from}  /careers/plumbing-jobs-y
 
 lines.push('');
 lines.push('# --- Old WordPress URLs, so nothing currently linked or ranking 404s ---');
+lines.push('#');
+lines.push('# EVERY PATH BELOW WAS RECOVERED FROM THE INTERNET ARCHIVE ON 31/08/2026.');
+lines.push('# None of it is guessed, and nothing should be added here that has not been');
+lines.push('# confirmed against the archive or against a real inbound link.');
+lines.push('#');
+lines.push('# The first version of this list was written from memory and left off the');
+lines.push('# /services/ and /project/ prefixes the old site actually used. The result:');
+lines.push('# three of the six service pages and the one project write-up returned a hard');
+lines.push('# 404 after cutover while still sitting in the search index, and those three');
+lines.push('# service phrases dropped out of the results entirely. Audited 31/08/2026.');
+lines.push('#');
+lines.push('# ORDER MATTERS. Netlify takes the first match, so specific paths come before');
+lines.push('# the catch-alls underneath them.');
+lines.push('#');
+lines.push('# Each entry emits THREE rules: /path, /path/ and /path/*. That is deliberate.');
+lines.push('# Relying on a single /path/* rule to also catch the bare /path/ leaves the');
+lines.push('# behaviour up to how the host expands a splat, and a specific rule that fails');
+lines.push('# to match silently falls through to the catch-all below it, which is how');
+lines.push('# /project/storm-water-solutions-in-taranganba/ would have landed on /projects/');
+lines.push('# instead of the Taranganba page. Writing all three forms removes the guess.');
 const legacy = [
-  ['/about-us/*', '/about/'],
-  ['/about/*', '/about/'], // the old /about/ was serving injected spam. Register row 14.
-  ['/locations/*', '/areas-we-serve/'],
-  ['/contact-us/*', '/contact/'],
-  ['/renovations/*', '/services/renovations/'],
-  ['/hot-water-installation-and-maintenance/*', '/services/hot-water/'],
-  ['/emergency-plumbing/*', '/services/emergency-plumbing/'],
-  ['/blocked-drains-and-maintenance/*', '/services/blocked-drains/'],
-  ['/backflow-tmv-testing/*', '/services/backflow-tmv-testing/'],
-  ['/gas-installation/*', '/services/gas-fitting/'],
-  ['/storm-water-solutions-in-taranganba/*', '/plumber-taranganba/'],
-  ['/blog/*', '/'],
-  ['/wp-admin/*', '/'],
+  // --- Service pages. The old site kept these under /services/. ---
+  ['/services/hot-water-installation-and-maintenance', '/services/hot-water/'],
+  ['/services/blocked-drains-and-maintenance', '/services/blocked-drains/'],
+  ['/services/gas-installation', '/services/gas-fitting/'],
+  // The same slugs without the prefix, in case anything external ever used them.
+  ['/hot-water-installation-and-maintenance', '/services/hot-water/'],
+  ['/blocked-drains-and-maintenance', '/services/blocked-drains/'],
+  ['/gas-installation', '/services/gas-fitting/'],
+  ['/renovations', '/services/renovations/'],
+  ['/emergency-plumbing', '/services/emergency-plumbing/'],
+  ['/backflow-tmv-testing', '/services/backflow-tmv-testing/'],
+
+  // --- The FAQ library. Fifteen indexed pages, each to the page that now
+  // answers the same question. These were the old site's best answer content
+  // and they are exactly what an AI assistant quotes, so they are worth
+  // landing precisely rather than dumping on the home page. ---
+  ['/faq/can-you-handle-commercial-plumbing-and-gas-fitting', '/commercial/'],
+  ['/faq/do-you-do-bathroom-renovations', '/services/renovations/'],
+  ['/faq/do-you-do-kitchen-renovations', '/services/renovations/'],
+  ['/faq/do-you-offer-emergency-plumbing-services', '/services/emergency-plumbing/'],
+  ['/faq/how-do-heat-pump-hot-water-heaters-work', '/services/hot-water/'],
+  ['/faq/how-do-solar-hot-water-heaters-work', '/services/hot-water/'],
+  ['/faq/i-have-a-blocked-drain-how-can-i-fix-it', '/services/blocked-drains/'],
+  ['/faq/i-think-i-have-a-gas-leak-what-should-i-do', '/services/emergency-plumbing/'],
+  ['/faq/ive-got-a-burst-pipe-and-water-is-going-everywhere-what-can-i-do', '/services/emergency-plumbing/'],
+  ['/faq/ive-just-jumped-in-the-shower-and-its-freezing-it-wont-warm-up-what-should-i-do', '/services/hot-water/'],
+  ['/faq/what-are-the-benefits-of-installing-an-instantaneous-hot-water-system-over-a-traditional-tank-system', '/services/hot-water/'],
+  ['/faq/what-areas-do-you-cover', '/areas-we-serve/'],
+  ['/faq/what-makes-flowtek-different-from-other-plumbers', '/about/'],
+  ['/faq/whats-a-backflow-valve-and-why-is-it-important', '/services/backflow-tmv-testing/'],
+  ['/faq/whats-a-tmv-and-why-is-it-important', '/services/backflow-tmv-testing/'],
+  ['/faq', '/services/'],
+
+  // --- The project write-up and its taxonomy. ---
+  ['/project/storm-water-solutions-in-taranganba', '/plumber-taranganba/'],
+  ['/storm-water-solutions-in-taranganba', '/plumber-taranganba/'],
+  ['/project', '/projects/'],
+  ['/tag/taranganba', '/plumber-taranganba/'],
+  ['/tag', '/projects/'],
+  ['/category/storm-water-solutions', '/projects/'],
+  ['/category', '/'],
+
+  // --- The blog. Six posts, each to the page nearest its subject. ---
+  ['/5-plumbing-emergencies-that-can-really-put-a-damper-on-your-day-off-in-rockhampton', '/services/emergency-plumbing/'],
+  ['/prevent-bursts-smart-flexi-hose-maintenance-for-long-term-savings', '/services/emergency-plumbing/'],
+  ['/five-plumbing-upgrades-that-can-make-your-rockhampton-business-more-profitable', '/commercial/'],
+  ['/five-plumbing-upgrades-that-your-yeppoon-home-will-thank-you-for', '/plumber-yeppoon/'],
+  ['/plumbing-tasks-you-shouldnt-put-off-otherwise-your-rockhampton-home-could-pay-the-price', '/plumber-rockhampton/'],
+  ['/renovating-in-yeppoon-four-top-tips-to-ensure-your-new-plumbing-is-flawless', '/services/renovations/'],
+
+  // --- Trust and general pages. ---
+  ['/testimonials', '/reviews/'],
+  ['/about-us', '/about/'],
+  ['/about', '/about/'], // the old /about/ was serving injected spam. Register row 14.
+  ['/locations', '/areas-we-serve/'],
+  ['/contact-us', '/contact/'],
+  ['/coming-soon', '/'],
+  ['/blog', '/'],
+  ['/author', '/about/'],
+
+  // --- WordPress leftovers. These also close an attack surface on a domain
+  // that was comprehensively compromised. Register row 14. ---
+  ['/wp-admin', '/'],
   ['/wp-login.php', '/'],
+  ['/xmlrpc.php', '/'],
+  ['/feed', '/'],
+  ['/comments/feed', '/'],
+  ['/wp-sitemap.xml', '/sitemap-index.xml'],
 ];
-for (const [from, to] of legacy) lines.push(`${from}  ${to}  301!`);
+// Emit /path, /path/ and /path/* for every directory-style entry, and an exact
+// rule only for a file. See the note above: one splat rule is not enough.
+let legacyRules = 0;
+for (const [from, to] of legacy) {
+  const isFile = /\.[a-z0-9]+$/i.test(from);
+  const forms = isFile ? [from] : [from, `${from}/`, `${from}/*`];
+  for (const f of forms) {
+    // Never emit a rule that points a path at itself. /about is the live case:
+    // the old /about/ served injected spam so it is listed here, but the new
+    // site has a real /about/ page, and "/about/ -> /about/" with a forced 301
+    // is a redirect loop, not a redirect. Register row 14.
+    if (f === to || `${f}/` === to) continue;
+    lines.push(`${f}  ${to}  301!`);
+    legacyRules++;
+  }
+}
 
 mkdirSync(new URL('../public/', import.meta.url), { recursive: true });
 writeFileSync(new URL('../public/_redirects', import.meta.url), lines.join('\n') + '\n');
-console.log(`_redirects written: ${suburbs.length * 2 + careersAliases.length + legacy.length} rules`);
+console.log(`_redirects written: ${suburbs.length * 2 + careersAliases.length + legacyRules} rules`);
